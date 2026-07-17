@@ -1,0 +1,3 @@
+[CustomSkin]
+MultiboardDefaultIcon=ReplaceableTextures\CommandButtons\BTNBlackIcon.blp
+

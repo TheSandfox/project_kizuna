@@ -1,0 +1,211 @@
+IncludeFile "UI\FrameDef\UI\EscMenuTemplates.fdf",
+IncludeFile "UI\FrameDef\myframes\Mytext.fdf",
+
+Frame "GLUETEXTBUTTON" "AbilityManagerPageButton" {
+	UseActiveContext,
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+	Height 0.02667,
+	Width 0.07111,
+
+	Frame "BACKDROP" "AbilityManagerPageButtonIcon" {
+		UseActiveContext,
+		SetPoint TOPLEFT, "AbilityManagerPageButton", TOPLEFT, 0.00444, -0.00444,
+		Height 0.01777,
+		Width 0.01777,
+	}
+
+	ButtonText "AbilityManagerPageButtonText",
+	Frame "TEXT" "AbilityManagerPageButtonText" INHERITS "MyButtonText" {
+		UseActiveContext,
+		SetPoint TOPLEFT, "AbilityManagerPageButtonIcon", TOPRIGHT, 0.0, 0.0,
+		SetPoint BOTTOMRIGHT, "AbilityManagerPageButton", BOTTOMRIGHT, -0.00444, 0.00444,
+		FontJustificationH JUSTIFYCENTER,
+    	FontJustificationV JUSTIFYMIDDLE, 
+	}
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "AbilityManagerUIButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+
+	Frame "BACKDROP" "AbilityManagerUIButtonIcon" {
+		Height 0.02,
+		Width 0.02,
+	}
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "AbilityManagerLevelUpButton" {
+	UseActiveContext,
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+	Width 0.04,
+	Height 0.02666,
+
+	ButtonText "AbilityManagerLevelUpButtonText",
+	Frame "TEXT" "AbilityManagerLevelUpButtonText" INHERITS "MyButtonText" {
+		SetPoint CENTER, "AbilityManagerLevelUpButton", CENTER, 0.0, 0.0,
+		Text "|cffffff00▲|r",
+	}
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "AbilityManagerRemoveButton" {
+	UseActiveContext,
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+	Width 0.04,
+	Height 0.02666,
+
+	ButtonText "AbilityManagerRemoveButtonText",
+	Frame "TEXT" "AbilityManagerRemoveButtonText" INHERITS "MyButtonText" {
+		SetPoint CENTER, "AbilityManagerRemoveButton", CENTER, 0.0, 0.0,
+		Text "|cffff00ccx|r",
+	}
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "AbilityMixConfirmButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+	Width 0.07111,
+	Height 0.02666,
+
+	ButtonText "AbilityMixConfirmButtonText",
+	Frame "TEXT" "AbilityMixConfirmButtonText" INHERITS "MyButtonText" {
+		SetPoint CENTER, "AbilityMixConfirmButton", CENTER, 0.0, 0.0,
+		Text "합성",
+	}
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "AbilityManagerUpgradeModeChangeButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+	Width 0.02666,
+	Height 0.02666,
+
+	Frame "BACKDROP" "AbilityManagerUpgradeModeChangeButtonIcon" {
+		BackdropBackground "ReplaceableTextures/CommandButtons/BTNSelectUnit.blp",
+		Height 0.01778,
+		Width 0.01778,
+		SetPoint CENTER, "AbilityManagerUpgradeModeChangeButton", CENTER, 0.0, 0.0,
+	}
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}

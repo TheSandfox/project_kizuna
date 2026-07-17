@@ -1,0 +1,118 @@
+// -- Frames -------------------------------------------------------
+Frame "BACKDROP" "MyTextBox" {
+	DecorateFileNames,
+	BackdropTileBackground, 
+	BackdropBackground  "ToolTipBackground", 
+	BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+	BackdropCornerSize  0.008,
+	BackdropEdgeFile  "ToolTipBorder",
+	BackdropBlendAll,
+}
+
+Frame "TEXT" "MyText" {
+	UseActiveContext,
+	DecorateFileNames,
+	LayerStyle "IGNORETRACKEVENTS",
+	FontJustificationH JUSTIFYCENTER,
+    FontJustificationV JUSTIFYMIDDLE,    
+	FontFlags "FIXEDSIZE",
+	FrameFont "MasterFont", 0.01, "",
+	FontColor 1.0 1.0 1.0 1.0,
+	FontShadowColor 0.0 0.0 0.0 0.9,
+	FontShadowOffset 0.001 -0.001,
+}
+
+Frame "TEXT" "MyButtonText" {
+	UseActiveContext,
+	DecorateFileNames,
+	LayerStyle "IGNORETRACKEVENTS",
+	FontJustificationH JUSTIFYCENTER,
+    FontJustificationV JUSTIFYMIDDLE,    
+	FontFlags "FIXEDSIZE",
+	FrameFont "MasterFont", 0.01, "",
+	FontColor 1.0 0.8 0.0 1.0,
+	FontShadowColor 0.0 0.0 0.0 0.9,
+	FontShadowOffset 0.001 -0.001,
+}
+
+Frame "TEXT" "MyButtonTextSmall" {
+	UseActiveContext,
+	DecorateFileNames,
+	LayerStyle "IGNORETRACKEVENTS",
+	FontJustificationH JUSTIFYCENTER,
+    FontJustificationV JUSTIFYMIDDLE,    
+	FontFlags "FIXEDSIZE",
+	FrameFont "MasterFont", 0.008, "",
+	FontColor 1.0 0.8 0.0 1.0,
+	FontShadowColor 0.0 0.0 0.0 0.9,
+	FontShadowOffset 0.001 -0.001,
+}
+
+Frame "TEXT" "MyAbilTooltip" {
+	UseActiveContext,
+	DecorateFileNames,
+	LayerStyle "IGNORETRACKEVENTS",
+	FontFlags "FIXEDSIZE",
+	FrameFont "MasterFont", 0.01, "",
+	FontColor 0.8 0.8 0.8 1.0,
+	FontShadowColor 0.0 0.0 0.0 0.9,
+	FontShadowOffset 0.001 -0.001,
+	Width 0.39,
+}
+
+Frame "TEXT" "MyStatTooltip" {
+	UseActiveContext,
+	DecorateFileNames,
+	LayerStyle "IGNORETRACKEVENTS",
+	FontFlags "FIXEDSIZE",
+	FrameFont "MasterFont", 0.01, "",
+	FontColor 1.0 1.0 1.0 1.0,
+	FontShadowColor 0.0 0.0 0.0 0.9,
+	FontShadowOffset 0.001 -0.001,
+	Width 0.24,
+}
+
+Frame "TEXT" "MyItemTooltip" {
+	UseActiveContext,
+	DecorateFileNames,
+	LayerStyle "IGNORETRACKEVENTS",
+	FontFlags "FIXEDSIZE",
+	FrameFont "MasterFont", 0.01, "",
+	FontColor 0.8 0.8 0.8 1.0,
+	FontShadowColor 0.0 0.0 0.0 0.9,
+	FontShadowOffset 0.001 -0.001,
+	Width 0.17778,
+}
+
+Frame "TEXT" "MyTextSmall" {
+	UseActiveContext,
+	DecorateFileNames,
+	LayerStyle "IGNORETRACKEVENTS",
+	FontFlags "FIXEDSIZE",
+	FrameFont "MasterFont", 0.008, "",
+	FontColor 1.0 1.0 1.0 1.0,
+	FontShadowColor 0.0 0.0 0.0 0.9,
+	FontShadowOffset 0.001 -0.001,
+}
+
+Frame "TEXT" "MyTextLarge" {
+	UseActiveContext,
+	DecorateFileNames,
+	LayerStyle "IGNORETRACKEVENTS",
+	FontFlags "FIXEDSIZE",
+	FrameFont "MasterFont", 0.015, "",
+	FontColor 1.0 1.0 1.0 1.0,
+	FontShadowColor 0.0 0.0 0.0 0.9,
+	FontShadowOffset 0.001 -0.001,
+}
+
+Frame "TEXT" "MyTextHeader" {
+	UseActiveContext,
+	DecorateFileNames,
+	LayerStyle "IGNORETRACKEVENTS",
+	FontFlags "FIXEDSIZE",
+	FrameFont "MasterFont", 0.02, "",
+	FontColor 1.0 1.0 1.0 1.0,
+	FontShadowColor 0.0 0.0 0.0 0.9,
+	FontShadowOffset 0.001 -0.001,
+}

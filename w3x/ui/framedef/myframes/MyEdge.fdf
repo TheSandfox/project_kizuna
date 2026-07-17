@@ -1,0 +1,35 @@
+// -- FRAMES ----------------------------------------------------------------
+
+Frame "BACKDROP" "MBEdge" {
+	UseActiveContext,
+	DecorateFileNames,
+	BackdropTileBackground,
+	BackdropBackground "MultiboardBackground",
+	BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+	BackdropCornerSize 0.0125,
+	BackdropBackgroundInsets 0.005f 0.005f 0.005f 0.005f,
+	BackdropEdgeFile "MultiboardBorder",
+	BackdropBlendAll,
+}
+
+Frame "TEXT" "GenericText" {
+	DecorateFileNames,
+	Text "GText",
+		FontFlags "FIXEDSIZE",
+		FrameFont "MasterFont", 0.013, "",
+		FontColor 1.0 1.0 1.0 1.0,
+		FontShadowColor 0.0 0.0 0.0 0.9,
+		FontShadowOffset 0.002 -0.002,
+}
+
+Frame "BACKDROP" "EMEdge" {
+	DecorateFileNames,
+	BackdropTileBackground,
+	BackdropBackground  "EscMenuBackground",
+ 	BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+ 	BackdropCornerSize  0.048,
+ 	BackdropBackgroundSize  0.256,
+ 	BackdropBackgroundInsets 0.01 0.01 0.01 0.01,
+ 	BackdropEdgeFile  "EscMenuBorder",
+ 	BackdropBlendAll,
+}

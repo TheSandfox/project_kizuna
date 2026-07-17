@@ -1,0 +1,66 @@
+IncludeFile "UI\FrameDef\UI\EscMenuTemplates.fdf",
+IncludeFile "UI\FrameDef\myframes\MyEdge.fdf",
+
+Frame "GLUETEXTBUTTON" "WarpButton" {
+	UseActiveContext,
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+
+	Frame "BACKDROP" "WarpButtonIcon" {
+		UseActiveContext,
+		SetPoint TOPLEFT, "WarpButton", TOPLEFT, 0.00444, -0.00444,
+		SetPoint BOTTOMRIGHT, "WarpButton", BOTTOMRIGHT, -0.00444, 0.00444,
+	}
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "WarpMoveCameraToggleButton" {
+	UseActiveContext,
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+
+	ButtonText "WarpMoveCameraToggleButtonText",
+	Frame "TEXT" "WarpMoveCameraToggleButtonText" INHERITS "MyButtonText" {
+		UseActiveContext,
+		SetPoint CENTER, "WarpMoveCameraToggleButton", CENTER, 0.0, 0.0,
+	}
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+
+}

@@ -1,0 +1,12 @@
+ui\framedef\myframes\MyEdge.fdf
+ui\framedef\myframes\MyText.fdf
+ui\framedef\myframes\MyGTB.fdf
+ui\framedef\myframes\MyButton.fdf
+ui\framedef\myframes\SkillShop.fdf
+ui\framedef\myframes\Inventory.fdf
+ui\framedef\myframes\Craft.fdf
+ui\framedef\myframes\Numberpad.fdf
+ui\framedef\myframes\Generic.fdf
+ui\framedef\myframes\Warp.fdf
+ui\framedef\myframes\AbilityManager.fdf
+ui\framedef\myframes\AbilityButton.fdf

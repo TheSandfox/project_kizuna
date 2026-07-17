@@ -1,0 +1,950 @@
+﻿STRING 111
+// 유닛: HR01 ([영웅]HR01#총잡이), Hotkey (단축키)
+{
+Q
+}
+
+STRING 143
+// 유닛: HRxx ([영웅]더미영웅), Hotkey (단축키)
+{
+Q
+}
+
+STRING 181
+// 유닛: HR02 ([영웅]HR02#붉은기사), Hotkey (단축키)
+{
+Q
+}
+
+STRING 234
+// 유닛: HR03 ([영웅]HR03#어둠추적자), Hotkey (단축키)
+{
+Q
+}
+
+STRING 372
+// 유닛: HR04 ([영웅]HR04#흑마법사), Hotkey (단축키)
+{
+Q
+}
+
+STRING 1508
+// 파괴 가능한 물체: LTlt ((여름 나무 벽), Name (이름)
+{
+(여름 나무 벽
+}
+
+STRING 1678
+{
+플레이어 1
+}
+
+STRING 1679
+{
+플레이어 2
+}
+
+STRING 1680
+{
+플레이어 3
+}
+
+STRING 1681
+{
+플레이어 4
+}
+
+STRING 1689
+// 유닛: HRxx ([영웅]더미영웅), Propernames (적합한 이름)
+{
+ 
+}
+
+STRING 1690
+// 유닛: HR00 ([영웅]HR00#전사), Propernames (적합한 이름)
+{
+전사
+}
+
+STRING 1809
+{
+수호자
+}
+
+STRING 1812
+// 능력: Axx0 (Axx0 공속), Name (이름)
+{
+Axx0 공속
+}
+
+STRING 1877
+// 유닛: HR05 ([영웅]HR05#해병), Hotkey (단축키)
+{
+Q
+}
+
+STRING 1931
+// 유닛: HR06 ([영웅]HR06#트롤 광전사), Hotkey (단축키)
+{
+Q
+}
+
+STRING 1932
+// 유닛: HR07 ([영웅]HR07#자객), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2089
+// 유닛: HR08 ([영웅]HR08#주술사), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2109
+// 유닛: U000 ([언데드]U000#구울), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2128
+// 유닛: dumm (라벨용 더미), Name (이름)
+{
+라벨용 더미
+}
+
+STRING 2129
+// 유닛: HR01 ([영웅]HR01#총잡이), Propernames (적합한 이름)
+{
+총잡이
+}
+
+STRING 2155
+// 유닛: HR02 ([영웅]HR02#붉은기사), Propernames (적합한 이름)
+{
+붉은기사
+}
+
+STRING 2204
+// 유닛: HR05 ([영웅]HR05#해병), Propernames (적합한 이름)
+{
+해병
+}
+
+STRING 2207
+{
+|cffd5bd92스킬저장소|r |cffffff00v0.01|r
+}
+
+STRING 2208
+{
+4
+}
+
+STRING 2209
+{
+자신만의 영웅을 육성하고 몰려오는 언데드군단을 막아내세요.
+}
+
+STRING 2210
+{
+모래여우
+}
+
+STRING 2228
+// 유닛: HR06 ([영웅]HR06#트롤 광전사), Propernames (적합한 이름)
+{
+트롤 광전사
+}
+
+STRING 2237
+// 유닛: HR07 ([영웅]HR07#자객), Propernames (적합한 이름)
+{
+자객
+}
+
+STRING 2260
+// 유닛: SP02 ([소환수]SP02#치유의 정령), Propernames (적합한 이름)
+{
+치유의 정령
+}
+
+STRING 2266
+// 유닛: SP01 ([소환수]SP01#천공룡), Propernames (적합한 이름)
+{
+천공룡
+}
+
+STRING 2282
+// 유닛: U000 ([언데드]U000#구울), Propernames (적합한 이름)
+{
+구울
+}
+
+STRING 2284
+// 유닛: U001 ([언데드]U001#지하마귀), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2287
+// 유닛: U002 ([언데드]U002#가고일), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2288
+// 유닛: U001 ([언데드]U001#지하마귀), Propernames (적합한 이름)
+{
+지하마귀
+}
+
+STRING 2290
+// 유닛: U002 ([언데드]U002#가고일), Propernames (적합한 이름)
+{
+가고일
+}
+
+STRING 2292
+// 유닛: U003 ([언데드]U003#강령술사), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2293
+// 유닛: U003 ([언데드]U003#강령술사), Propernames (적합한 이름)
+{
+강령술사
+}
+
+STRING 2295
+// 유닛: U004 ([언데드]U004#누더기 골렘), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2296
+// 유닛: U004 ([언데드]U004#누더기 골렘), Propernames (적합한 이름)
+{
+누더기 골렘
+}
+
+STRING 2298
+// 유닛: HR09 ([영웅]HR09#마술사), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2299
+// 유닛: HR09 ([영웅]HR09#마술사), Propernames (적합한 이름)
+{
+마술사
+}
+
+STRING 2301
+// 유닛: G000 ([수호자]G000#수호병), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2302
+// 유닛: G000 ([수호자]G000#수호병), Propernames (적합한 이름)
+{
+수호병
+}
+
+STRING 2304
+// 유닛: G001 ([수호자]G001#생명의 나무), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2305
+// 유닛: G001 ([수호자]G001#생명의 나무), Propernames (적합한 이름)
+{
+생명의 나무
+}
+
+STRING 2307
+// 유닛: HR00 ([영웅]HR00#전사), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2310
+// 파괴 가능한 물체: D000 (지옥문), Name (이름)
+{
+지옥문
+}
+
+STRING 2314
+// 파괴 가능한 물체: D000 (지옥문), EditorSuffix (에디터 접미사)
+{
+(0도)
+}
+
+STRING 2321
+// 유닛: NS03 ([NPC]NS03#차원문), Propernames (적합한 이름)
+{
+차원문
+}
+
+STRING 2322
+// 유닛: idum (아이템 더미), Name (이름)
+{
+아이템 더미
+}
+
+STRING 2338
+// 유닛: HR0a ([영웅]HR0a#불한당), Propernames (적합한 이름)
+{
+불한당
+}
+
+STRING 2340
+// 유닛: HR0a ([영웅]HR0a#불한당), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2346
+// 유닛: NS00 ([NPC]NS00#광맥), Propernames (적합한 이름)
+{
+광맥
+}
+
+STRING 2348
+// 유닛: NS01 ([NPC]NS01#제련소), Propernames (적합한 이름)
+{
+제련소
+}
+
+STRING 2350
+// 유닛: NS02 ([NPC]NS02#대장간), Propernames (적합한 이름)
+{
+대장간
+}
+
+STRING 2351
+// 능력: Axx6 (Axx6 상호작용가능), Name (이름)
+{
+Axx6 상호작용가능
+}
+
+STRING 2355
+// 유닛: HRxx ([영웅]더미영웅), Name (이름)
+{
+[영웅]더미영웅
+}
+
+STRING 2399
+// 유닛: SP00 ([소환수]SP00#군마), Propernames (적합한 이름)
+{
+군마
+}
+
+STRING 2401
+// 유닛: SP00 ([소환수]SP00#군마), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2402
+// 유닛: HR01 ([영웅]HR01#총잡이), Name (이름)
+{
+[영웅]HR01#총잡이
+}
+
+STRING 2403
+// 유닛: HR02 ([영웅]HR02#붉은기사), Name (이름)
+{
+[영웅]HR02#붉은기사
+}
+
+STRING 2406
+// 유닛: HR05 ([영웅]HR05#해병), Name (이름)
+{
+[영웅]HR05#해병
+}
+
+STRING 2407
+// 유닛: HR06 ([영웅]HR06#트롤 광전사), Name (이름)
+{
+[영웅]HR06#트롤 광전사
+}
+
+STRING 2408
+// 유닛: HR07 ([영웅]HR07#자객), Name (이름)
+{
+[영웅]HR07#자객
+}
+
+STRING 2410
+// 유닛: U000 ([언데드]U000#구울), Name (이름)
+{
+[언데드]U000#구울
+}
+
+STRING 2411
+// 유닛: U001 ([언데드]U001#지하마귀), Name (이름)
+{
+[언데드]U001#지하마귀
+}
+
+STRING 2412
+// 유닛: U002 ([언데드]U002#가고일), Name (이름)
+{
+[언데드]U002#가고일
+}
+
+STRING 2413
+// 유닛: U003 ([언데드]U003#강령술사), Name (이름)
+{
+[언데드]U003#강령술사
+}
+
+STRING 2414
+// 유닛: U004 ([언데드]U004#누더기 골렘), Name (이름)
+{
+[언데드]U004#누더기 골렘
+}
+
+STRING 2415
+// 유닛: HR09 ([영웅]HR09#마술사), Name (이름)
+{
+[영웅]HR09#마술사
+}
+
+STRING 2416
+// 유닛: G000 ([수호자]G000#수호병), Name (이름)
+{
+[수호자]G000#수호병
+}
+
+STRING 2417
+// 유닛: G001 ([수호자]G001#생명의 나무), Name (이름)
+{
+[수호자]G001#생명의 나무
+}
+
+STRING 2418
+// 유닛: HR00 ([영웅]HR00#전사), Name (이름)
+{
+[영웅]HR00#전사
+}
+
+STRING 2422
+// 유닛: HR0a ([영웅]HR0a#불한당), Name (이름)
+{
+[영웅]HR0a#불한당
+}
+
+STRING 2428
+// 유닛: SP00 ([소환수]SP00#군마), Name (이름)
+{
+[소환수]SP00#군마
+}
+
+STRING 2429
+// 능력: Axx1 (Axx1(channel)따라가기), Name (이름)
+{
+Axx1(channel)따라가기
+}
+
+STRING 2430
+// 능력: Axx4 (Axx4(absorb)상호작용), Name (이름)
+{
+Axx4(absorb)상호작용
+}
+
+STRING 2431
+// 능력: Axx7 (Axx7(acidbomb)자동공격없는홀드), Name (이름)
+{
+Axx7(acidbomb)자동공격없는홀드
+}
+
+STRING 2432
+// 능력: Axx2 (Axx2(acolyteharvest)자동공격없는무빙), Name (이름)
+{
+Axx2(acolyteharvest)자동공격없는무빙
+}
+
+STRING 2434
+// 유닛: SP01 ([소환수]SP01#천공룡), Name (이름)
+{
+[소환수]SP01#천공룡
+}
+
+STRING 2435
+// 유닛: SP01 ([소환수]SP01#천공룡), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2437
+// 유닛: SP02 ([소환수]SP02#치유의 정령), Name (이름)
+{
+[소환수]SP02#치유의 정령
+}
+
+STRING 2438
+// 유닛: SP02 ([소환수]SP02#치유의 정령), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2439
+// 유닛: HR08 ([영웅]HR08#주술사), Propernames (적합한 이름)
+{
+주술사
+}
+
+STRING 2440
+// 유닛: HR08 ([영웅]HR08#주술사), Name (이름)
+{
+[영웅]HR08#주술사
+}
+
+STRING 2443
+// 유닛: HR0b ([영웅]HR0b#바다사냥꾼), Propernames (적합한 이름)
+{
+바다사냥꾼
+}
+
+STRING 2444
+// 유닛: HR0b ([영웅]HR0b#바다사냥꾼), Name (이름)
+{
+[영웅]HR0b#바다사냥꾼
+}
+
+STRING 2445
+// 유닛: HR0b ([영웅]HR0b#바다사냥꾼), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2446
+// 유닛: HR0c ([영웅]HR0c#주문파괴자), Propernames (적합한 이름)
+{
+주문파괴자
+}
+
+STRING 2447
+// 유닛: HR0c ([영웅]HR0c#주문파괴자), Name (이름)
+{
+[영웅]HR0c#주문파괴자
+}
+
+STRING 2448
+// 유닛: HR0c ([영웅]HR0c#주문파괴자), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2449
+// 유닛: HR0d ([영웅]HR0d#기술자), Propernames (적합한 이름)
+{
+기술자
+}
+
+STRING 2450
+// 유닛: HR0d ([영웅]HR0d#기술자), Name (이름)
+{
+[영웅]HR0d#기술자
+}
+
+STRING 2451
+// 유닛: HR0d ([영웅]HR0d#기술자), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2452
+// 유닛: HR04 ([영웅]HR04#흑마법사), Propernames (적합한 이름)
+{
+흑마법사
+}
+
+STRING 2453
+// 유닛: HR04 ([영웅]HR04#흑마법사), Name (이름)
+{
+[영웅]HR04#흑마법사
+}
+
+STRING 2454
+// 유닛: HR0e ([영웅]HR0e#돼지술사), Propernames (적합한 이름)
+{
+돼지술사
+}
+
+STRING 2455
+// 유닛: HR0e ([영웅]HR0e#돼지술사), Name (이름)
+{
+[영웅]HR0e#돼지술사
+}
+
+STRING 2456
+// 유닛: HR0e ([영웅]HR0e#돼지술사), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2457
+// 유닛: SP03 ([소환수]SP03#돼지), Propernames (적합한 이름)
+{
+돼지
+}
+
+STRING 2458
+// 유닛: SP03 ([소환수]SP03#돼지), Name (이름)
+{
+[소환수]SP03#돼지
+}
+
+STRING 2459
+// 유닛: SP03 ([소환수]SP03#돼지), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2462
+// 유닛: HR0f ([영웅]HR0f#요정용), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2463
+// 유닛: NP01 ([NPC]NP01#낚시꾼), Name (이름)
+{
+[NPC]NP01#낚시꾼
+}
+
+STRING 2464
+// 유닛: NP01 ([NPC]NP01#낚시꾼), Propernames (적합한 이름)
+{
+|cffffcc00[낚시의 달인]|r
+낚시꾼
+}
+
+STRING 2465
+// 유닛: NP00 ([NPC]NP00#망각술사), Name (이름)
+{
+[NPC]NP00#망각술사
+}
+
+STRING 2466
+// 유닛: NP00 ([NPC]NP00#망각술사), Propernames (적합한 이름)
+{
+|cffffcc00[능력 제거]|r
+망각술사
+}
+
+STRING 2467
+// 유닛: NP03 ([NPC]NP03#나무꾼), Name (이름)
+{
+[NPC]NP03#나무꾼
+}
+
+STRING 2468
+// 유닛: NP03 ([NPC]NP03#나무꾼), Propernames (적합한 이름)
+{
+|cffffcc00[벌목의 달인]|r
+나무꾼
+}
+
+STRING 2469
+// 유닛: NP04 ([NPC]NP04#광부), Name (이름)
+{
+[NPC]NP04#광부
+}
+
+STRING 2470
+// 유닛: NP04 ([NPC]NP04#광부), Propernames (적합한 이름)
+{
+|cffffcc00[채광의 달인]|r
+광부
+}
+
+STRING 2472
+// 유닛: NP02 ([NPC]NP02#병참장교), Propernames (적합한 이름)
+{
+|cffffcc00[병참 보급]|r
+병참장교
+}
+
+STRING 2473
+// 유닛: NP00 ([NPC]NP00#망각술사), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2474
+// 유닛: NP01 ([NPC]NP01#낚시꾼), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2475
+// 유닛: NP03 ([NPC]NP03#나무꾼), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2476
+// 유닛: NP04 ([NPC]NP04#광부), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2477
+// 유닛: NS00 ([NPC]NS00#광맥), Name (이름)
+{
+[NPC]NS00#광맥
+}
+
+STRING 2478
+// 유닛: NS01 ([NPC]NS01#제련소), Name (이름)
+{
+[NPC]NS01#제련소
+}
+
+STRING 2479
+// 유닛: NS02 ([NPC]NS02#대장간), Name (이름)
+{
+[NPC]NS02#대장간
+}
+
+STRING 2480
+// 유닛: NS03 ([NPC]NS03#차원문), Name (이름)
+{
+[NPC]NS03#차원문
+}
+
+STRING 2481
+// 유닛: NP02 ([NPC]NP02#병참장교), Name (이름)
+{
+[NPC]NP02#병참장교
+}
+
+STRING 2482
+// 유닛: NP02 ([NPC]NP02#병참장교), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2483
+// 유닛: SP04 ([소환수]SP04#해골 전사), Propernames (적합한 이름)
+{
+해골 전사
+}
+
+STRING 2484
+// 유닛: SP04 ([소환수]SP04#해골 전사), Name (이름)
+{
+[소환수]SP04#해골 전사
+}
+
+STRING 2485
+// 유닛: SP04 ([소환수]SP04#해골 전사), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2486
+// 유닛: HR03 ([영웅]HR03#어둠추적자), Propernames (적합한 이름)
+{
+어둠추적자
+}
+
+STRING 2487
+// 유닛: HR03 ([영웅]HR03#어둠추적자), Name (이름)
+{
+[영웅]HR03#어둠추적자
+}
+
+STRING 2488
+// 유닛: SP05 ([소환수]SP05#감시탑), Propernames (적합한 이름)
+{
+감시탑
+}
+
+STRING 2489
+// 유닛: SP05 ([소환수]SP05#감시탑), Name (이름)
+{
+[소환수]SP05#감시탑
+}
+
+STRING 2490
+// 유닛: SP05 ([소환수]SP05#감시탑), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2491
+// 유닛: SP06 ([소환수]SP06#전기충격기), Propernames (적합한 이름)
+{
+전기충격기
+}
+
+STRING 2492
+// 유닛: SP06 ([소환수]SP06#전기충격기), Name (이름)
+{
+[소환수]SP06#전기충격기
+}
+
+STRING 2493
+// 유닛: SP06 ([소환수]SP06#전기충격기), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2494
+// 유닛: SP07 ([소환수]SP07#늑대정령), Propernames (적합한 이름)
+{
+늑대정령
+}
+
+STRING 2495
+// 유닛: SP07 ([소환수]SP07#늑대정령), Name (이름)
+{
+[소환수]SP07#늑대정령
+}
+
+STRING 2496
+// 유닛: SP07 ([소환수]SP07#늑대정령), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2497
+// 유닛: HR0f ([영웅]HR0f#요정용), Propernames (적합한 이름)
+{
+요정용
+}
+
+STRING 2498
+// 유닛: HR0f ([영웅]HR0f#요정용), Name (이름)
+{
+[영웅]HR0f#요정용
+}
+
+STRING 2499
+// 유닛: SP08 ([소환수]SP08#고대 코끼리), Propernames (적합한 이름)
+{
+고대 코끼리
+}
+
+STRING 2500
+// 유닛: SP08 ([소환수]SP08#고대 코끼리), Name (이름)
+{
+[소환수]SP08#고대 코끼리
+}
+
+STRING 2501
+// 유닛: SP08 ([소환수]SP08#고대 코끼리), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2502
+// 유닛: SP09 ([소환수]SP09#마법 금고), Propernames (적합한 이름)
+{
+마법 금고
+}
+
+STRING 2503
+// 유닛: SP09 ([소환수]SP09#마법 금고), Name (이름)
+{
+[소환수]SP09#마법 금고
+}
+
+STRING 2504
+// 유닛: SP09 ([소환수]SP09#마법 금고), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2505
+// 능력: Axx8 (Axx8 유닛으로분류안해), Name (이름)
+{
+Axx8 유닛으로분류안해
+}
+
+STRING 2506
+// 유닛: B000 ([보스]B000#대지령), Propernames (적합한 이름)
+{
+대지령
+}
+
+STRING 2507
+// 유닛: B000 ([보스]B000#대지령), Name (이름)
+{
+[보스]B000#대지령
+}
+
+STRING 2508
+// 유닛: B000 ([보스]B000#대지령), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2509
+// 유닛: B001 ([보스]B001#기계난동꾼), Propernames (적합한 이름)
+{
+기계난동꾼
+}
+
+STRING 2510
+// 유닛: B001 ([보스]B001#기계난동꾼), Name (이름)
+{
+[보스]B001#기계난동꾼
+}
+
+STRING 2511
+// 유닛: B001 ([보스]B001#기계난동꾼), Hotkey (단축키)
+{
+Q
+}
+
+STRING 2512
+// 유닛: NS04 ([NPC]NS04#봉인석), Propernames (적합한 이름)
+{
+봉인석
+}
+
+STRING 2513
+// 유닛: NS04 ([NPC]NS04#봉인석), Name (이름)
+{
+[NPC]NS04#봉인석
+}
+
+STRING 2515
+// 유닛: NS05 ([NPC]NS05#봉인석), Name (이름)
+{
+[NPC]NS05#봉인석
+}
+
+STRING 2517
+// 유닛: NS05 ([NPC]NS05#봉인석), EditorSuffix (이름 - 에디터 접미사)
+{
+(비활성)
+}
+
+STRING 2518
+// 유닛: NS05 ([NPC]NS05#봉인석), Propernames (적합한 이름)
+{
+봉인석
+}
+
+STRING 2523
+// 유닛: NS06 ([NPC]NS06#간이 차원문), Name (이름)
+{
+[NPC]NS06#간이 차원문
+}
+
+STRING 2524
+// 유닛: NS06 ([NPC]NS06#간이 차원문), Propernames (적합한 이름)
+{
+간이 차원문
+}
+

@@ -1,0 +1,168 @@
+IncludeFile "UI\FrameDef\UI\EscMenuTemplates.fdf",
+IncludeFile "UI\FrameDef\myframes\Mytext.fdf",
+
+Frame "GLUETEXTBUTTON" "InventoryDialogConfirmButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+
+	ButtonText "InventoryDialogConfirmButtonText",
+	Frame "TEXT" "InventoryDialogConfirmButtonText" INHERITS "MyButtonText" {
+		SetPoint CENTER, "InventoryDialogConfirmButton", CENTER, 0.0, 0.0,
+		Text "확인",
+	}
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "InventoryDialogCancleButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+
+	ButtonText "InventoryDialogCancleButtonText",
+	Frame "TEXT" "InventoryDialogCancleButtonText" INHERITS "MyButtonText" {
+		SetPoint CENTER, "InventoryDialogCancleButton", CENTER, 0.0, 0.0,
+		Text "취소 (ESC)",
+	}
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "InventoryCategoryMaterialButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+
+	ControlBackdrop "InventoryCategoryMaterialButtonBackdrop",
+	Frame "BACKDROP" "InventoryCategoryMaterialButtonBackdrop" {
+    	BackdropBackground "ui\widgets\tooltips\human\tooltipmaterialicon.blp",
+	}
+
+	ControlPushedBackdrop "InventoryCategoryMaterialButtonPushedBackdrop",
+	Frame "BACKDROP" "InventoryCategoryMaterialButtonPushedBackdrop" INHERITS "InventoryCategoryMaterialButtonBackdrop" {
+	}
+
+	ControlDisabledBackdrop "InventoryCategoryMaterialButtonDisabledBackdrop",
+	Frame "BACKDROP" "InventoryCategoryMaterialButtonDisabledBackdrop" INHERITS "InventoryCategoryMaterialButtonBackdrop" {
+	}
+
+	ControlDisabledPushedBackdrop "InventoryCategoryMaterialButtonDisabledPushedBackdrop",
+	Frame "BACKDROP" "InventoryCategoryMaterialButtonDisabledPushedBackdrop" INHERITS "InventoryCategoryMaterialButtonBackdrop" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "InventoryCategoryArtifactButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+
+	ControlBackdrop "InventoryCategoryArtifactButtonBackdrop",
+	Frame "BACKDROP" "InventoryCategoryArtifactButtonBackdrop" {
+    	BackdropBackground "ui\widgets\tooltips\human\tooltipartifacticon.blp",
+	}
+
+	ControlPushedBackdrop "InventoryCategoryArtifactButtonPushedBackdrop",
+	Frame "BACKDROP" "InventoryCategoryArtifactButtonPushedBackdrop" INHERITS "InventoryCategoryArtifactButtonBackdrop" {
+	}
+
+	ControlDisabledBackdrop "InventoryCategoryArtifactButtonDisabledBackdrop",
+	Frame "BACKDROP" "InventoryCategoryArtifactButtonDisabledBackdrop" INHERITS "InventoryCategoryArtifactButtonBackdrop" {
+	}
+
+	ControlDisabledPushedBackdrop "InventoryCategoryArtifactButtonDisabledPushedBackdrop",
+	Frame "BACKDROP" "InventoryCategoryArtifactButtonDisabledPushedBackdrop" INHERITS "InventoryCategoryArtifactButtonBackdrop" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "InventoryCategoryFoodButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+
+	ControlBackdrop "InventoryCategoryFoodButtonBackdrop",
+	Frame "BACKDROP" "InventoryCategoryFoodButtonBackdrop" {
+    	BackdropBackground "ui\widgets\tooltips\human\tooltipfoodicon.blp",
+	}
+
+	ControlPushedBackdrop "InventoryCategoryFoodButtonPushedBackdrop",
+	Frame "BACKDROP" "InventoryCategoryFoodButtonPushedBackdrop" INHERITS "InventoryCategoryFoodButtonBackdrop" {
+	}
+
+	ControlDisabledBackdrop "InventoryCategoryFoodButtonDisabledBackdrop",
+	Frame "BACKDROP" "InventoryCategoryFoodButtonDisabledBackdrop" INHERITS "InventoryCategoryFoodButtonBackdrop" {
+	}
+
+	ControlDisabledPushedBackdrop "InventoryCategoryFoodButtonDisabledPushedBackdrop",
+	Frame "BACKDROP" "InventoryCategoryFoodButtonDisabledPushedBackdrop" INHERITS "InventoryCategoryFoodButtonBackdrop" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "InventoryCategoryGachaButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+
+	ControlBackdrop "InventoryCategoryGachaButtonBackdrop",
+	Frame "BACKDROP" "InventoryCategoryGachaButtonBackdrop" {
+    	BackdropBackground "ui\widgets\tooltips\human\tooltipgachaicon.blp",
+	}
+
+	ControlPushedBackdrop "InventoryCategoryGachaButtonPushedBackdrop",
+	Frame "BACKDROP" "InventoryCategoryGachaButtonPushedBackdrop" INHERITS "InventoryCategoryGachaButtonBackdrop" {
+	}
+
+	ControlDisabledBackdrop "InventoryCategoryGachaButtonDisabledBackdrop",
+	Frame "BACKDROP" "InventoryCategoryGachaButtonDisabledBackdrop" INHERITS "InventoryCategoryGachaButtonBackdrop" {
+	}
+
+	ControlDisabledPushedBackdrop "InventoryCategoryGachaButtonDisabledPushedBackdrop",
+	Frame "BACKDROP" "InventoryCategoryGachaButtonDisabledPushedBackdrop" INHERITS "InventoryCategoryGachaButtonBackdrop" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}

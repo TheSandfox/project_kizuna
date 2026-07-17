@@ -1,0 +1,249 @@
+IncludeFile "UI\FrameDef\UI\EscMenuTemplates.fdf",
+
+Frame "TEXT" "NumberpadTextTemplate" {
+	UseActiveContext,
+	DecorateFileNames,
+	FontJustificationH JUSTIFYCENTER,
+    FontJustificationV JUSTIFYMIDDLE,    
+	FontFlags "FIXEDSIZE",
+	FrameFont "MasterFont", 0.012, "",
+	FontColor 1.0 1.0 1.0 1.0,
+	FontShadowColor 0.0 0.0 0.0 0.9,
+	FontShadowOffset 0.001 -0.001,
+}
+
+Frame "TEXT" "NumberpadButtonTextTemplate" {
+	UseActiveContext,
+	DecorateFileNames,
+	FontJustificationH JUSTIFYCENTER,
+    FontJustificationV JUSTIFYMIDDLE,    
+	FontFlags "FIXEDSIZE",
+	FrameFont "MasterFont", 0.01, "",
+	FontColor 1.0 0.8 0.0 1.0,
+	FontShadowColor 0.0 0.0 0.0 0.9,
+	FontShadowOffset 0.001 -0.001,
+}
+
+Frame "GLUETEXTBUTTON" "NumberpadButtonTemplate" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "FRAME" "Numberpad" {
+	Width 0.14222,
+	Height 0.17778,
+
+	Frame "BACKDROP" "NumberpadBackdrop" {
+		SetAllPoints,
+		DecorateFileNames,
+		BackdropTileBackground,
+		BackdropBackground "MultiboardBackground",
+		BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+		BackdropCornerSize 0.0125,
+		BackdropBackgroundInsets 0.005f 0.005f 0.005f 0.005f,
+		BackdropEdgeFile "MultiboardBorder",
+		BackdropBlendAll,
+	}
+
+	Frame "BACKDROP" "NumberpadDisplayTextBackdrop" {
+		SetPoint TOPLEFT, "Numberpad", TOPLEFT, 0.01778, -0.01778,
+		Width 0.10667,
+		Height 0.02667,
+		BackdropBackground "replaceabletextures\\teamcolor\\teamcolor20.blp",
+	}
+
+	Frame "TEXT" "NumberpadDisplayText" INHERITS "NumberpadTextTemplate" {
+		SetPoint RIGHT, "NumberpadDisplayTextBackdrop", RIGHT, -0.0044, 0,
+		FontJustificationH JUSTIFYRIGHT,
+    	FontJustificationV JUSTIFYMIDDLE, 
+	}
+
+	Frame "GLUETEXTBUTTON" "NumberpadButton0" INHERITS WITHCHILDREN "NumberpadButtonTemplate" {
+		SetPoint BOTTOMLEFT, "Numberpad", BOTTOMLEFT, 0.01778, 0.01778,
+		Width 0.05333,
+		Height 0.02667,
+
+		ButtonText "NumberpadButton0Text",
+		Frame "TEXT" "NumberpadButton0Text" INHERITS "NumberpadButtonTextTemplate" {
+			SetPoint CENTER, "NumberpadButton0", CENTER, 0.0, 0.0,
+			Text "0",
+		}
+	}
+
+	Frame "GLUETEXTBUTTON" "NumberpadButton1" INHERITS WITHCHILDREN "NumberpadButtonTemplate" {
+		SetPoint BOTTOMLEFT, "NumberpadButton0", TOPLEFT, 0.0, 0.0,
+		Width 0.02667,
+		Height 0.02667,
+
+		ButtonText "NumberpadButton1Text",
+		Frame "TEXT" "NumberpadButton1Text" INHERITS "NumberpadButtonTextTemplate" {
+			SetPoint CENTER, "NumberpadButton1", CENTER, 0.0, 0.0,
+			Text "1",
+		}
+	}
+
+	Frame "GLUETEXTBUTTON" "NumberpadButton2" INHERITS WITHCHILDREN "NumberpadButtonTemplate" {
+		SetPoint BOTTOMLEFT, "NumberpadButton1", BOTTOMRIGHT, 0.0, 0.0,
+		Width 0.02667,
+		Height 0.02667,
+
+		ButtonText "NumberpadButton2Text",
+		Frame "TEXT" "NumberpadButton2Text" INHERITS "NumberpadButtonTextTemplate" {
+			SetPoint CENTER, "NumberpadButton2", CENTER, 0.0, 0.0,
+			Text "2",
+		}
+	}
+
+	Frame "GLUETEXTBUTTON" "NumberpadButton3" INHERITS WITHCHILDREN "NumberpadButtonTemplate" {
+		SetPoint BOTTOMLEFT, "NumberpadButton2", BOTTOMRIGHT, 0.0, 0.0,
+		Width 0.02667,
+		Height 0.02667,
+
+		ButtonText "NumberpadButton3Text",
+		Frame "TEXT" "NumberpadButton3Text" INHERITS "NumberpadButtonTextTemplate" {
+			SetPoint CENTER, "NumberpadButton3", CENTER, 0.0, 0.0,
+			Text "3",
+		}
+	}
+
+	Frame "GLUETEXTBUTTON" "NumberpadButton4" INHERITS WITHCHILDREN "NumberpadButtonTemplate" {
+		SetPoint BOTTOMLEFT, "NumberpadButton1", TOPLEFT, 0.0, 0.0,
+		Width 0.02667,
+		Height 0.02667,
+
+		ButtonText "NumberpadButton4Text",
+		Frame "TEXT" "NumberpadButton4Text" INHERITS "NumberpadButtonTextTemplate" {
+			SetPoint CENTER, "NumberpadButton4", CENTER, 0.0, 0.0,
+			Text "4",
+		}
+	}
+
+	Frame "GLUETEXTBUTTON" "NumberpadButton5" INHERITS WITHCHILDREN "NumberpadButtonTemplate" {
+		SetPoint BOTTOMLEFT, "NumberpadButton4", BOTTOMRIGHT, 0.0, 0.0,
+		Width 0.02667,
+		Height 0.02667,
+
+		ButtonText "NumberpadButton5Text",
+		Frame "TEXT" "NumberpadButton5Text" INHERITS "NumberpadButtonTextTemplate" {
+			SetPoint CENTER, "NumberpadButton5", CENTER, 0.0, 0.0,
+			Text "5",
+		}
+	}
+
+	Frame "GLUETEXTBUTTON" "NumberpadButton6" INHERITS WITHCHILDREN "NumberpadButtonTemplate" {
+		SetPoint BOTTOMLEFT, "NumberpadButton5", BOTTOMRIGHT, 0.0, 0.0,
+		Width 0.02667,
+		Height 0.02667,
+
+		ButtonText "NumberpadButton6Text",
+		Frame "TEXT" "NumberpadButton6Text" INHERITS "NumberpadButtonTextTemplate" {
+			SetPoint CENTER, "NumberpadButton6", CENTER, 0.0, 0.0,
+			Text "6",
+		}
+	}
+
+	Frame "GLUETEXTBUTTON" "NumberpadButton7" INHERITS WITHCHILDREN "NumberpadButtonTemplate" {
+		SetPoint BOTTOMLEFT, "NumberpadButton4", TOPLEFT, 0.0, 0.0,
+		Width 0.02667,
+		Height 0.02667,
+
+		ButtonText "NumberpadButton7Text",
+		Frame "TEXT" "NumberpadButton7Text" INHERITS "NumberpadButtonTextTemplate" {
+			SetPoint CENTER, "NumberpadButton7", CENTER, 0.0, 0.0,
+			Text "7",
+		}
+	}
+
+	Frame "GLUETEXTBUTTON" "NumberpadButton8" INHERITS WITHCHILDREN "NumberpadButtonTemplate" {
+		SetPoint BOTTOMLEFT, "NumberpadButton7", BOTTOMRIGHT, 0.0, 0.0,
+		Width 0.02667,
+		Height 0.02667,
+
+		ButtonText "NumberpadButton8Text",
+		Frame "TEXT" "NumberpadButton8Text" INHERITS "NumberpadButtonTextTemplate" {
+			SetPoint CENTER, "NumberpadButton8", CENTER, 0.0, 0.0,
+			Text "8",
+		}
+	}
+
+	Frame "GLUETEXTBUTTON" "NumberpadButton9" INHERITS WITHCHILDREN "NumberpadButtonTemplate" {
+		SetPoint BOTTOMLEFT, "NumberpadButton8", BOTTOMRIGHT, 0.0, 0.0,
+		Width 0.02667,
+		Height 0.02667,
+
+		ButtonText "NumberpadButton9Text",
+		Frame "TEXT" "NumberpadButton9Text" INHERITS "NumberpadButtonTextTemplate" {
+			SetPoint CENTER, "NumberpadButton9", CENTER, 0.0, 0.0,
+			Text "9",
+		}
+	}
+
+	Frame "GLUETEXTBUTTON" "NumberpadButton00" INHERITS WITHCHILDREN "NumberpadButtonTemplate" {
+		SetPoint BOTTOMLEFT, "NumberpadButton0", BOTTOMRIGHT, 0.0, 0.0,
+		Width 0.02667,
+		Height 0.02667,
+
+		ButtonText "NumberpadButton00Text",
+		Frame "TEXT" "NumberpadButton00Text" INHERITS "NumberpadButtonTextTemplate" {
+			SetPoint CENTER, "NumberpadButton00", CENTER, 0.0, 0.0,
+			Text "00",
+		}
+	}
+
+	Frame "GLUETEXTBUTTON" "NumberpadSummitButton" INHERITS WITHCHILDREN "NumberpadButtonTemplate" {
+		SetPoint BOTTOMLEFT, "NumberpadButton00", BOTTOMRIGHT, 0.0, 0.0,
+		Width 0.02667,
+		Height 0.05333,
+
+		ButtonText "NumberpadSummitButtonText",
+		Frame "TEXT" "NumberpadSummitButtonText" INHERITS "NumberpadButtonTextTemplate" {
+			SetPoint CENTER, "NumberpadSummitButton", CENTER, 0.0, 0.0,
+			Text "확인",
+		}
+	}
+
+	Frame "GLUETEXTBUTTON" "NumberpadClearButton" INHERITS WITHCHILDREN "NumberpadButtonTemplate" {
+		SetPoint BOTTOMLEFT, "NumberpadSummitButton", TOPLEFT, 0.0, 0.0,
+		Width 0.02667,
+		Height 0.02667,
+
+		ButtonText "NumberpadClearButtonText",
+		Frame "TEXT" "NumberpadClearButtonText" INHERITS "NumberpadButtonTextTemplate" {
+			SetPoint CENTER, "NumberpadClearButton", CENTER, 0.0, 0.0,
+			Text "C",
+		}
+	}
+
+	Frame "GLUETEXTBUTTON" "NumberpadDeleteButton" INHERITS WITHCHILDREN "NumberpadButtonTemplate" {
+		SetPoint BOTTOMLEFT, "NumberpadClearButton", TOPLEFT, 0.0, 0.0,
+		Width 0.02667,
+		Height 0.02667,
+
+		ButtonText "NumberpadDeleteButtonText",
+		Frame "TEXT" "NumberpadDeleteButtonText" INHERITS "NumberpadButtonTextTemplate" {
+			SetPoint CENTER, "NumberpadDeleteButton", CENTER, 0.0, 0.0,
+			Text "←",
+		}
+	}
+
+}

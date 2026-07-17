@@ -1,0 +1,212 @@
+IncludeFile "UI\FrameDef\UI\EscMenuTemplates.fdf",
+IncludeFile "UI\FrameDef\myframes\Mytext.fdf",
+
+Frame "GLUETEXTBUTTON" "CraftCloseButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+	Width 0.02666,
+	Height 0.02666,
+
+	ButtonText "CraftCloseButtonText",
+	Frame "TEXT" "CraftCloseButtonText" INHERITS "MyButtonText" {
+		SetPoint CENTER, "CraftCloseButton", CENTER, 0.0, 0.0,
+		Text "|cffff0000X|r",
+	}
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "CraftMixConfirmButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+	Width 0.07111,
+	Height 0.02666,
+
+	ButtonText "CraftMixConfirmButtonText",
+	Frame "TEXT" "CraftMixConfirmButtonText" INHERITS "MyButtonText" {
+		SetPoint CENTER, "CraftMixConfirmButton", CENTER, 0.0, 0.0,
+		Text "합성",
+	}
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "CraftMixClearButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+	Width 0.07111,
+	Height 0.02666,
+
+	ButtonText "CraftMixConfirmButtonText",
+	Frame "TEXT" "CraftMixConfirmButtonText" INHERITS "MyButtonText" {
+		SetPoint CENTER, "CraftMixConfirmButton", CENTER, 0.0, 0.0,
+		Text "비우기",
+	}
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "CraftUpgradeConfirmButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+	Width 0.07111,
+	Height 0.02666,
+
+	ButtonText "CraftUpgradeConfirmButtonText",
+	Frame "TEXT" "CraftUpgradeConfirmButtonText" INHERITS "MyButtonText" {
+		SetPoint CENTER, "CraftUpgradeConfirmButton", CENTER, 0.0, 0.0,
+		Text "합성",
+	}
+
+	ControlBackdrop "ButtonBackdropTemplate",
+	Frame "BACKDROP" "ButtonBackdropTemplate" INHERITS "EscMenuButtonBackdropTemplate" {
+	}
+
+	ControlPushedBackdrop "ButtonPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonPushedBackdropTemplate" INHERITS "EscMenuButtonPushedBackdropTemplate" {
+	}
+
+	ControlDisabledBackdrop "ButtonDisabledBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledBackdropTemplate" INHERITS "EscMenuButtonDisabledBackdropTemplate" {
+	}
+
+	ControlDisabledPushedBackdrop "ButtonDisabledPushedBackdropTemplate",
+	Frame "BACKDROP" "ButtonDisabledPushedBackdropTemplate" INHERITS "EscMenuButtonDisabledPushedBackdropTemplate" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "CraftCategoryMixButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+
+	ControlBackdrop "CraftCategoryMixButtonBackdrop",
+	Frame "BACKDROP" "CraftCategoryMixButtonBackdrop" {
+    	BackdropBackground "ui\widgets\tooltips\human\tooltipmixicon.blp",
+	}
+
+	ControlPushedBackdrop "CraftCategoryMixButtonPushedBackdrop",
+	Frame "BACKDROP" "CraftCategoryMixButtonPushedBackdrop" INHERITS "CraftCategoryMixButtonBackdrop" {
+	}
+
+	ControlDisabledBackdrop "CraftCategoryMixButtonDisabledBackdrop",
+	Frame "BACKDROP" "CraftCategoryMixButtonDisabledBackdrop" INHERITS "CraftCategoryMixButtonBackdrop" {
+	}
+
+	ControlDisabledPushedBackdrop "CraftCategoryMixButtonDisabledPushedBackdrop",
+	Frame "BACKDROP" "CraftCategoryMixButtonDisabledPushedBackdrop" INHERITS "CraftCategoryMixButtonBackdrop" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "CraftCategoryUpgradeButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+
+	ControlBackdrop "CraftCategoryUpgradeButtonBackdrop",
+	Frame "BACKDROP" "CraftCategoryUpgradeButtonBackdrop" {
+    	BackdropBackground "ui\widgets\tooltips\human\tooltipupgradeicon.blp",
+	}
+
+	ControlPushedBackdrop "CraftCategoryUpgradeButtonPushedBackdrop",
+	Frame "BACKDROP" "CraftCategoryUpgradeButtonPushedBackdrop" INHERITS "CraftCategoryUpgradeButtonBackdrop" {
+	}
+
+	ControlDisabledBackdrop "CraftCategoryUpgradeButtonDisabledBackdrop",
+	Frame "BACKDROP" "CraftCategoryUpgradeButtonDisabledBackdrop" INHERITS "CraftCategoryUpgradeButtonBackdrop" {
+	}
+
+	ControlDisabledPushedBackdrop "CraftCategoryUpgradeButtonDisabledPushedBackdrop",
+	Frame "BACKDROP" "CraftCategoryUpgradeButtonDisabledPushedBackdrop" INHERITS "CraftCategoryUpgradeButtonBackdrop" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "CraftCategoryCookButton" {
+	ControlStyle "HIGHLIGHTONMOUSEOVER",
+	ButtonPushedTextOffset 0.00 0.00,
+
+	ControlBackdrop "CraftCategoryCookButtonBackdrop",
+	Frame "BACKDROP" "CraftCategoryCookButtonBackdrop" {
+    	BackdropBackground "ui\widgets\tooltips\human\tooltipfoodicon.blp",
+	}
+
+	ControlPushedBackdrop "CraftCategoryCookButtonPushedBackdrop",
+	Frame "BACKDROP" "CraftCategoryCookButtonPushedBackdrop" INHERITS "CraftCategoryCookButtonBackdrop" {
+	}
+
+	ControlDisabledBackdrop "CraftCategoryCookButtonDisabledBackdrop",
+	Frame "BACKDROP" "CraftCategoryCookButtonDisabledBackdrop" INHERITS "CraftCategoryCookButtonBackdrop" {
+	}
+
+	ControlDisabledPushedBackdrop "CraftCategoryCookButtonDisabledPushedBackdrop",
+	Frame "BACKDROP" "CraftCategoryCookButtonDisabledPushedBackdrop" INHERITS "CraftCategoryCookButtonBackdrop" {
+	}
+
+	ControlMouseOverHighlight "ButtonMouseOverHighlightTemplate",
+	Frame "HIGHLIGHT" "ButtonMouseOverHighlightTemplate" INHERITS "EscMenuButtonMouseOverHighlightTemplate" {
+	}
+}

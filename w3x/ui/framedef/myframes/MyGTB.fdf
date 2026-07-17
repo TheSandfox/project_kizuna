@@ -1,0 +1,41 @@
+IncludeFile "UI\FrameDef\UI\EscMenuTemplates.fdf",
+
+Frame "GLUETEXTBUTTON" "MyGTB" INHERITS WITHCHILDREN "EscMenuButtonTemplate" {
+	ButtonText "MyGTBText",
+	Frame "TEXT" "MyGTBText" INHERITS "EscMenuButtonTextTemplate" {
+	}
+}
+
+Frame "GLUETEXTBUTTON" "MyGTBSmall" INHERITS WITHCHILDREN "EscMenuButtonTemplate" {
+	ButtonText "MyGTBTextSmall",
+	Frame "TEXT" "MyGTBTextSmall" {
+		DecorateFileNames,
+		FrameFont "MasterFont", 0.01, "",
+		FontJustificationH JUSTIFYCENTER,
+		FontJustificationV JUSTIFYMIDDLE,    
+		FontJustificationOffset 0.0 -0.002,
+		FontFlags "FIXEDSIZE",
+		FontColor 0.99 0.827 0.0705 1.0,
+		FontHighlightColor 1.0 1.0 1.0 1.0,
+		FontDisabledColor 0.5 0.5 0.5 1.0,
+		FontShadowColor 0.0 0.0 0.0 0.9,	
+		FontShadowOffset 0.002 -0.002,	
+	}
+}
+
+// Frame "SIMPLEBUTTON" "MyGTBSmall" INHERITS WITHCHILDREN "EscMenuButtonTemplate" {
+// 	ButtonText "MyGTBTextSmall",
+// 	Frame "TEXT" "MyGTBTextSmall" {
+// 		DecorateFileNames,
+// 		FrameFont "MasterFont", 0.01, "",
+// 		FontJustificationH JUSTIFYCENTER,
+// 		FontJustificationV JUSTIFYMIDDLE,    
+// 		FontJustificationOffset 0.0 -0.002,
+// 		FontFlags "FIXEDSIZE",
+// 		FontColor 0.99 0.827 0.0705 1.0,
+// 		FontHighlightColor 1.0 1.0 1.0 1.0,
+// 		FontDisabledColor 0.5 0.5 0.5 1.0,
+// 		FontShadowColor 0.0 0.0 0.0 0.9,	
+// 		FontShadowOffset 0.002 -0.002,	
+// 	}
+// }
