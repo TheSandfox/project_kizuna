@@ -12,7 +12,7 @@ library Game requires Unit, UI
 
 	globals
 		private trigger LEAVE_TRIGGER = CreateTrigger()	
-		private integer TEST_UNIT_ID = 'HR0d'
+		private integer TEST_UNIT_ID = 'HR00'
 		private integer DUMMY_UNIT_ID1 = 'U001'
 		private integer DUMMY_UNIT_ID2 = 'U004'
 		private constant boolean GAME_DEBUG = true
@@ -121,7 +121,7 @@ library Game requires Unit, UI
 			loop
 				exitwhen i >= CONFIG_PLAYER_MAX
 				if GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING and GetPlayerController(Player(i)) == MAP_CONTROL_USER then
-					call initForPlayer(Player(i),CharacterSelect_ID[i],CharacterSelect_CHINGHO_ID[i])
+					call initForPlayer(Player(i),CharacterSelect_ID[i],'C000'/*임시*/)
 					call TriggerRegisterPlayerEventLeave(LEAVE_TRIGGER,Player(i))
 				endif
 				set i = i + 1
@@ -159,17 +159,17 @@ library Game requires Unit, UI
 					if GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING then
 						call initForPlayer(Player(i),TEST_UNIT_ID,'C000')
 					endif
-					//call initForPlayer(Player(1),'HR09','C000')
+					//call initForPlayer(Player(1),'HR09')
 					set i = i + 1
 				endloop
 				/*생명의 나무*/
-				call TreeOfLife.init()
+				// call TreeOfLife.init()
 				/*수호자 초기화*/
 				//call Guardians.init()
 				/*웨이브 가동*/
 				//call Round.init()
 				/*상호작용물*/
-				// call Interactive.init()
+				call Interactive.init()
 				/*필드*/
 				// call Field.init()
 				/*내비게이터*/
@@ -214,12 +214,13 @@ library Game requires Unit, UI
 			/*프레임 숨기기*/
 			call BlzHideOriginFrames(true)
 			call BlzFrameClearAllPoints(BlzGetFrameByName("ConsoleUIBackdrop",0))
+			call BlzFrameClearAllPoints(BlzGetFrameByName("ConsoleUI",0))
 			/*상단바*/
-			// call BlzFrameClearAllPoints(BlzGetFrameByName("ConsoleTopBar",0))
-			call BlzFrameSetVisible(BlzGetFrameByName("ConsoleTopBar",0),false)
+			call BlzFrameClearAllPoints(BlzGetFrameByName("ConsoleTopBar",0))
+			/*하단바*/
+			call BlzFrameClearAllPoints(BlzGetFrameByName("ConsoleBottomBar",0))
 			/*명령창 포인트 클리어*/
 			call BlzFrameClearAllPoints(BlzGetFrameByName("CommandBarFrame",0))
-			call BlzFrameClearAllPoints(BlzFrameGetParent(BlzGetFrameByName("CommandBarFrame",0)))
 			/*디버그창*/
 			call BlzFrameSetAbsPoint(BlzGetOriginFrame(ORIGIN_FRAME_UNIT_MSG,0),FRAMEPOINT_BOTTOMLEFT,0.,0.205)
 			call BlzFrameSetSize(BlzGetOriginFrame(ORIGIN_FRAME_UNIT_MSG,0),1,1)

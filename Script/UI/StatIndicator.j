@@ -1,3 +1,7 @@
+/**
+C버튼 누르면 나오는 그거(스탯창)
+*/
+
 struct StatIcon extends array
 
 	static constant integer HEIGHT = 32
@@ -278,7 +282,7 @@ struct StatIndicator extends array
 		call StatIcon.create(parent,ENUM_STAT_ATTACK,p)
 		call StatIcon.create(parent,ENUM_STAT_MAGICPOWER,p)
 		call StatIcon.create(parent,ENUM_STAT_ACCURACY,p)
-		call StatIcon.create(parent,ENUM_STAT_RODONG,p)
+		call StatIcon.create(parent,ENUM_STAT_LUCK,p)
 		call StatIcon.create(parent,ENUM_STAT_MOVEMENT_SPEED,p)
 		//2열
 		call StatIcon.create(parent,ENUM_STAT_HPREGEN,p)
@@ -289,7 +293,7 @@ struct StatIndicator extends array
 		call StatIcon.create(parent,ENUM_STAT_LOVE,p)
 		call StatIcon.create(parent,ENUM_STAT_ATTACK_SPEED,p)
 		//3열
-		call StatIcon.create(parent,ENUM_STAT_LUCK,p)
+		call StatIcon.create(parent,ENUM_STAT_RODONG,p)
 		call StatIcon.create(parent,ENUM_STAT_INSIGHT,p)
 		call StatIcon.create(parent,ENUM_STAT_ARMOR_PENET,p)
 		call StatIcon.create(parent,ENUM_STAT_MAGIC_PENET,p)

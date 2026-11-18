@@ -242,10 +242,7 @@ library CharacterSelect requires UnitData
 			call BlzFrameSetPoint(.tool_text,FRAMEPOINT_BOTTOMRIGHT,.tool_backdrop,FRAMEPOINT_BOTTOMRIGHT,-0.005,0.005)
 			call BlzFrameSetTextAlignment(.tool_text,TEXT_JUSTIFY_CENTER,TEXT_JUSTIFY_CENTER)
 			/*칭호프레임*/
-			set .cf = ChinghoFrame.create(.container,.tool_backdrop)
-			call BlzFrameClearAllPoints(.cf.backdrop)
-			call BlzFrameSetPointPixel(.cf.backdrop,FRAMEPOINT_BOTTOM,.tool_backdrop,FRAMEPOINT_TOP,0,16)
-			call BlzFrameSetScale(.cf.backdrop,1.5)
+			set .cf = ChinghoFrame.create(owner)
 			call setTarget(-2)
 			call setChinghoTarget(-2)
 			/*가시성처리*/
@@ -262,7 +259,6 @@ library CharacterSelect requires UnitData
 			//! runtextmacro destroyFrame(".name")
 			//! runtextmacro destroyFrame(".tool_backdrop")
 			//! runtextmacro destroyFrame(".tool_text")
-			call .cf.destroy()
 		endmethod
 
 	endstruct

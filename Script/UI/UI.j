@@ -3,15 +3,21 @@ library UI requires User, Frame
 	globals
 		private trigger FRAME_BUTTON_TRIGGER = null
 
-		framehandle FRAME_MINIMAP = null
-		framehandle FRAME_MINIMAP_BACKDROP = null
-		framehandle FRAME_PORTRAIT = null
-		framehandle FRAME_PORTRAIT_BACKDROP = null
-		framehandle FRAME_HP_BAR = null
-		framehandle FRAME_MP_BAR = null
-		framehandle FRAME_SP_BAR = null
-		framehandle FRAME_ABILITY_CONTAINER = null
-		framehandle FRAME_STAT1	= null
+		framehandle FRAME_SIMPLEPIVOT = null				//꽉찬화면기준점
+		framehandle FRAME_UNITINFO = null						//유닛정보
+		framehandle FRAME_UNITINFO_UNITNAME = null	//유닛정보-유닛이름(Lv.X "유닛이름")
+		framehandle FRAME_CHINGHO = null						//유닛정보-칭호
+		framehandle FRAME_CHINGHO_ICON = null				//유닛정보-칭호-아이콘	
+		framehandle FRAME_CHINGHO_NAME = null				//유닛정보-칭호-칭호이름
+		framehandle FRAME_MINIMAP = null						//미니맵
+		framehandle FRAME_MINIMAP_BACKDROP = null		//미니맵의 액자
+		framehandle FRAME_PORTRAIT = null						//포트레이트
+		framehandle FRAME_PORTRAIT_BACKDROP = null	//포트레이트의 액자
+		framehandle FRAME_HP_BAR = null							//체력바
+		framehandle FRAME_MP_BAR = null							//마나바
+		framehandle FRAME_SP_BAR = null							//쉴드게이지
+		framehandle FRAME_ABILITY_CONTAINER = null	//스킬창아이콘그룹
+		framehandle FRAME_STAT1	= null							
 		framehandle FRAME_STAT2	= null
 		framehandle FRAME_STAT_INDICATOR_BUTTON = null
 		framehandle FRAME_EXP_BAR = null
@@ -36,10 +42,15 @@ library UI requires User, Frame
 		framehandle array FRAME_INVENTORY_CATEGORY_BUTTON
 		framehandle array FRAME_INVENTORY_CATEGORY_HIGHTLIGHT
 
-		private constant integer PORTRAIT_SIZE = 96
-		private constant integer PORTRAIT_OFFSET_Y = 64//160
-		private constant integer PORTRAIT_OFFSET_X = -360-96-264
-		private constant integer PORTRAIT_BORDER = 0
+		private constant integer MINIMAP_OFFSET_X =	0 	//전체화면 좌측으로부터
+		private constant integer MINIMAP_OFFSET_Y =	0			//전체화면 하단으로부터
+		private constant integer MINIMAP_SIZE =	240
+		private constant integer MINIMAP_INSET =	16
+		private constant integer PORTRAIT_SIZE = 128
+		private constant integer PORTRAIT_OFFSET_X = 240		//전체화면 좌상단으로부터
+		private constant integer PORTRAIT_OFFSET_Y = 1080-PORTRAIT_SIZE		//전체화면 좌상단으로부터
+		private constant integer PORTRAIT_INSET = 16 //포트레이트 액자백드롭 인셋
+		private constant integer UNITINFO_WIDTH = 240
 		private constant integer BAR_WIDTH = 720
 		private constant integer BAR_HEIGHT = 24
 		private constant integer HP_BAR_OFFSET_Y = 136
@@ -72,58 +83,30 @@ library UI requires User, Frame
 		private constant integer ABILITY_MANAGER_HEIGHT = 440
 	endglobals
 
-	struct ChinghoFrame
+	struct ChinghoFrame extends array
 
-		integer id = 0
-
-		framehandle backdrop = null
-		framehandle icon1 = null
-		framehandle icon2 = null
-		framehandle name = null
+		integer id
 
 		method setTarget takes integer cid returns nothing
 			set .id = cid
-			if cid > 0 then
-				call BlzFrameSetTexture(.icon1,Ability.getTypeIconPath(cid),0,true)
-				call BlzFrameSetTexture(.icon2,Ability.getTypeIconPath(cid),0,true)
-				call BlzFrameSetText(.name,Ability.getTypeName(cid))
-			elseif cid < 0 then
-				call BlzFrameSetTexture(.icon1,"ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp",0,true)
-				call BlzFrameSetTexture(.icon2,"ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp",0,true)
-				call BlzFrameSetText(.name,"???")
-			else
-				call BlzFrameSetTexture(.icon1,"Icons\\BTNBlackIcon.blp",0,true)
-				call BlzFrameSetTexture(.icon2,"Icons\\BTNBlackIcon.blp",0,true)
-				call BlzFrameSetText(.name,"")
+			if GetLocalPlayer() == Player(this) then
+				if cid > 0 then
+					call BlzFrameSetTexture(FRAME_CHINGHO_ICON,Ability.getTypeIconPath(cid),0,true)
+					call BlzFrameSetText(FRAME_CHINGHO_NAME,Ability.getTypeName(cid))
+				elseif cid < 0 then
+					call BlzFrameSetTexture(FRAME_CHINGHO_ICON,"ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp",0,true)
+					call BlzFrameSetText(FRAME_CHINGHO_NAME,"???")
+				else
+					call BlzFrameSetTexture(FRAME_CHINGHO_ICON,"Icons\\BTNBlackIcon.blp",0,true)
+					call BlzFrameSetText(FRAME_CHINGHO_NAME,"")
+				endif
 			endif
 		endmethod
 
-		static method create takes framehandle parent, framehandle pivot returns thistype
-			local thistype this = allocate()
-			set .backdrop = BlzCreateFrameByType("BACKDROP","",parent,"",0)
-			call BlzFrameSetPoint(.backdrop,FRAMEPOINT_TOPLEFT,pivot,FRAMEPOINT_TOPLEFT,0.,0.)
-			call BlzFrameSetSize(.backdrop,Math.px2Size(STAT1_WIDTH),Math.px2Size(CHINGHO_HEIGHT))
-			call BlzFrameSetTexture(.backdrop,"textures\\black32.blp",0,true)
-			set .icon1 = BlzCreateFrameByType("BACKDROP","",.backdrop,"",0)
-			call BlzFrameSetPoint(.icon1,FRAMEPOINT_TOPLEFT,.backdrop,FRAMEPOINT_TOPLEFT,0.,0.)
-			call BlzFrameSetSize(.icon1,Math.px2Size(CHINGHO_HEIGHT),Math.px2Size(CHINGHO_HEIGHT))
-			call BlzFrameSetTexture(.icon1,"textures\\black32.blp",0,true)
-			set .icon2 = BlzCreateFrameByType("BACKDROP","",.backdrop,"",0)
-			call BlzFrameSetPoint(.icon2,FRAMEPOINT_TOPRIGHT,.backdrop,FRAMEPOINT_TOPRIGHT,0.,0.)
-			call BlzFrameSetSize(.icon2,Math.px2Size(CHINGHO_HEIGHT),Math.px2Size(CHINGHO_HEIGHT))
-			call BlzFrameSetTexture(.icon2,"textures\\black32.blp",0,true)
-			set .name = BlzCreateFrame("MyTextSmall",.backdrop,0,0)
-			call BlzFrameSetAllPoints(.name,.backdrop)
-			call BlzFrameSetTextAlignment(.name,TEXT_JUSTIFY_CENTER,TEXT_JUSTIFY_CENTER)
+		static method create takes player p returns thistype
+			local thistype this = GetPlayerId(p)
 			call setTarget(0)
 			return this
-		endmethod
-
-		method onDestroy takes nothing returns nothing
-			//! runtextmacro destroyFrame(".backdrop")
-			//! runtextmacro destroyFrame(".icon1")
-			//! runtextmacro destroyFrame(".icon2")
-			//! runtextmacro destroyFrame(".name")
 		endmethod
 
 	endstruct
@@ -191,7 +174,7 @@ library UI requires User, Frame
 
 		method refreshName takes nothing returns nothing
 			if GetLocalPlayer() == Player(this) then
-				call BlzFrameSetVisible(NAME,.target > 0)
+				// call BlzFrameSetVisible(NAME,.target > 0)
 				call BlzFrameSetText(NAME,.target.origin_name)
 			endif
 		endmethod
@@ -317,7 +300,7 @@ library UI requires User, Frame
 			local StatIcon sa = 0
 			set .main_timer = Timer.new(this)
 			/*칭호*/
-			set .chingho = ChinghoFrame.create(CONTAINER,FRAME_STAT1)
+			set .chingho = ChinghoFrame.create(p)
 			/*어빌아이콘*/
 			loop
 				exitwhen i >= 10
@@ -346,9 +329,6 @@ library UI requires User, Frame
 		method destroy takes nothing returns nothing
 			local integer i = 0
 			local IconFrame ii = 0
-			if .chingho > 0 then
-				call .chingho.destroy()
-			endif
 			call Timer.release(.main_timer)
 			set .main_timer = null
 		endmethod
@@ -397,29 +377,63 @@ library UI requires User, Frame
 			local real c_cell = c_width/10.
 			local real c_padding = c_cell-Math.px2Size(ABILITY_ICON_SIZE)
 			local trigger t = null
+			/*심플피봇*/
+			set FRAME_SIMPLEPIVOT = BlzCreateSimpleFrame("CPivot",BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),0)
+			call BlzFrameSetAbsPoint(FRAME_SIMPLEPIVOT,FRAMEPOINT_TOPLEFT,-240.0/1800.0,1080./1800.)
+			call BlzFrameSetSize(FRAME_SIMPLEPIVOT,1920./1800.,1080./1800.)
+			call BlzFrameSetEnable(FRAME_SIMPLEPIVOT,false)
 			/*미니맵*/
 			set FRAME_MINIMAP = BlzGetOriginFrame(ORIGIN_FRAME_MINIMAP,0)
-			set FRAME_MINIMAP_BACKDROP = BlzCreateFrame("MBEdge",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC]/*BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME,0)*/,0,0)
-			call BlzFrameSetParent(FRAME_MINIMAP,FRAME_MINIMAP_BACKDROP)
+			set FRAME_MINIMAP_BACKDROP = BlzCreateSimpleFrame("CMinimap",BlzGetFrameByName("ConsoleUIBackdrop", 0),0)
+			call BlzFrameSetParent(FRAME_MINIMAP,BlzGetFrameByName("ConsoleUIBackdrop", 0))
 			call BlzFrameClearAllPoints(FRAME_MINIMAP)
-			call BlzFrameSetPointPixel(FRAME_MINIMAP,FRAMEPOINT_BOTTOMRIGHT,FRAME_ORIGIN,FRAMEPOINT_BOTTOMRIGHT,0.,CONFIG_MINIMAP_OFFSET_Y)
-			call BlzFrameSetPointPixel(FRAME_MINIMAP,FRAMEPOINT_TOPLEFT,FRAME_ORIGIN,FRAMEPOINT_BOTTOMRIGHT,-CONFIG_MINIMAP_SIZE,CONFIG_MINIMAP_SIZE+CONFIG_MINIMAP_OFFSET_Y)
-			call BlzFrameSetPointPixel(FRAME_MINIMAP_BACKDROP,FRAMEPOINT_BOTTOMRIGHT,FRAME_ORIGIN,FRAMEPOINT_BOTTOMRIGHT,0,CONFIG_MINIMAP_OFFSET_Y)
-			call BlzFrameSetSizePixel(FRAME_MINIMAP_BACKDROP,CONFIG_MINIMAP_SIZE,CONFIG_MINIMAP_SIZE)
+			call BlzFrameSetAbsPoint(FRAME_MINIMAP,FRAMEPOINT_BOTTOMLEFT,/*
+				*/(-240.+MINIMAP_OFFSET_X+MINIMAP_INSET)/1800.,/*
+				*/(MINIMAP_OFFSET_Y+MINIMAP_INSET)/1800./*
+			*/)
+			call BlzFrameSetAbsPoint(FRAME_MINIMAP,FRAMEPOINT_TOPRIGHT,/*
+				*/(-240.+MINIMAP_OFFSET_X+MINIMAP_SIZE-MINIMAP_INSET)/1800.,/*
+				*/(MINIMAP_OFFSET_Y+MINIMAP_SIZE-MINIMAP_INSET)/1800./*
+			*/)
+			call BlzFrameSetAbsPoint(FRAME_MINIMAP_BACKDROP,FRAMEPOINT_TOPLEFT,/*
+				*/(-240.+MINIMAP_OFFSET_X)/1800.,/*
+				*/(MINIMAP_OFFSET_Y+MINIMAP_SIZE)/1800./*
+				*/)
+				call BlzFrameSetAbsPoint(FRAME_MINIMAP_BACKDROP,FRAMEPOINT_BOTTOMRIGHT,/*
+				*/(-240.+MINIMAP_OFFSET_X+MINIMAP_SIZE)/1800.,/*
+				*/(MINIMAP_OFFSET_Y)/1800./*
+			*/)
 			call BlzFrameSetEnable(FRAME_MINIMAP,true)
 			call BlzFrameSetVisible(FRAME_MINIMAP,true)
 			/*포트레이트*/
-			set FRAME_PORTRAIT_BACKDROP = BlzCreateFrameByType("BACKDROP","",BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME,0),"",0)
-			call BlzFrameSetPoint(FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_TOPLEFT,FRAME_ORIGIN,FRAMEPOINT_BOTTOM,/*
-				*/Math.px2Size(PORTRAIT_OFFSET_X),Math.px2Size(PORTRAIT_OFFSET_Y+PORTRAIT_BORDER+PORTRAIT_SIZE))
-			call BlzFrameSetSize(FRAME_PORTRAIT_BACKDROP,Math.px2Size(PORTRAIT_SIZE),Math.px2Size(PORTRAIT_SIZE))
-			call BlzFrameSetTexture(FRAME_PORTRAIT_BACKDROP,"ReplaceableTextures\\teamcolor\\teamcolor27.blp",0,true)
-			call BlzFrameSetAlpha(FRAME_PORTRAIT_BACKDROP,128)
+			set FRAME_PORTRAIT_BACKDROP = BlzCreateSimpleFrame("CPortrait",BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME,0),0)
+			call BlzFrameSetPoint(FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_TOPLEFT,FRAME_SIMPLEPIVOT,FRAMEPOINT_TOPLEFT,/*
+			x*/Math.px2Size(PORTRAIT_OFFSET_X),/*
+			y*/Math.px2Size(-PORTRAIT_OFFSET_Y)/*
+			*/)
+			call BlzFrameSetPoint(FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_BOTTOMRIGHT,FRAME_SIMPLEPIVOT,FRAMEPOINT_TOPLEFT,/*
+			x*/Math.px2Size(PORTRAIT_OFFSET_X+PORTRAIT_SIZE),/*
+			y*/Math.px2Size(-PORTRAIT_OFFSET_Y-PORTRAIT_SIZE)/*
+			*/)
 			set FRAME_PORTRAIT = BlzGetOriginFrame(ORIGIN_FRAME_PORTRAIT,0)
+			call BlzFrameSetParent(FRAME_PORTRAIT,BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0))
 			call BlzFrameSetVisible(FRAME_PORTRAIT,true)
 			call BlzFrameClearAllPoints(FRAME_PORTRAIT)
-			call BlzFrameSetAbsPoint(FRAME_PORTRAIT,FRAMEPOINT_TOPLEFT,Math.px2Size((1920/2)+PORTRAIT_OFFSET_X)*0.75,Math.px2Size(PORTRAIT_OFFSET_Y+PORTRAIT_BORDER+PORTRAIT_SIZE))
-			call BlzFrameSetAbsPoint(FRAME_PORTRAIT,FRAMEPOINT_BOTTOMRIGHT,Math.px2Size((1920/2)+PORTRAIT_SIZE+PORTRAIT_OFFSET_X)*0.75,Math.px2Size(PORTRAIT_OFFSET_Y+PORTRAIT_BORDER))
+			call BlzFrameSetAbsPoint(FRAME_PORTRAIT,FRAMEPOINT_TOPLEFT,Math.px2Size(PORTRAIT_OFFSET_X+PORTRAIT_INSET)*0.75,Math.px2Size(-PORTRAIT_OFFSET_Y-PORTRAIT_INSET+1080))
+			call BlzFrameSetAbsPoint(FRAME_PORTRAIT,FRAMEPOINT_BOTTOMRIGHT,Math.px2Size(PORTRAIT_SIZE+PORTRAIT_OFFSET_X-PORTRAIT_INSET)*0.75,Math.px2Size(-PORTRAIT_OFFSET_Y+PORTRAIT_INSET-PORTRAIT_SIZE+1080))
+			/*좌하단유닛정보*/
+			set FRAME_UNITINFO = BlzCreateSimpleFrame("CUnitInfo",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],0)
+			call BlzFrameSetPointPixel(FRAME_UNITINFO,FRAMEPOINT_TOPLEFT,FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_TOPRIGHT,0,0)
+			call BlzFrameSetPointPixel(FRAME_UNITINFO,FRAMEPOINT_BOTTOMRIGHT,FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_BOTTOMRIGHT,UNITINFO_WIDTH,0)
+			set FRAME_UNITINFO_UNITNAME = BlzGetFrameByName("CUnitInfoUnitName",0)
+			call BlzFrameSetText(FRAME_UNITINFO_UNITNAME,"테스트입니다")
+			/*칭호*/
+			set FRAME_CHINGHO = BlzGetFrameByName("CChingho",0)
+			set FRAME_CHINGHO_ICON = BlzGetFrameByName("CChinghoIcon",0)
+			set FRAME_CHINGHO_NAME = BlzGetFrameByName("CChinghoName",0)
+			call BJDebugMsg("칭호프레임"+I2S(GetHandleId(FRAME_CHINGHO)))
+			call BJDebugMsg("칭호아이콘"+I2S(GetHandleId(FRAME_CHINGHO_ICON)))
+			call BJDebugMsg("칭호이름"+I2S(GetHandleId(FRAME_CHINGHO_NAME)))
 			/*어빌리티박스*/
 			set FRAME_ABILITY_CONTAINER = BlzCreateFrameByType("BACKDROP","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],"",0)
 			call BlzFrameSetPoint(FRAME_ABILITY_CONTAINER,FRAMEPOINT_BOTTOMLEFT,FRAME_ORIGIN,FRAMEPOINT_BOTTOM,/*
@@ -494,6 +508,7 @@ library UI requires User, Frame
 			call BlzFrameSetPoint(FRAME_STAT1,FRAMEPOINT_BOTTOMRIGHT,FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_BOTTOMRIGHT,Math.px2Size(STAT1_WIDTH),0.)
 			call BlzFrameSetTexture(FRAME_STAT1,"replaceabletextures\\teamcolor\\teamcolor27.blp",0,true)
 			call BlzFrameSetAlpha(FRAME_STAT1,200)
+			/**/call BlzFrameSetVisible(FRAME_STAT1,false)
 			set FRAME_STAT2 = BlzCreateFrame("MBEdge",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],0,0)
 			call BlzFrameSetPointPixel(FRAME_STAT2,FRAMEPOINT_BOTTOMLEFT,FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_TOPLEFT,0.,96)
 			call BlzFrameSetSizePixel(FRAME_STAT2,STAT2_WIDTH,STAT2_HEIGHT)
@@ -584,10 +599,10 @@ library UI requires User, Frame
 			call BlzFrameSetVisible(EXP_FILL,false)
 			call BlzFrameSetVisible(EXP_TEXT,false)
 			/*유닛이름*/
-			set NAME = BlzCreateFrame("MyTextLarge",CONTAINER,0,0)
-			call BlzFrameSetPoint(NAME,FRAMEPOINT_TOPLEFT,FRAME_EXP_BAR,FRAMEPOINT_TOPLEFT,0.,Math.px2Size(PORTRAIT_SIZE-CHINGHO_HEIGHT))
-			call BlzFrameSetPoint(NAME,FRAMEPOINT_BOTTOMRIGHT,FRAME_EXP_BAR,FRAMEPOINT_TOPRIGHT,0.,0.)
-			call BlzFrameSetTextAlignment(NAME,TEXT_JUSTIFY_CENTER,TEXT_JUSTIFY_CENTER)
+			set NAME = FRAME_UNITINFO_UNITNAME
+			// call BlzFrameSetPoint(NAME,FRAMEPOINT_TOPLEFT,FRAME_EXP_BAR,FRAMEPOINT_TOPLEFT,0.,Math.px2Size(PORTRAIT_SIZE-CHINGHO_HEIGHT))
+			// call BlzFrameSetPoint(NAME,FRAMEPOINT_BOTTOMRIGHT,FRAME_EXP_BAR,FRAMEPOINT_TOPRIGHT,0.,0.)
+			// call BlzFrameSetTextAlignment(NAME,TEXT_JUSTIFY_CENTER,TEXT_JUSTIFY_CENTER)
 			/*포션제조*/
 			/*set FRAME_MAKE_POTION = BlzCreateFrameByType("FRAME","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],"",0)
 			call BlzFrameSetPoint(FRAME_MAKE_POTION,FRAMEPOINT_BOTTOMRIGHT,FRAME_HP_BAR,FRAMEPOINT_TOPRIGHT,0,0)*/

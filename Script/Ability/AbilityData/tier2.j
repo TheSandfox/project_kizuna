@@ -865,8 +865,8 @@ scope Ability2090 initializer init
 				set .level = level
 				set .radius_wave = RADIUS2
 				set .flag_wave = true
-				call .caster.setAnim("attack")
-				call .caster.setAnimSpeed(0.7)
+				call .caster.setAnim("walk")
+				call .caster.setAnimSpeed(2.5)
 				set .ef = Effect.create(EFFECT_PATH1,.caster.x,.caster.y,.caster.z+.caster.pivot_z,yaw)
 				set .t = Timer.new(this)
 				call Timer.start(.t,TIMER_TICK,true,function thistype.tA)
