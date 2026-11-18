@@ -12,10 +12,11 @@ library Game requires Unit, UI
 
 	globals
 		private trigger LEAVE_TRIGGER = CreateTrigger()	
-		private integer TEST_UNIT_ID = 'HR00'
+		private integer TEST_UNIT_ID = 'HR0c'
 		private integer DUMMY_UNIT_ID1 = 'U001'
 		private integer DUMMY_UNIT_ID2 = 'U004'
-		private constant boolean GAME_DEBUG = true
+		constant boolean GAME_DEBUG = true
+		// constant boolean GAME_DEBUG = false
 		private constant real CAMERA_DISTANCE = 2425.0
 	endglobals
 
@@ -75,7 +76,7 @@ library Game requires Unit, UI
 			endloop
 		endmethod
 
-		private static method initForPlayer takes player p, integer uid, integer chingho returns nothing
+		private static method initForPlayer takes player p, integer uid returns nothing
 			local Unit u = Unit.create(p,uid,Math.pPX(GetRectCenterX(gg_rct_Spawn),128,GetRandomReal(0.,360.)),Math.pPY(GetRectCenterY(gg_rct_Spawn),128,GetRandomReal(0.,360.)),270.)
 			set u.is_revive = true
 			/*카메라*/
@@ -93,8 +94,6 @@ library Game requires Unit, UI
 			call User.selectFocusUnit(p)
 			/*어빌리티테이블*/
 			call AbilityTable.createExtra(GetPlayerId(p),uid)
-			/*칭호 추가*/
-			call u.setChingho(chingho)
 			/*메인 UI*/
 			call UI.create(p)
 			/*초기소지금*/
@@ -104,9 +103,6 @@ library Game requires Unit, UI
 				call User.addGold(p,5)
 			endif
 			set u.level = 5
-			/*칭호 어빌 추가*/
-			//call u.addAbility(chingho)
-			//call u.swapAbility(2,9)
 		endmethod
 
 		static method endSelect takes nothing returns nothing
@@ -121,63 +117,34 @@ library Game requires Unit, UI
 			loop
 				exitwhen i >= CONFIG_PLAYER_MAX
 				if GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING and GetPlayerController(Player(i)) == MAP_CONTROL_USER then
-					call initForPlayer(Player(i),CharacterSelect_ID[i],'C000'/*임시*/)
+					call initForPlayer(Player(i),TEST_UNIT_ID)
 					call TriggerRegisterPlayerEventLeave(LEAVE_TRIGGER,Player(i))
 				endif
 				set i = i + 1
 			endloop
 			/*생명의 나무*/
-			call TreeOfLife.init()
+			// call TreeOfLife.init()
 			/*수호자 초기화*/
-			call Guardians.init()
+			// call Guardians.init()
 			/*웨이브 가동*/
-			call Round.init()
+			// call Round.init()
 			/*상호작용물*/
 			call Interactive.init()
 			/*필드*/
-			call Field.init()
+			// call Field.init()
 			/*내비게이터*/
-			call Navigator.init()
+			// call Navigator.init()
 			/*탈주트리거*/
 			call TriggerAddCondition(LEAVE_TRIGGER,function thistype.playerLeave)
 		endmethod
 
+		/*시간차 게임초기화 콜백*/
 		private static method start takes nothing returns nothing
 			local Unit u = 0
 			local trigger t = null
 			local integer i = 0
 			if GAME_DEBUG then
-				/*꿀팁 활성화*/
-				//call Tip.init()
-				/*프레임관련*/
-				call UI.init()
-				call Inventory.init()
-				call Numberpad.init()
-				/*플레이어별 초기화*/
-				loop
-					exitwhen i >= CONFIG_PLAYER_MAX
-					if GetPlayerSlotState(Player(i)) == PLAYER_SLOT_STATE_PLAYING then
-						call initForPlayer(Player(i),TEST_UNIT_ID,'C000')
-					endif
-					//call initForPlayer(Player(1),'HR09')
-					set i = i + 1
-				endloop
-				/*생명의 나무*/
-				// call TreeOfLife.init()
-				/*수호자 초기화*/
-				//call Guardians.init()
-				/*웨이브 가동*/
-				//call Round.init()
-				/*상호작용물*/
-				call Interactive.init()
-				/*필드*/
-				// call Field.init()
-				/*내비게이터*/
-				// call Navigator.init()
-				/*임시*/
-				// call SkillShop(0).setLevel(10)
-				// call SkillShop(0).refresh()
-				/**/
+				call endSelect()
 			else
 				/*캐릭터셀렉트*/
 				call CharacterSelect.init()
@@ -186,6 +153,7 @@ library Game requires Unit, UI
 			set t = null
 		endmethod
 
+		/*동맹초기화*/
 		static method initAlly takes nothing returns nothing
 			local integer i = 0
 			loop
@@ -207,9 +175,16 @@ library Game requires Unit, UI
 		private static method onInit takes nothing returns nothing
 			/*시간차 init*/
 			local trigger t = CreateTrigger()
+			/*게임초기화타이머*/
 			call TriggerRegisterTimerEvent(t,0.5,false)
 			call TriggerAddAction(t,function thistype.start)
-			/*기본 게임설정*/
+			/*ENDSELCT 리스너*/
+			static if not GAME_DEBUG then
+				set t = CreateTrigger()
+				call Event.register(t,ENUM_EVENT_CHARACTERSELECT_END)
+				call TriggerAddAction(t,function thistype.endSelect)
+			endif
+			/*TOC가져오기*/
 			call BlzLoadTOCFile("ui\\framedef\\myframes\\MyFrames.toc")
 			/*프레임 숨기기*/
 			call BlzHideOriginFrames(true)
@@ -234,24 +209,16 @@ library Game requires Unit, UI
 			call FogEnable(false)
 			/*시간 고정시키기*/
 			call SetTimeOfDay(12.)
-   			call SetTimeOfDayScalePercentBJ(0.)
+			call SetTimeOfDayScalePercentBJ(0.)
 			/*카메라*/
 			call Camera.init()
 			/*플레이어 이름 설정*/
 			call SetPlayerName(CONFIG_PLAYER_GUARDIANS,"수호자")
-			call SetPlayerName(CONFIG_PLAYER_MONSTER,"숲의 괴물들")
+			call SetPlayerName(CONFIG_PLAYER_MONSTER,"괴수")
 			call SetPlayerName(CONFIG_PLAYER_UNDEAD,"언데드 침략자")
 			call SetPlayerName(CONFIG_PLAYER_SYSTEM,"|cffffcc00시스템|r")
 			/*동맹설정*/
 			call initAlly()
-			/*백그라운드*/
-			if not GAME_DEBUG then
-				/*CreateBackground*/
-				set CharacterSelect_BACKGROUND = BlzCreateFrameByType("SPRITE","",BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0),"",0)
-				call BlzFrameSetModel(CharacterSelect_BACKGROUND,"ui\\characterselectbackground.mdl",0)
-				call BlzFrameSetAbsPoint(CharacterSelect_BACKGROUND,FRAMEPOINT_BOTTOMLEFT,0.,0.)
-				call BlzFrameSetSize(CharacterSelect_BACKGROUND,1,1)
-			endif
 			/**/
 			set t = null
 		endmethod

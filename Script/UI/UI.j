@@ -6,9 +6,6 @@ library UI requires User, Frame
 		framehandle FRAME_SIMPLEPIVOT = null				//꽉찬화면기준점
 		framehandle FRAME_UNITINFO = null						//유닛정보
 		framehandle FRAME_UNITINFO_UNITNAME = null	//유닛정보-유닛이름(Lv.X "유닛이름")
-		framehandle FRAME_CHINGHO = null						//유닛정보-칭호
-		framehandle FRAME_CHINGHO_ICON = null				//유닛정보-칭호-아이콘	
-		framehandle FRAME_CHINGHO_NAME = null				//유닛정보-칭호-칭호이름
 		framehandle FRAME_MINIMAP = null						//미니맵
 		framehandle FRAME_MINIMAP_BACKDROP = null		//미니맵의 액자
 		framehandle FRAME_PORTRAIT = null						//포트레이트
@@ -61,7 +58,6 @@ library UI requires User, Frame
 		private constant integer ABILITY_CONTAINER_OFFSET_Y = 16
 		private constant integer ABILITY_ICON_SIZE = 64
 		private constant integer ABILITY_TOOLTIP_OFFSET_Y = 160
-		private constant integer CHINGHO_HEIGHT = 32
 		private constant integer STAT1_WIDTH = 264
 		private constant integer STAT2_WIDTH = 48*8 + 64//640 -32 -32 -32
 		private constant integer STAT2_HEIGHT = 48*4 + 64 + 64
@@ -82,35 +78,7 @@ library UI requires User, Frame
 		private constant integer ABILITY_MANAGER_WIDTH = 1440 - STAT2_WIDTH - INVENTORY_WIDTH
 		private constant integer ABILITY_MANAGER_HEIGHT = 440
 	endglobals
-
-	struct ChinghoFrame extends array
-
-		integer id
-
-		method setTarget takes integer cid returns nothing
-			set .id = cid
-			if GetLocalPlayer() == Player(this) then
-				if cid > 0 then
-					call BlzFrameSetTexture(FRAME_CHINGHO_ICON,Ability.getTypeIconPath(cid),0,true)
-					call BlzFrameSetText(FRAME_CHINGHO_NAME,Ability.getTypeName(cid))
-				elseif cid < 0 then
-					call BlzFrameSetTexture(FRAME_CHINGHO_ICON,"ReplaceableTextures\\CommandButtons\\BTNSelectHeroOn.blp",0,true)
-					call BlzFrameSetText(FRAME_CHINGHO_NAME,"???")
-				else
-					call BlzFrameSetTexture(FRAME_CHINGHO_ICON,"Icons\\BTNBlackIcon.blp",0,true)
-					call BlzFrameSetText(FRAME_CHINGHO_NAME,"")
-				endif
-			endif
-		endmethod
-
-		static method create takes player p returns thistype
-			local thistype this = GetPlayerId(p)
-			call setTarget(0)
-			return this
-		endmethod
-
-	endstruct
-
+	
 	struct IconFrame
 
 	endstruct
@@ -146,8 +114,6 @@ library UI requires User, Frame
 		Unit target
 
 		timer main_timer
-		
-		ChinghoFrame chingho		
 		
 		real ability_error_lifespan 
 
@@ -274,7 +240,6 @@ library UI requires User, Frame
 			call refreshAbilityIconsTarget()
 			call refreshStatIconsTarget()
 			call refreshName()
-			call .chingho.setTarget(.target.chingho.id)
 			call refreshPeriodic()
 		endmethod
 
@@ -299,8 +264,6 @@ library UI requires User, Frame
 			local AbilityIcon ia = 0
 			local StatIcon sa = 0
 			set .main_timer = Timer.new(this)
-			/*칭호*/
-			set .chingho = ChinghoFrame.create(p)
 			/*어빌아이콘*/
 			loop
 				exitwhen i >= 10
@@ -427,13 +390,6 @@ library UI requires User, Frame
 			call BlzFrameSetPointPixel(FRAME_UNITINFO,FRAMEPOINT_BOTTOMRIGHT,FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_BOTTOMRIGHT,UNITINFO_WIDTH,0)
 			set FRAME_UNITINFO_UNITNAME = BlzGetFrameByName("CUnitInfoUnitName",0)
 			call BlzFrameSetText(FRAME_UNITINFO_UNITNAME,"테스트입니다")
-			/*칭호*/
-			set FRAME_CHINGHO = BlzGetFrameByName("CChingho",0)
-			set FRAME_CHINGHO_ICON = BlzGetFrameByName("CChinghoIcon",0)
-			set FRAME_CHINGHO_NAME = BlzGetFrameByName("CChinghoName",0)
-			call BJDebugMsg("칭호프레임"+I2S(GetHandleId(FRAME_CHINGHO)))
-			call BJDebugMsg("칭호아이콘"+I2S(GetHandleId(FRAME_CHINGHO_ICON)))
-			call BJDebugMsg("칭호이름"+I2S(GetHandleId(FRAME_CHINGHO_NAME)))
 			/*어빌리티박스*/
 			set FRAME_ABILITY_CONTAINER = BlzCreateFrameByType("BACKDROP","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],"",0)
 			call BlzFrameSetPoint(FRAME_ABILITY_CONTAINER,FRAMEPOINT_BOTTOMLEFT,FRAME_ORIGIN,FRAMEPOINT_BOTTOM,/*
@@ -600,12 +556,6 @@ library UI requires User, Frame
 			call BlzFrameSetVisible(EXP_TEXT,false)
 			/*유닛이름*/
 			set NAME = FRAME_UNITINFO_UNITNAME
-			// call BlzFrameSetPoint(NAME,FRAMEPOINT_TOPLEFT,FRAME_EXP_BAR,FRAMEPOINT_TOPLEFT,0.,Math.px2Size(PORTRAIT_SIZE-CHINGHO_HEIGHT))
-			// call BlzFrameSetPoint(NAME,FRAMEPOINT_BOTTOMRIGHT,FRAME_EXP_BAR,FRAMEPOINT_TOPRIGHT,0.,0.)
-			// call BlzFrameSetTextAlignment(NAME,TEXT_JUSTIFY_CENTER,TEXT_JUSTIFY_CENTER)
-			/*포션제조*/
-			/*set FRAME_MAKE_POTION = BlzCreateFrameByType("FRAME","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],"",0)
-			call BlzFrameSetPoint(FRAME_MAKE_POTION,FRAMEPOINT_BOTTOMRIGHT,FRAME_HP_BAR,FRAMEPOINT_TOPRIGHT,0,0)*/
 			/*스킬상점*/
 			set FRAME_SKILL_SHOP_BACKDROP = BlzCreateFrame("EMEdge",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],0,0)
 			call BlzFrameSetPoint(FRAME_SKILL_SHOP_BACKDROP,FRAMEPOINT_TOP,FRAME_ORIGIN,FRAMEPOINT_TOP,0.,Math.px2Size(SKILL_SHOP_OFFSET_Y))

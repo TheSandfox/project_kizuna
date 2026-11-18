@@ -11,8 +11,6 @@ library Unit requires UnitData
 		private static constant integer SKILLPOINT_PER_LEVEL = 3
 		private static constant integer REMOVEPOINT_PER_LEVEL = 2
 
-		//static trigger UNIT_SELECT = null
-		Chingho chingho = 0
 		integer removepoint = 0
 
 		SimpleList upgrade_point = 0
@@ -160,20 +158,6 @@ library Unit requires UnitData
 			call BJDebugMsg("//===================")
 		endmethod
 
-		method setChingho takes integer id returns nothing
-			if .chingho > 0 then
-				call .chingho.destroy()
-			endif
-			call Ability_prototype.new(id)
-			set .chingho = ABILITY_LAST_CREATED
-			if .chingho > 0 then
-				/*명함의 역할만 하기 때문에 essentialInit 호출 생략.*/
-				set .chingho.owner = this
-				call .chingho.init()
-				call BlzSetHeroProperName(.origin_unit,"|cffffcc00["+.chingho.name+"]|r\n"+.origin_name)
-			endif
-		endmethod
-
 		method copyStat takes integer stattype returns nothing
 			if HaveSavedReal(UnitData.HASH,.id,UnitData.INDEX_STAT+(stattype*ENUM_STAT_INDEX_SIZE)+ENUM_STAT_INDEX_BASE) then
 				call setStatValue(stattype,ENUM_STAT_INDEX_BASE,LoadReal(UnitData.HASH,.id,UnitData.INDEX_STAT+(stattype*ENUM_STAT_INDEX_SIZE)+ENUM_STAT_INDEX_BASE))
@@ -243,9 +227,6 @@ library Unit requires UnitData
 		endmethod
 
 		method onDestroy takes nothing returns nothing
-			if .chingho > 0 then
-				call .chingho.destroy()
-			endif
 			call .upgrade_point.destroy()
 			call UnitClass(this).clearClass()
 		endmethod

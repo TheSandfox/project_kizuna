@@ -294,7 +294,6 @@ endlibrary
 //! endtextmacro
 
 //! import "AbilityData\\AbilityData.j"
-//! import "Chingho.j"
 //! import "AbilityMix.j"
 //! import "AbilityTable.j"
 //! import "GenericBuffs/GenericBuffs.j"

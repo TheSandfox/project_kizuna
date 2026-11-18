@@ -148,6 +148,7 @@ globals
 	constant real ENUM_EVENT_MOVER_SUSPEND = 31
 	constant real ENUM_EVENT_CARCULATE_DAMAGE = 32
 	constant real ENUM_EVENT_STATUS_CHANGE = 33
+	constant real ENUM_EVENT_CHARACTERSELECT_END = 34
 	constant integer ENUM_CAST_TYPE_TARGET_LOCATION = 0
 	constant integer ENUM_CAST_TYPE_TARGET_UNIT = 1
 	constant integer ENUM_CAST_TYPE_IMMEDIATE = 2
