@@ -70,7 +70,7 @@ library ExtraAbilityIcon requires UI
 			set .pid = GetPlayerId(p)
 			set .target = target
 			/*TODO INIT FRAME*/
-			set .container = BlzCreateFrameByType("FRAME","",FRAME_STAT1,"",this)
+			set .container = BlzCreateFrameByType("FRAME","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],"",this)
 			set .icon_backdrop = BlzCreateFrameByType("BACKDROP","",.container,"",this)
 			call BlzFrameSetTexture(.icon_backdrop,Ability.getTypeIconPath(.target.id),0,true)
 			call BlzFrameSetSizePixel(.icon_backdrop,SIZE,SIZE)

@@ -12,12 +12,16 @@ library SlotChanger requires UI
 		static integer array MAP
 
 		static framehandle array BUTTON[10]
+		private static integer P_BUTTON_GAP = 4
+		private static integer P_BUTTON_SIZE = 64
+		private static integer P_BUTTON_OFFSET_Y = 88//하단에서부터
 
-		static framehandle CONTAINER = null
 		static framehandle CONFIRM_BUTTON = null
+		static framehandle CONFIRM_BUTTON_TEXT = null
 		static framehandle CLOSE_BUTTON = null
 		static boolean ACTIVATED = false
-		private static trigger KEYPRESS = null
+		private static trigger P_KEYPRESS_CALLBACK = null
+		private static trigger P_ICON_CLICK_CALLBACK = null
 
 		method getMap takes integer index returns integer
 			return MAP[this*10 + index]
@@ -41,9 +45,9 @@ library SlotChanger requires UI
 			loop
 				exitwhen i >= 10
 				/*유닛어빌리티 가져오기*/
-				set a = User.getFocusUnit(.owner).getAbility(getMap(i))
+				set a = Ability(User.getFocusUnit(.owner).getAbility(getMap(i)))
 				/*아이콘 설정*/
-				set f = BlzGetFrameByName("SlotChangerButtonIcon",i)
+				set f = BlzGetFrameByName("CSlotChangerButtonIcon",i)
 				if User.getFocusUnit(.owner) <= 0 or a <= 0 then
 					if GetLocalPlayer() == Player(this) then
 						call BlzFrameSetTexture(f,"Icons\\BTNBlackIcon.blp",0,true)
@@ -61,16 +65,16 @@ library SlotChanger requires UI
 					if User.getFocusUnit(.owner) <= 0 or a <= 0 then
 						if GetLocalPlayer() == Player(this) then
 							call BlzFrameSetEnable(f,false)
-							call BlzFrameSetText(BlzGetFrameByName("SlotChangerButtonText",i),"|cff999999"+CONSTANT_ABILITY_HOTKEY_NAME[i]+"|r")
+							call BlzFrameSetText(BlzGetFrameByName("CSlotChangerButtonHotkeyText",i),"|cff999999"+CONSTANT_ABILITY_HOTKEY_NAME[i]+"|r")
 						endif
 					/*비어있지 않은 어빌리티의 위치에만 시작지 버튼 출력*/
 					else
 						if GetLocalPlayer() == Player(this) then
 							call BlzFrameSetEnable(f,true)
 							if .state == 0 then
-								call BlzFrameSetText(BlzGetFrameByName("SlotChangerButtonText",i),"|cffffcc00"+CONSTANT_ABILITY_HOTKEY_NAME[i]+"|r")
+								call BlzFrameSetText(BlzGetFrameByName("CSlotChangerButtonHotkeyText",i),"|cffffcc00"+CONSTANT_ABILITY_HOTKEY_NAME[i]+"|r")
 							elseif .state == 2 then
-								call BlzFrameSetText(BlzGetFrameByName("SlotChangerButtonText",i),"|cff00ccff"+CONSTANT_ABILITY_HOTKEY_NAME[i]+"|r")
+								call BlzFrameSetText(BlzGetFrameByName("CSlotChangerButtonHotkeyText",i),"|cff00ccff"+CONSTANT_ABILITY_HOTKEY_NAME[i]+"|r")
 							endif
 						endif
 					endif
@@ -82,7 +86,7 @@ library SlotChanger requires UI
 						endif
 					/*어빌리티가 비어있어도 목적지 버튼 출력*/
 					else
-						set bf = BlzGetFrameByName("SlotChangerButtonText",i)
+						set bf = BlzGetFrameByName("CSlotChangerButtonHotkeyText",i)
 						if GetLocalPlayer() == Player(this) then
 							call BlzFrameSetEnable(f,true)
 							if i == .first_index then
@@ -97,15 +101,15 @@ library SlotChanger requires UI
 			endloop
 			/*적용버튼 리프레시*/
 			if .state == 0 or .state == 1 then
-				set f = BlzGetFrameByName("SlotChangerConfirmButtonText",0)
+				set f = CONFIRM_BUTTON_TEXT
 				if GetLocalPlayer() == Player(this) then
 					call BlzFrameSetText(f,"|cff999999적용|r")
 					call BlzFrameSetEnable(CONFIRM_BUTTON,false)
 				endif
 			elseif .state == 2 then
-				set f = BlzGetFrameByName("SlotChangerConfirmButtonText",0)
+				set f = CONFIRM_BUTTON_TEXT
 				if GetLocalPlayer() == Player(this) then
-					call BlzFrameSetText(f,"|cff00ccff적용 (G)|r")
+					call BlzFrameSetText(f,"|cff00ccff적용 ("+CONSTANT_HOTKEY_NAME[ENUM_HOTKEY_SLOT_CHANGER]+")|r")
 					call BlzFrameSetEnable(CONFIRM_BUTTON,true)
 				endif
 			endif
@@ -145,21 +149,24 @@ library SlotChanger requires UI
 					/*열림*/
 					call stateDefault()
 					if User.getFocusUnit(.owner) > 0 then
-						call User.getFocusUnit(.owner).releaseAbilityAll()
+						call Ability.releaseUnitAbilityAll(User.getFocusUnit(.owner))
 					endif
 					call EnableTrigger(.keypress_trigger.main_trigger)
 					/*CLOSEUI*/
 					call CloseUI(this).add(CloseUI.ORDER_SLOT_CHANGER)
+					call User.addInputLayer(.owner,ENUM_INPUT_LAYER_SLOT_CHANGER)
 				else
 					/*닫힘*/
 					call DisableTrigger(.keypress_trigger.main_trigger)
 					/*CLOSEUI*/
 					call CloseUI(this).eraseFor(CloseUI.ORDER_SLOT_CHANGER)
+					call User.removeInputLayer(.owner,ENUM_INPUT_LAYER_SLOT_CHANGER)
 				endif
-				call User.enableAbilityHotkey(.owner,not flag)
+				// call User.enableAbilityHotkey(.owner,not flag)
 			endif
 			if GetLocalPlayer() == Player(this) then
 				call BlzFrameSetVisible(FRAME_SLOT_CHANGER,flag)
+				call PlaySoundBJ(gg_snd_BigButtonClick)
 			endif
 			set .visible_flag = flag
 		endmethod
@@ -227,7 +234,7 @@ library SlotChanger requires UI
 			local integer i = 0
 			if Event.getValue() == ENUM_EVENT_KEYPRESS then
 				set this = GetPlayerId(CUSTOM_RESPOND_KEYPRESS_PLAYER)
-				if CUSTOM_RESPOND_KEYPRESS_KEY == OSKEY_G and CUSTOM_RESPOND_KEYPRESS_PRESS then
+				if CUSTOM_RESPOND_KEYPRESS_KEY == CONSTANT_HOTKEY_OSKEY[ENUM_HOTKEY_SLOT_CHANGER] and CUSTOM_RESPOND_KEYPRESS_PRESS then
 					if .state == 2 and .visible_flag then
 						call confirm()
 					endif
@@ -238,15 +245,13 @@ library SlotChanger requires UI
 			endif
 			set this = GetPlayerId(p)
 			if BlzGetTriggerFrame() != null then
-				if GetLocalPlayer() == Player(this) then
-					if BlzFrameGetEnable(BlzGetTriggerFrame()) then
-						call BlzFrameSetEnable(BlzGetTriggerFrame(),false)
-						call BlzFrameSetEnable(BlzGetTriggerFrame(),true)
-					endif
-				endif
 				if BlzGetTriggerFrameEvent() != FRAMEEVENT_CONTROL_CLICK then
 					return
 				endif
+				/* 버튼소리재생 */
+				if GetLocalPlayer() == p then
+          call PlaySoundBJ(gg_snd_BigButtonClick)
+        endif
 				if BlzGetTriggerFrame() == CLOSE_BUTTON then
 					call close()
 					return
@@ -282,49 +287,35 @@ library SlotChanger requires UI
 
 		static method initFrames takes nothing returns nothing
 			local integer i = 0
+			local integer buttonsTotalWidth = P_BUTTON_SIZE * 10 + P_BUTTON_GAP * 9
+			local integer buttonX = 0
+			local integer buttonY = 0
 			local framehandle f = null
-			set CONTAINER = BlzCreateFrameByType("FRAME","",FRAME_SLOT_CHANGER,"",0)
-			call BlzFrameSetPoint(CONTAINER,FRAMEPOINT_TOPLEFT,FRAME_SLOT_CHANGER,FRAMEPOINT_TOPLEFT,0.,0.)
 			/**/
 			loop
-				exitwhen i >= 10
+				exitwhen i >= CONFIG_ABILITY_SIZE
 				/*버튼프레임*/
-				set f = BlzCreateFrame("SlotChangerButton",CONTAINER,0,i)
-				call BlzFrameSetAllPoints(f,FRAME_ABILITY_ICON[i])
-				//call BlzFrameSetPointPixel(f,FRAMEPOINT_BOTTOMLEFT,LoadFrameHandle(UI.HASH,this,UI.INDEX_SLOT_CHANGER_ICON+i),FRAMEPOINT_BOTTOMLEFT,-4,-4/*Math.px2Size(16)*/)
-				//call BlzFrameSetSize(f,Math.px2Size(48),Math.px2Size(48))
-				call BlzTriggerRegisterFrameEvent(.KEYPRESS,f,FRAMEEVENT_CONTROL_CLICK)
-				call BlzTriggerRegisterFrameEvent(.KEYPRESS,f,FRAMEEVENT_MOUSE_LEAVE)
+				set f = BlzCreateSimpleFrame("CSlotChangerButton",FRAME_SLOT_CHANGER,i)
+				set buttonX = (-buttonsTotalWidth/2) + (P_BUTTON_SIZE*i) + (P_BUTTON_GAP*i)
+				set buttonY = P_BUTTON_OFFSET_Y
+				call BlzFrameSetPointPixel(f,FRAMEPOINT_TOPLEFT,FRAME_SLOT_CHANGER,FRAMEPOINT_BOTTOM,buttonX,buttonY+P_BUTTON_SIZE)
+				call BlzFrameSetPointPixel(f,FRAMEPOINT_BOTTOMRIGHT,FRAME_SLOT_CHANGER,FRAMEPOINT_BOTTOM,buttonX+P_BUTTON_SIZE,buttonY)
+				call BlzTriggerRegisterFrameEvent(P_KEYPRESS_CALLBACK,f,FRAMEEVENT_CONTROL_CLICK)
 				set BUTTON[i] = f
-				/*버튼아이콘*/
-				set f = BlzGetFrameByName("SlotChangerButtonIcon",i)
-				call BlzFrameSetSizePixel(f,48,48)
-				/*버튼텍스트백드롭*/
-				set f = BlzGetFrameByName("SlotChangerButtonTextBackdrop",i)
-				call BlzFrameSetSizePixel(f,20,20)
-				//call BlzFrameSetAlpha(f,192)
 				/*버튼텍스트*/
-				set f = BlzGetFrameByName("SlotChangerButtonText",i)
+				set f = BlzGetFrameByName("CSlotChangerButtonHotkeyText",i)
 				call BlzFrameSetText(f,"|cffffcc00"+CONSTANT_ABILITY_HOTKEY_NAME[i]+"|r")
-				call BlzFrameSetTextAlignment(f,TEXT_JUSTIFY_CENTER,TEXT_JUSTIFY_CENTER)
 				set i = i + 1
 			endloop
 			/*컨펌버튼*/
-			set CONFIRM_BUTTON = BlzCreateFrame("SlotChangerConfirmButton",CONTAINER,0,0)
-			call BlzFrameSetPoint(CONFIRM_BUTTON,FRAMEPOINT_TOP,FRAME_SLOT_CHANGER,FRAMEPOINT_TOP,0,-Math.px2Size(12))
-			call BlzFrameSetSize(CONFIRM_BUTTON,Math.px2Size(192),Math.px2Size(48))
-			call BlzTriggerRegisterFrameEvent(.KEYPRESS,CONFIRM_BUTTON,FRAMEEVENT_CONTROL_CLICK)
-			call BlzTriggerRegisterFrameEvent(.KEYPRESS,CONFIRM_BUTTON,FRAMEEVENT_MOUSE_LEAVE)
-			set f = BlzGetFrameByName("SlotChangerConfirmButtonText",0)
-			call BlzFrameSetPoint(f,FRAMEPOINT_CENTER,CONFIRM_BUTTON,FRAMEPOINT_CENTER,0,0)
-			call BlzFrameSetTextAlignment(f,TEXT_JUSTIFY_CENTER,TEXT_JUSTIFY_CENTER)
-			call BlzFrameSetText(f,"|cff999999적용|r")
+			set CONFIRM_BUTTON = BlzGetFrameByName("CSlotChangerConfirmButton",0)
+			call BlzTriggerRegisterFrameEvent(P_KEYPRESS_CALLBACK,CONFIRM_BUTTON,FRAMEEVENT_CONTROL_CLICK)
+			set CONFIRM_BUTTON_TEXT = BlzGetFrameByName("CSlotChangerConfirmButtonText",0)
+			call BlzFrameSetText(CONFIRM_BUTTON_TEXT,"|cff999999적용|r")
 			call BlzFrameSetEnable(CONFIRM_BUTTON,false)
 			/*닫기버튼*/
-			set CLOSE_BUTTON = BlzCreateFrame("GenericCloseButton",CONTAINER,0,0)
-			call BlzFrameSetPointPixel(CLOSE_BUTTON,FRAMEPOINT_TOPRIGHT,FRAME_SLOT_CHANGER,FRAMEPOINT_TOPRIGHT,-12,-12)
-			call BlzTriggerRegisterFrameEvent(.KEYPRESS,CLOSE_BUTTON,FRAMEEVENT_CONTROL_CLICK)
-			call BlzTriggerRegisterFrameEvent(.KEYPRESS,CLOSE_BUTTON,FRAMEEVENT_MOUSE_LEAVE)
+			set CLOSE_BUTTON = BlzGetFrameByName("CSlotChangerCloseButton",0)
+			call BlzTriggerRegisterFrameEvent(P_KEYPRESS_CALLBACK,CLOSE_BUTTON,FRAMEEVENT_CONTROL_CLICK)
 			set f = null
 		endmethod
 
@@ -360,9 +351,14 @@ library SlotChanger requires UI
 		endmethod
 
 		static method onInit takes nothing returns nothing
-			set .KEYPRESS = CreateTrigger()
-			call TriggerAddCondition(.KEYPRESS,function thistype.act)
-			call Event.register(.KEYPRESS,ENUM_EVENT_KEYPRESS)
+			/*키입력*/
+			set P_KEYPRESS_CALLBACK = CreateTrigger()
+			call TriggerAddCondition(P_KEYPRESS_CALLBACK,function thistype.act)
+			call Event.register(P_KEYPRESS_CALLBACK,ENUM_EVENT_KEYPRESS)
+			/*어빌아이콘 클릭*/
+			// set P_ICON_CLICK_CALLBACK = CreateTrigger()
+			// call TriggerAddCondition(P_ICON_CLICK_CALLBACK,function thistype.iconClickCallback)
+			// call Event.register(P_ICON_CLICK_CALLBACK,ENUM_EVENT_ABILITY_ICON_CLICK)
 		endmethod
 
 	endstruct

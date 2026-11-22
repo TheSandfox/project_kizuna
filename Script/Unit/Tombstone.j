@@ -18,24 +18,37 @@ library Tombstone
 		timer main_timer
 		framehandle text
 
-		static method timerAction takes nothing returns nothing
-			local thistype this = Timer.getData(GetExpiredTimer())
+		method refresh takes nothing returns nothing
 			local real val = 0.
-			/*가시성처리*/
-			if GetLocalPlayer() == .owner.owner then
-				call BlzFrameSetVisible(.text,User.getFocusUnit(.owner.owner) == .owner)
-			endif
 			if GAME_OVER then
 				set .owner.hp = 1.
-				call BlzFrameSetText(.text,"|cffff0000∞|r")
-				call BlzFrameSetScale(.text,2.0)
-				set .text = null
+				if GetLocalPlayer() == .owner.owner then
+					call BlzFrameSetText(.text,"|cffff0000∞|r")
+				endif
+				// set .text = null
 				return
 			else
 				call .owner.healUnit(.owner,.owner.maxhp*HEAL_PER_SEC*TICK)
 				/*부활 예상시간 계산*/
 				set val = (.owner.maxhp - .owner.hp) / ( (.owner.maxhp*HEAL_PER_SEC+.owner.hpregen)*.owner.getCarculatedStatValue(ENUM_STAT_HEAL_AMP) )
-				call BlzFrameSetText(.text,"|cffff0000"+I2S(R2I(val)+1)+"|r")
+				if GetLocalPlayer() == .owner.owner then
+					call BlzFrameSetText(.text,"|cffff0000"+I2S(R2I(val)+1)+"|r")
+				endif
+				if not .exists then
+					if GetLocalPlayer() == .owner.owner then
+						call BlzFrameSetText(.text,"")
+					endif
+				endif
+			endif
+		endmethod
+
+		static method timerAction takes nothing returns nothing
+			local thistype this = Timer.getData(GetExpiredTimer())
+			if this <= 0 or not .exists then
+				return
+			endif
+			if .owner.isUnitType(UNIT_TYPE_DEAD) then
+				call refresh()
 			endif
 		endmethod
 
@@ -50,22 +63,29 @@ library Tombstone
 			set .ef = Effect.create(EFFECT_PATH1,.owner.x,.owner.y,0.,270.)
 			set .main_timer = Timer.new(this)
 			call Timer.start(.main_timer,TICK,true,function thistype.timerAction)
-			set .text = BlzCreateFrame("MyTextLarge",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],0,0)
-			call BlzFrameSetPoint(.text,FRAMEPOINT_CENTER,FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_CENTER,0.,0.)
-			call BlzFrameSetVisible(.text,GetLocalPlayer() == .owner.owner)
+			set .text = BlzGetFrameByName("CPortraitReviveTimerText",0)
+			// set .text = BlzCreateFrame("MyTextLarge",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],0,0)
+			// call BlzFrameSetPoint(.text,FRAMEPOINT_CENTER,FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_CENTER,0.,0.)
+			if GetLocalPlayer() == .owner.owner then
+				call BlzFrameSetText(.text,"")
+			endif
+			call refresh()
 			return this
 		endmethod
 
 		method destroy takes nothing returns nothing
 			local Effect eff = Effect.create(EFFECT_PATH2,.owner.x,.owner.y,0.,270.).setAnim(ANIM_TYPE_DEATH).setDuration(3.33)
 			set eff.want_remove = true
+			call Timer.pause(.main_timer)
 			call Timer.release(.main_timer)
+			if GetLocalPlayer() == .owner.owner then
+				call BlzFrameSetText(.text,"")
+			endif
 			set .main_timer = null
 			set .ef.want_remove = true
 			call .ef.destroy()
 			set .ef = 0
 			set .exists = false
-			//! runtextmacro destroyFrame(".text")
 			/**/
 		endmethod
 

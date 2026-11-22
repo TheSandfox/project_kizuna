@@ -376,7 +376,7 @@ scope Ability3020 initializer init
 		endmethod
 
 		method onComplete takes nothing returns nothing
-			local Ability a = .caster.getAbilityById(ID)
+			local Ability a = Ability.getUnitAbilityById(.caster,ID)
 			if a > 0 then
 				if a.value < DATA_INTEGER1 then
 					call .caster.healUnit(.caster,.damage*DATA_REAL1)
@@ -602,7 +602,7 @@ scope Ability3030 initializer init
 		public struct actor extends MeleeAttack
 
 			method onComplete takes nothing returns nothing
-				local Ability a = .caster.getAbilityById(ID)
+				local Ability a = Ability.getUnitAbilityById(.caster,ID)
 				call missile.create(.caster,.target,.level)
 				call Backswing.create(.caster)
 				if a > 0 then
@@ -755,7 +755,7 @@ scope Ability3040 initializer init
 		public struct actor extends MeleeAttack
 
 			method onComplete takes nothing returns nothing
-				local Ability a = .caster.getAbilityById(ID)
+				local Ability a = Ability.getUnitAbilityById(.caster,ID)
 				call missile.create(.caster,.target,.level)
 				call Backswing.create(.caster)
 			endmethod
@@ -950,12 +950,12 @@ scope Ability3050 initializer init
 				return true
 			endmethod
 
-			method iconClick takes nothing returns nothing
+			method onIconClick takes nothing returns nothing
 				/*SHIFT CLICK = 군마스킬사용*/
 				if .servant <= 0 then
 					return
 				endif
-				call .servant.getAbility(HORSE_ABILITY_INDEX).useRequest(Mouse.getX(.owner.owner),Mouse.getY(.owner.owner),null,true)
+				call Ability(.servant.getAbility(HORSE_ABILITY_INDEX)).useRequest(Mouse.getX(.owner.owner),Mouse.getY(.owner.owner),null,true)
 			endmethod
 
 			method update takes integer v returns nothing
@@ -1380,7 +1380,7 @@ scope Ability3070 initializer init
 				endif
 				call ex.activate()
 				/**/
-				set MY_RESPOND_ABILITY = .caster.getAbilityById(ID)
+				set MY_RESPOND_ABILITY = Ability.getUnitAbilityById(.caster,ID)
 				set MY_RESPOND_ADD_COUNT = .count != COUNT-1
 				call TriggerEvaluate(MY_RESPOND)
 				call Backswing.create(.caster)

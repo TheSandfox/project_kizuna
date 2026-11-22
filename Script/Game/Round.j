@@ -44,7 +44,7 @@ library Round
 					call Game.addLevel()
 					call Guardians.addLevel()
 					call TreeOfLife.addLevel()
-					call SkillShop.addLevel()
+					call PowerupUI.addLevel()
 				endif
 				set ROUND = ROUND + 1
 				set ROUND_TIME_REMAIN = ROUND_TIME

@@ -137,32 +137,45 @@ library Ability requires AbilityPrototype
 			return "Textures\\ability_border_tier"+I2S(v)+".blp"
 		endmethod
 
-		stub method iconClick takes nothing returns nothing
+		stub method onIconClick takes nothing returns nothing
+
+		endmethod
+
+		method iconClick takes nothing returns nothing
 			local integer s = .smart
-			if getTypeIsWeapon(.id) then
-				call .owner.setWeaponAbility(this)
-				call UI(GetPlayerId(.owner.owner)).refreshAbilityIconsTarget()
-			elseif User.ENABLE_ABILITY_HOTKEY[GetPlayerId(.owner.owner)] > 0 then
-				set .smart = 0
-				call press()
-				set .smart = s
+			if User.getCurrentInputLayer(.owner.owner) == ENUM_INPUT_LAYER_DEFAULT then
+				if getTypeIsWeapon(.id) then
+					call Ability.setUnitWeaponAbility(.owner,this)
+					call UI(GetPlayerId(.owner.owner)).refreshAbilityIconsTarget()
+					if GetLocalPlayer() == GetTriggerPlayer() then
+						call PlaySoundBJ(gg_snd_AutoCastButtonClick1)
+					endif
+				else
+					set .smart = 0
+					call press()
+					set .smart = s
+					if GetLocalPlayer() == GetTriggerPlayer() then
+						call PlaySoundBJ(gg_snd_BigButtonClick)
+					endif
+				endif
+				call onIconClick()
 			endif
 		endmethod
 
 		stub method iconRightClick takes nothing returns nothing
-			if User.ENABLE_ABILITY_RIGHT_CLICK[GetPlayerId(.owner.owner)] > 0 then
+			if User.getCurrentInputLayer(.owner.owner) == ENUM_INPUT_LAYER_DEFAULT then
 				/*아이콘 어빌 우클릭 활성화상태*/
 				if Ability.getTypeIsWeapon(.id) then
 					/*무기 어빌리티 우클릭 > 무기 장착 해제*/
-					if .owner.weapon_ability == this then
-						call .owner.setWeaponAbility(0)
+					if .owner.getWeaponAbility() == this then
+						call Ability.setUnitWeaponAbility(.owner,0)
 					endif
 				else
 					/*액티브 어빌리티 우클릭 > 스마트캐스트 설정*/
 					call changeSmart(.smart + 1)
 				endif
 				call UI(GetPlayerId(.owner.owner)).refreshAbilityIconsTarget()
-			else
+			elseif User.getCurrentInputLayer(.owner.owner) == ENUM_INPUT_LAYER_ABILITY_MANAGER then
 				/*비활성화상태임(조합창에 올릴때 등 액션은 여기에 작성)*/
 				call AbilityManager(GetPlayerId(.owner.owner)).abilityMixRegisterRequest(this,AbilityMixElement.TYPE_ABILITY)
 			endif
@@ -227,14 +240,21 @@ endlibrary
 //! textmacro abilityDataEnd
 	private function act takes nothing returns nothing
 		local main a = 0
-		if ABILITY_CREATE_ID == ID then
+		if CUSTOM_RESPOND_ABILITY_CREATE_ID == ID then
 			set a = main.create()
-			set ABILITY_LAST_CREATED = a
+			set a.owner = CUSTOM_RESPOND_ABILITY_CREATE_UNIT
+			call a.essentialInit()
+			call a.init()
+			set CUSTOM_RESPOND_ABILITY_CREATE_RESULT = a
 		endif
 	endfunction
 
 	private function init takes nothing returns nothing
-		call TriggerAddCondition(ABILITY_CREATE_TRIGGER,function act)
+		/*어빌리티 생성 콜백*/
+		local trigger t = CreateTrigger()
+		call Event.register(t,ENUM_EVENT_ABILITY_CREATE)
+		call TriggerAddCondition(t,function act)
+		/*기본설정*/
 		call Ability.setTypeIconPath(ID,ICON_PATH)
 		call Ability.setTypeName(ID,NAME)
 		call Ability.setTypeTier(ID,TIER)
@@ -266,6 +286,8 @@ endlibrary
 			call DamageFlag.def(ID,DamageFlag.INDEX_ONHIT_TYPE,ONHIT_TYPE)
 			call DamageFlag.def(ID,DamageFlag.INDEX_RANGE_TYPE,RANGE_TYPE)
 		endif
+		/**/
+		set t = null
 	endfunction
 //! endtextmacro
 
@@ -297,3 +319,4 @@ endlibrary
 //! import "AbilityMix.j"
 //! import "AbilityTable.j"
 //! import "GenericBuffs/GenericBuffs.j"
+//! import "Powerup.j"

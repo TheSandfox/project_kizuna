@@ -4,8 +4,8 @@ library UI requires User, Frame
 		private trigger FRAME_BUTTON_TRIGGER = null
 
 		framehandle FRAME_SIMPLEPIVOT = null				//꽉찬화면기준점
-		framehandle FRAME_UNITINFO = null						//유닛정보
-		framehandle FRAME_UNITINFO_UNITNAME = null	//유닛정보-유닛이름(Lv.X "유닛이름")
+		// framehandle FRAME_UNITINFO = null						//유닛정보
+		// framehandle FRAME_UNITINFO_UNITNAME = null	//유닛정보-유닛이름(Lv.X "유닛이름")
 		framehandle FRAME_MINIMAP = null						//미니맵
 		framehandle FRAME_MINIMAP_BACKDROP = null		//미니맵의 액자
 		framehandle FRAME_PORTRAIT = null						//포트레이트
@@ -14,13 +14,12 @@ library UI requires User, Frame
 		framehandle FRAME_MP_BAR = null							//마나바
 		framehandle FRAME_SP_BAR = null							//쉴드게이지
 		framehandle FRAME_ABILITY_CONTAINER = null	//스킬창아이콘그룹
-		framehandle FRAME_STAT1	= null							
-		framehandle FRAME_STAT2	= null
+		framehandle FRAME_STAT_INDICATOR	= null
 		framehandle FRAME_STAT_INDICATOR_BUTTON = null
 		framehandle FRAME_EXP_BAR = null
-		framehandle FRAME_SKILL_SHOP = null
-		framehandle FRAME_SKILL_SHOP_BACKDROP = null
-		framehandle FRAME_SKILL_SHOP_BUTTON = null
+		framehandle FRAME_POWERUP_UI = null
+		framehandle FRAME_POWERUP_UI_BACKDROP = null
+		framehandle FRAME_POWERUP_UI_BUTTON = null
 		framehandle FRAME_SLOT_CHANGER = null
 		framehandle FRAME_SLOT_CHANGER_BUTTON = null
 		framehandle FRAME_INVENTORY = null
@@ -43,29 +42,32 @@ library UI requires User, Frame
 		private constant integer MINIMAP_OFFSET_Y =	0			//전체화면 하단으로부터
 		private constant integer MINIMAP_SIZE =	240
 		private constant integer MINIMAP_INSET =	16
-		private constant integer PORTRAIT_SIZE = 128
-		private constant integer PORTRAIT_OFFSET_X = 240		//전체화면 좌상단으로부터
-		private constant integer PORTRAIT_OFFSET_Y = 1080-PORTRAIT_SIZE		//전체화면 좌상단으로부터
-		private constant integer PORTRAIT_INSET = 16 //포트레이트 액자백드롭 인셋
-		private constant integer UNITINFO_WIDTH = 240
+		// private constant integer UNITINFO_WIDTH = 240
 		private constant integer BAR_WIDTH = 720
 		private constant integer BAR_HEIGHT = 24
 		private constant integer HP_BAR_OFFSET_Y = 136
 		private constant integer MP_BAR_OFFSET_Y = 112
 		private constant integer SP_BAR_OFFSET_Y = 160
+		private constant integer EXP_BAR_OFFSET_Y = 0
+		private constant integer EXP_BAR_HEIGHT = 16
 		private constant integer ABILITY_CONTAINER_WIDTH = 720
 		private constant integer ABILITY_CONTAINER_HEIGHT = 96
 		private constant integer ABILITY_CONTAINER_OFFSET_Y = 16
 		private constant integer ABILITY_ICON_SIZE = 64
 		private constant integer ABILITY_TOOLTIP_OFFSET_Y = 160
+		private constant integer PORTRAIT_SIZE = 128
+		private constant integer PORTRAIT_OFFSET_X = 1920/2 - PORTRAIT_SIZE - BAR_WIDTH/2	//전체화면 좌상단으로부터
+		private constant integer PORTRAIT_OFFSET_Y = 1080 - PORTRAIT_SIZE - EXP_BAR_HEIGHT		//전체화면 좌상단으로부터
+		private constant integer PORTRAIT_INSET = 16 //포트레이트 액자백드롭 인셋
+		private constant integer P_STAT_INDICATOR_OFFSET_X = 0
+		private constant integer P_STAT_INDICATOR_OFFSET_Y = 0
+		private constant integer P_STAT_INDICATOR_WIDTH = 240+160 /*미니맵사이즈+메뉴버튼 너비*/
+		private constant integer P_STAT_INDICATOR_HEIGHT = 1080-MINIMAP_SIZE
 		private constant integer STAT1_WIDTH = 264
-		private constant integer STAT2_WIDTH = 48*8 + 64//640 -32 -32 -32
-		private constant integer STAT2_HEIGHT = 48*4 + 64 + 64
-		private constant integer EXP_BAR_HEIGHT = 12
-		private constant integer SKILL_SHOP_OFFSET_Y = -16	/*FROM TOP*/
-		private constant integer SKILL_SHOP_WIDTH = 1280
-		private constant integer SKILL_SHOP_HEIGHT = 396
-		private constant integer SKILL_SHOP_INSET = 32
+		private constant integer POWERUP_UI_OFFSET_Y = -16	/*FROM TOP*/
+		private constant integer POWERUP_UI_WIDTH = 1280
+		private constant integer POWERUP_UI_HEIGHT = 396
+		private constant integer POWERUP_UI_INSET = 32
 		private constant integer INVENTORY_WIDTH = 48*8 + 64	/* 64*8 + 64*/	
 		private constant integer INVENTORY_HEIGHT = 48*4 + 64 + 40 /* 64*8 + 64 + 40 */
 		private constant integer INVENTORY_OFFSET_X = 0
@@ -73,12 +75,15 @@ library UI requires User, Frame
 		private constant integer CRAFT_WIDTH = 480
 		private constant integer ABILITY_ERROR_OFFSET_Y = 268-96 /*FROM BOTTOM*/
 		private constant integer SLOT_CHANGER_WIDTH = 720//(64*10)+16
-		private constant integer SLOT_CHANGER_HEIGHT = 96 + 24 + 24 //(64*3)+16
-		private constant integer SLOT_CHANGER_OFFSET_Y = 16 /*FROM BOTTOM*/
-		private constant integer ABILITY_MANAGER_WIDTH = 1440 - STAT2_WIDTH - INVENTORY_WIDTH
+		private constant integer SLOT_CHANGER_HEIGHT = 240
+		private constant integer SLOT_CHANGER_OFFSET_Y = 240 /*FROM BOTTOM*/
+		// private constant integer SLOT_CHANGER_OFFSET_Y = 16 /*FROM BOTTOM*/
+		private constant integer ABILITY_MANAGER_WIDTH = 1440 /* - STAT2_WIDTH - INVENTORY_WIDTH */
 		private constant integer ABILITY_MANAGER_HEIGHT = 440
+		private constant integer MENU_BUTTON_WIDTH = 160
+		private constant integer MENU_BUTTON_HEIGHT = 40
 	endglobals
-	
+
 	struct IconFrame
 
 	endstruct
@@ -141,7 +146,7 @@ library UI requires User, Frame
 		method refreshName takes nothing returns nothing
 			if GetLocalPlayer() == Player(this) then
 				// call BlzFrameSetVisible(NAME,.target > 0)
-				call BlzFrameSetText(NAME,.target.origin_name)
+				// call BlzFrameSetText(NAME,.target.origin_name)
 			endif
 		endmethod
 
@@ -213,10 +218,10 @@ library UI requires User, Frame
 				call BlzFrameSetText(SP_TEXT,I2S(MathRound(Shield(.target).shield_amount))+" / "+I2S(MathRound(Shield(.target).shield_max)))
 				/*레벨*/
 				call BlzFrameSetText(LEVEL_TEXT," Lv."+I2S(.target.level)+" ")
-				/*경험치*/
+				/*경험치바&경험치텍스트*/
 				call BlzFrameSetVisible(EXP_FILL,.target.exp > 0.)
 				call BlzFrameSetPoint(EXP_FILL,FRAMEPOINT_TOPRIGHT,FRAME_EXP_BAR,FRAMEPOINT_TOPLEFT,Math.px2Size(STAT1_WIDTH)*(I2R(.target.exp)/I2R(.target.exp_max)),0.)
-				call BlzFrameSetText(EXP_TEXT,"|cff000000"+R2SW(I2R(.target.exp)/I2R(.target.exp_max),1,1)+"%|r")
+				call BlzFrameSetText(EXP_TEXT,I2S(.target.exp)+" / "+I2S(.target.exp_max)+" ("+R2SW(I2R(.target.exp)/I2R(.target.exp_max),1,1)+"%)")
 			endif
 			/*어빌아이콘*/
 			call refreshAbilityIcons()
@@ -262,7 +267,7 @@ library UI requires User, Frame
 			local thistype this = GetPlayerId(p)
 			local integer i = 0
 			local AbilityIcon ia = 0
-			local StatIcon sa = 0
+			// local StatItem sa = 0
 			set .main_timer = Timer.new(this)
 			/*어빌아이콘*/
 			loop
@@ -272,12 +277,12 @@ library UI requires User, Frame
 				set i = i + 1
 			endloop
 			/*외부프레임*/
-			call SkillShop.create(p)
+			call PowerupUI.create(p)
 			call SlotChanger.create(p)
 			call CloseUI.create(p)
 			call Inventory.create(p)
 			call Numberpad.create(p)
-			call StatIndicator.create(p,FRAME_STAT2)
+			call StatIndicator.create(p,FRAME_STAT_INDICATOR)
 			call Scouter.create(p)
 			call CameraSetup.create(p)
 			call BuffIndicator.create(p)
@@ -304,8 +309,8 @@ library UI requires User, Frame
 			if BlzGetTriggerFrameEvent() != FRAMEEVENT_CONTROL_CLICK then
 				return
 			endif
-			if BlzGetTriggerFrame() == FRAME_SKILL_SHOP_BUTTON then
-				call SkillShop(GetPlayerId(GetTriggerPlayer())).switch()
+			if BlzGetTriggerFrame() == FRAME_POWERUP_UI_BUTTON then
+				call PowerupUI(GetPlayerId(GetTriggerPlayer())).switch()
 				return
 			elseif BlzGetTriggerFrame() == FRAME_SLOT_CHANGER_BUTTON then
 				call SlotChanger(GetPlayerId(GetTriggerPlayer())).switch()
@@ -368,6 +373,31 @@ library UI requires User, Frame
 			*/)
 			call BlzFrameSetEnable(FRAME_MINIMAP,true)
 			call BlzFrameSetVisible(FRAME_MINIMAP,true)
+			/*능력치(C) 메뉴버튼*/
+			set FRAME_STAT_INDICATOR_BUTTON = BlzCreateSimpleFrame("CStatIndicatorMenuButton",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],0)
+			call BlzFrameSetPoint(FRAME_STAT_INDICATOR_BUTTON,FRAMEPOINT_TOPLEFT,FRAME_MINIMAP_BACKDROP,FRAMEPOINT_TOPRIGHT,0,0)
+			call BlzFrameSetSizePixel(FRAME_STAT_INDICATOR_BUTTON,MENU_BUTTON_WIDTH,MENU_BUTTON_HEIGHT)
+			/*단축키 변경(V) 메뉴버튼*/
+			set FRAME_SLOT_CHANGER_BUTTON = BlzCreateSimpleFrame("CSlotChangerMenuButton",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],0)
+			call BlzFrameSetPoint(FRAME_SLOT_CHANGER_BUTTON,FRAMEPOINT_TOPLEFT,FRAME_STAT_INDICATOR_BUTTON,FRAMEPOINT_BOTTOMLEFT,0,0)
+			call BlzFrameSetSizePixel(FRAME_SLOT_CHANGER_BUTTON,MENU_BUTTON_WIDTH,MENU_BUTTON_HEIGHT)
+			/*메뉴(F10)+로그(F12)버튼 살리기*/
+			set f = BlzGetFrameByName("UpperButtonBarMenuButton",0)
+			call BlzFrameSetVisible(f,true)
+			call BlzFrameClearAllPoints(f)
+			call BlzFrameSetPoint(f,FRAMEPOINT_TOPLEFT,FRAME_SLOT_CHANGER_BUTTON,FRAMEPOINT_BOTTOMLEFT,0,0)
+			call BlzFrameSetSizePixel(f,MENU_BUTTON_WIDTH,MENU_BUTTON_HEIGHT)
+			set bf = f
+			set f = BlzGetFrameByName("UpperButtonBarChatButton",0)
+			call BlzFrameSetVisible(f,true)
+			call BlzFrameClearAllPoints(f)
+			call BlzFrameSetPoint(f,FRAMEPOINT_TOPLEFT,bf,FRAMEPOINT_BOTTOMLEFT,0,0)
+			call BlzFrameSetSizePixel(f,MENU_BUTTON_WIDTH,MENU_BUTTON_HEIGHT)
+			/*퀘스트+동맹버튼 죽이기*/
+			set f = BlzGetFrameByName("UpperButtonBarQuestsButton",0)
+			call BlzFrameSetVisible(f,false)
+			set f = BlzGetFrameByName("UpperButtonBarAlliesButton",0)
+			call BlzFrameSetVisible(f,false)
 			/*포트레이트*/
 			set FRAME_PORTRAIT_BACKDROP = BlzCreateSimpleFrame("CPortrait",BlzGetOriginFrame(ORIGIN_FRAME_WORLD_FRAME,0),0)
 			call BlzFrameSetPoint(FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_TOPLEFT,FRAME_SIMPLEPIVOT,FRAMEPOINT_TOPLEFT,/*
@@ -379,17 +409,11 @@ library UI requires User, Frame
 			y*/Math.px2Size(-PORTRAIT_OFFSET_Y-PORTRAIT_SIZE)/*
 			*/)
 			set FRAME_PORTRAIT = BlzGetOriginFrame(ORIGIN_FRAME_PORTRAIT,0)
-			call BlzFrameSetParent(FRAME_PORTRAIT,BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0))
+			// call BlzFrameSetParent(FRAME_PORTRAIT,BlzGetOriginFrame(ORIGIN_FRAME_GAME_UI,0))
 			call BlzFrameSetVisible(FRAME_PORTRAIT,true)
 			call BlzFrameClearAllPoints(FRAME_PORTRAIT)
 			call BlzFrameSetAbsPoint(FRAME_PORTRAIT,FRAMEPOINT_TOPLEFT,Math.px2Size(PORTRAIT_OFFSET_X+PORTRAIT_INSET)*0.75,Math.px2Size(-PORTRAIT_OFFSET_Y-PORTRAIT_INSET+1080))
 			call BlzFrameSetAbsPoint(FRAME_PORTRAIT,FRAMEPOINT_BOTTOMRIGHT,Math.px2Size(PORTRAIT_SIZE+PORTRAIT_OFFSET_X-PORTRAIT_INSET)*0.75,Math.px2Size(-PORTRAIT_OFFSET_Y+PORTRAIT_INSET-PORTRAIT_SIZE+1080))
-			/*좌하단유닛정보*/
-			set FRAME_UNITINFO = BlzCreateSimpleFrame("CUnitInfo",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],0)
-			call BlzFrameSetPointPixel(FRAME_UNITINFO,FRAMEPOINT_TOPLEFT,FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_TOPRIGHT,0,0)
-			call BlzFrameSetPointPixel(FRAME_UNITINFO,FRAMEPOINT_BOTTOMRIGHT,FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_BOTTOMRIGHT,UNITINFO_WIDTH,0)
-			set FRAME_UNITINFO_UNITNAME = BlzGetFrameByName("CUnitInfoUnitName",0)
-			call BlzFrameSetText(FRAME_UNITINFO_UNITNAME,"테스트입니다")
 			/*어빌리티박스*/
 			set FRAME_ABILITY_CONTAINER = BlzCreateFrameByType("BACKDROP","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],"",0)
 			call BlzFrameSetPoint(FRAME_ABILITY_CONTAINER,FRAMEPOINT_BOTTOMLEFT,FRAME_ORIGIN,FRAMEPOINT_BOTTOM,/*
@@ -438,6 +462,7 @@ library UI requires User, Frame
 			call BlzFrameSetTextAlignment(f,TEXT_JUSTIFY_CENTER,TEXT_JUSTIFY_CENTER)
 			call BlzFrameSetText(f,"|cffffcc00"+CONSTANT_ABILITY_HOTKEY_NAME[ENUM_ABILITY_HOTKEY_UNRIDE]+"|r")
 			call Frame.addTooltipSimple(FRAMEPOINT_BOTTOMLEFT,FRAME_UNRIDE_ICON,FRAMEPOINT_TOPLEFT,"내리기|cffffcc00(Z)|r",0.,0.)
+			/*일단 숨김*/call BlzFrameSetVisible(FRAME_UNRIDE_ICON,false)
 			/*내려놓기 아이콘*/
 			set FRAME_UNGRAB_ICON = BlzCreateFrameByType("FRAME","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],"",0)
 			call BlzFrameSetPointPixel(FRAME_UNGRAB_ICON,FRAMEPOINT_BOTTOMRIGHT,FRAME_ABILITY_CONTAINER,FRAMEPOINT_BOTTOMLEFT,0.,0.)
@@ -458,22 +483,16 @@ library UI requires User, Frame
 			call BlzFrameSetTextAlignment(f,TEXT_JUSTIFY_CENTER,TEXT_JUSTIFY_CENTER)
 			call BlzFrameSetText(f,"|cffffcc00"+CONSTANT_ABILITY_HOTKEY_NAME[ENUM_ABILITY_HOTKEY_UNGRAB]+"|r")
 			call Frame.addTooltipSimple(FRAMEPOINT_BOTTOMLEFT,FRAME_UNGRAB_ICON,FRAMEPOINT_TOPLEFT,"내려놓기|cffffcc00(X)|r",0.,0.)
-			/*스탯박스1*/
-			set FRAME_STAT1 = BlzCreateFrameByType("BACKDROP","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],"",0)
-			call BlzFrameSetPoint(FRAME_STAT1,FRAMEPOINT_TOPLEFT,FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_TOPRIGHT,0.,0.)
-			call BlzFrameSetPoint(FRAME_STAT1,FRAMEPOINT_BOTTOMRIGHT,FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_BOTTOMRIGHT,Math.px2Size(STAT1_WIDTH),0.)
-			call BlzFrameSetTexture(FRAME_STAT1,"replaceabletextures\\teamcolor\\teamcolor27.blp",0,true)
-			call BlzFrameSetAlpha(FRAME_STAT1,200)
-			/**/call BlzFrameSetVisible(FRAME_STAT1,false)
-			set FRAME_STAT2 = BlzCreateFrame("MBEdge",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],0,0)
-			call BlzFrameSetPointPixel(FRAME_STAT2,FRAMEPOINT_BOTTOMLEFT,FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_TOPLEFT,0.,96)
-			call BlzFrameSetSizePixel(FRAME_STAT2,STAT2_WIDTH,STAT2_HEIGHT)
-			call BlzFrameSetVisible(FRAME_STAT2,false)
-			set f = BlzCreateFrameByType("FRAME","",FRAME_STAT2,"",0)
-			call BlzFrameSetAllPoints(f,FRAME_STAT2)
-			set f = BlzCreateFrame("MyTextLarge",FRAME_STAT2,0,0)
-			call BlzFrameSetPointPixel(f,FRAMEPOINT_TOP,FRAME_STAT2,FRAMEPOINT_TOP,0.,-32)
-			call BlzFrameSetText(f,"|cffffcc00능력치 (C)|r")
+			/*일단 숨김*/call BlzFrameSetVisible(FRAME_UNGRAB_ICON,false)
+			/*능력치(C)*/
+			set FRAME_STAT_INDICATOR = BlzCreateSimpleFrame("CStatIndicator",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],0)
+			call BlzFrameSetPointPixel(FRAME_STAT_INDICATOR,FRAMEPOINT_TOPLEFT,FRAME_SIMPLEPIVOT,FRAMEPOINT_TOPLEFT,/*
+			*/P_STAT_INDICATOR_OFFSET_X,-P_STAT_INDICATOR_OFFSET_Y/*
+			*/)
+			call BlzFrameSetPointPixel(FRAME_STAT_INDICATOR,FRAMEPOINT_BOTTOMRIGHT,FRAME_SIMPLEPIVOT,FRAMEPOINT_TOPLEFT,/*
+			*/P_STAT_INDICATOR_OFFSET_X+P_STAT_INDICATOR_WIDTH,-P_STAT_INDICATOR_OFFSET_Y-P_STAT_INDICATOR_HEIGHT/*
+			*/)
+			call BlzFrameSetVisible(FRAME_STAT_INDICATOR,false)
 			/*체력바 마나바*/
 			set FRAME_HP_BAR = BlzCreateFrameByType("FRAME","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],"",0)
 			call BlzFrameSetPoint(FRAME_HP_BAR,FRAMEPOINT_BOTTOMLEFT,FRAME_ORIGIN,FRAMEPOINT_BOTTOM,/*
@@ -500,11 +519,14 @@ library UI requires User, Frame
 			call BlzFrameSetAlpha(f,96)
 			call BlzFrameSetAllPoints(f,FRAME_SP_BAR)
 			/*경험치바*/
-			set FRAME_EXP_BAR = BlzCreateFrameByType("BACKDROP","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],"",0)
-			call BlzFrameSetPoint(FRAME_EXP_BAR,FRAMEPOINT_BOTTOMLEFT,FRAME_STAT1,FRAMEPOINT_BOTTOMLEFT,0.,0.)
-			call BlzFrameSetPoint(FRAME_EXP_BAR,FRAMEPOINT_TOPRIGHT,FRAME_STAT1,FRAMEPOINT_BOTTOMRIGHT,0.,Math.px2Size(EXP_BAR_HEIGHT))
-			call BlzFrameSetTexture(FRAME_EXP_BAR,"replaceabletextures\\teamcolor\\teamcolor03.blp",0,true)
-			call BlzFrameSetVisible(FRAME_EXP_BAR,false)
+			set FRAME_EXP_BAR = BlzCreateFrameByType("FRAME","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],"",0)
+			call BlzFrameSetPoint(FRAME_EXP_BAR,FRAMEPOINT_BOTTOMLEFT,FRAME_ORIGIN,FRAMEPOINT_BOTTOM,/*
+				*/Math.px2Size(-BAR_WIDTH/2),Math.px2Size(EXP_BAR_OFFSET_Y))
+			call BlzFrameSetSize(FRAME_EXP_BAR,Math.px2Size(BAR_WIDTH),Math.px2Size(EXP_BAR_HEIGHT))
+			set f = BlzCreateFrameByType("BACKDROP","",FRAME_EXP_BAR,"",0)
+			call BlzFrameSetTexture(f,"ReplaceableTextures\\teamcolor\\teamcolor03.blp",0,true)
+			call BlzFrameSetAlpha(f,96)
+			call BlzFrameSetAllPoints(f,FRAME_EXP_BAR)
 			/*스탯UI*/
 			/*컨테이너*/
 			set CONTAINER = BlzCreateFrameByType("FRAME","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],"",0)
@@ -536,13 +558,6 @@ library UI requires User, Frame
 			set SP_TEXT = BlzCreateFrame("MyTextSmall",FRAME_SP_BAR,0,0)
 			call BlzFrameSetAllPoints(SP_TEXT,FRAME_SP_BAR)
 			call BlzFrameSetTextAlignment(SP_TEXT,TEXT_JUSTIFY_CENTER,TEXT_JUSTIFY_CENTER)
-			/*레벨*/
-			set LEVEL_BACKDROP = BlzCreateFrameByType("BACKDROP","",CONTAINER,"",0)
-			call BlzFrameSetTexture(LEVEL_BACKDROP,"ui\\console\\human\\human-transport-slot.blp",0,true)
-			set LEVEL_TEXT	= BlzCreateFrame("MyText",CONTAINER,0,0)
-			call BlzFrameSetPoint(LEVEL_TEXT,FRAMEPOINT_BOTTOMRIGHT,FRAME_EXP_BAR,FRAMEPOINT_BOTTOMLEFT,0.,0.)
-			call BlzFrameSetAllPoints(LEVEL_BACKDROP,LEVEL_TEXT)
-			call BlzFrameSetTextAlignment(LEVEL_TEXT,TEXT_JUSTIFY_BOTTOM,TEXT_JUSTIFY_RIGHT)
 			/*경험치바*/
 			set EXP_FILL = BlzCreateFrameByType("BACKDROP","",CONTAINER,"",0)
 			call BlzFrameSetPoint(EXP_FILL,FRAMEPOINT_BOTTOMLEFT,FRAME_EXP_BAR,FRAMEPOINT_BOTTOMLEFT,0.,0.)
@@ -552,42 +567,49 @@ library UI requires User, Frame
 			call BlzFrameSetPoint(EXP_TEXT,FRAMEPOINT_BOTTOM,FRAME_EXP_BAR,FRAMEPOINT_BOTTOM,0.,0.)
 			call BlzFrameSetTextAlignment(EXP_TEXT,TEXT_JUSTIFY_BOTTOM,TEXT_JUSTIFY_CENTER)
 			call BlzFrameSetText(EXP_TEXT,"0%")
-			call BlzFrameSetVisible(EXP_FILL,false)
-			call BlzFrameSetVisible(EXP_TEXT,false)
+			// call BlzFrameSetVisible(EXP_FILL,false)
+			// call BlzFrameSetVisible(EXP_TEXT,false)
+			/*레벨*/
+			set LEVEL_BACKDROP = BlzCreateFrameByType("BACKDROP","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],"",0)
+			call BlzFrameSetTexture(LEVEL_BACKDROP,"ui\\console\\human\\human-transport-slot.blp",0,true)
+			set LEVEL_TEXT	= BlzCreateFrame("MyText",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],0,0)
+			call BlzFrameSetPoint(LEVEL_TEXT,FRAMEPOINT_BOTTOMRIGHT,FRAME_EXP_BAR,FRAMEPOINT_BOTTOMLEFT,0.,0.)
+			call BlzFrameSetAllPoints(LEVEL_BACKDROP,LEVEL_TEXT)
+			call BlzFrameSetTextAlignment(LEVEL_TEXT,TEXT_JUSTIFY_BOTTOM,TEXT_JUSTIFY_RIGHT)
 			/*유닛이름*/
-			set NAME = FRAME_UNITINFO_UNITNAME
+			// set NAME = FRAME_UNITINFO_UNITNAME
 			/*스킬상점*/
-			set FRAME_SKILL_SHOP_BACKDROP = BlzCreateFrame("EMEdge",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],0,0)
-			call BlzFrameSetPoint(FRAME_SKILL_SHOP_BACKDROP,FRAMEPOINT_TOP,FRAME_ORIGIN,FRAMEPOINT_TOP,0.,Math.px2Size(SKILL_SHOP_OFFSET_Y))
-			call BlzFrameSetSize(FRAME_SKILL_SHOP_BACKDROP,Math.px2Size(SKILL_SHOP_WIDTH),Math.px2Size(SKILL_SHOP_HEIGHT))
-			set f = BlzCreateFrame("MyTextBox",FRAME_SKILL_SHOP_BACKDROP,0,0)
+			set FRAME_POWERUP_UI_BACKDROP = BlzCreateFrame("EMEdge",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],0,0)
+			call BlzFrameSetPoint(FRAME_POWERUP_UI_BACKDROP,FRAMEPOINT_TOP,FRAME_ORIGIN,FRAMEPOINT_TOP,0.,Math.px2Size(POWERUP_UI_OFFSET_Y))
+			call BlzFrameSetSize(FRAME_POWERUP_UI_BACKDROP,Math.px2Size(POWERUP_UI_WIDTH),Math.px2Size(POWERUP_UI_HEIGHT))
+			set f = BlzCreateFrame("MyTextBox",FRAME_POWERUP_UI_BACKDROP,0,0)
 			set bf = f
-			set f = BlzCreateFrame("MyTextLarge",FRAME_SKILL_SHOP_BACKDROP,0,0)
-			call BlzFrameSetPoint(f,FRAMEPOINT_BOTTOM,FRAME_SKILL_SHOP_BACKDROP,FRAMEPOINT_TOP,0.,-0.0125)
+			set f = BlzCreateFrame("MyTextLarge",FRAME_POWERUP_UI_BACKDROP,0,0)
+			call BlzFrameSetPoint(f,FRAMEPOINT_BOTTOM,FRAME_POWERUP_UI_BACKDROP,FRAMEPOINT_TOP,0.,-0.0125)
 			call BlzFrameSetTextAlignment(f,TEXT_JUSTIFY_BOTTOM,TEXT_JUSTIFY_CENTER)
 			call BlzFrameSetText(f,"상점 (T)")
 			call BlzFrameSetPoint(bf,FRAMEPOINT_BOTTOMLEFT,f,FRAMEPOINT_BOTTOMLEFT,-0.005,-0.005)
 			call BlzFrameSetPoint(bf,FRAMEPOINT_TOPRIGHT,f,FRAMEPOINT_TOPRIGHT,0.005,0.005)
-			set FRAME_SKILL_SHOP = BlzCreateFrameByType("BACKDROP","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],"",0)
-			call BlzFrameSetPoint(FRAME_SKILL_SHOP,FRAMEPOINT_TOP,FRAME_SKILL_SHOP_BACKDROP,FRAMEPOINT_TOP,0.,-Math.px2Size(SKILL_SHOP_INSET))
-			call BlzFrameSetSize(FRAME_SKILL_SHOP,Math.px2Size(SKILL_SHOP_WIDTH-SKILL_SHOP_INSET*2),Math.px2Size(SKILL_SHOP_HEIGHT-SKILL_SHOP_INSET*2))
-			call BlzFrameSetAlpha(FRAME_SKILL_SHOP,0)
-			call BlzFrameSetVisible(FRAME_SKILL_SHOP_BACKDROP,false)
+			set FRAME_POWERUP_UI = BlzCreateFrameByType("BACKDROP","",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],"",0)
+			call BlzFrameSetPoint(FRAME_POWERUP_UI,FRAMEPOINT_TOP,FRAME_POWERUP_UI_BACKDROP,FRAMEPOINT_TOP,0.,-Math.px2Size(POWERUP_UI_INSET))
+			call BlzFrameSetSize(FRAME_POWERUP_UI,Math.px2Size(POWERUP_UI_WIDTH-POWERUP_UI_INSET*2),Math.px2Size(POWERUP_UI_HEIGHT-POWERUP_UI_INSET*2))
+			call BlzFrameSetAlpha(FRAME_POWERUP_UI,0)
+			call BlzFrameSetVisible(FRAME_POWERUP_UI_BACKDROP,false)
 			/*슬롯체인저*/
-			set FRAME_SLOT_CHANGER = BlzCreateFrame("MBEdge",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],0,0)
-			call BlzFrameSetPoint(FRAME_SLOT_CHANGER,FRAMEPOINT_BOTTOM,FRAME_ORIGIN,FRAMEPOINT_BOTTOM,0.,Math.px2Size(SLOT_CHANGER_OFFSET_Y))
-			call BlzFrameSetSize(FRAME_SLOT_CHANGER,Math.px2Size(SLOT_CHANGER_WIDTH),Math.px2Size(SLOT_CHANGER_HEIGHT))
+			set FRAME_SLOT_CHANGER = BlzCreateSimpleFrame("CSlotChanger",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],0)
+			call BlzFrameSetPointPixel(FRAME_SLOT_CHANGER,FRAMEPOINT_TOPLEFT,FRAME_ORIGIN,FRAMEPOINT_BOTTOM,-SLOT_CHANGER_WIDTH/2,SLOT_CHANGER_HEIGHT+SLOT_CHANGER_OFFSET_Y)
+			call BlzFrameSetPointPixel(FRAME_SLOT_CHANGER,FRAMEPOINT_BOTTOMRIGHT,FRAME_ORIGIN,FRAMEPOINT_BOTTOM,SLOT_CHANGER_WIDTH/2,SLOT_CHANGER_OFFSET_Y)
 			call BlzFrameSetVisible(FRAME_SLOT_CHANGER,false)
-			set f = BlzCreateFrameByType("FRAME","",FRAME_SLOT_CHANGER,"",0)
-			call BlzFrameSetAllPoints(f,FRAME_SLOT_CHANGER)
-			set f = BlzCreateFrameByType("BACKDROP","",FRAME_SLOT_CHANGER,"",0)
-			call BlzFrameSetPointPixel(f,FRAMEPOINT_BOTTOMLEFT,FRAME_SLOT_CHANGER,FRAMEPOINT_BOTTOMLEFT,12,12)
-			call BlzFrameSetPointPixel(f,FRAMEPOINT_TOPRIGHT,FRAME_SLOT_CHANGER,FRAMEPOINT_TOPRIGHT,-12,-12)
-			call BlzFrameSetTexture(f,"textures\\black32.blp",0,true)
-			set f = BlzCreateFrame("MyText",FRAME_SLOT_CHANGER,0,0)
-			call BlzFrameSetPointPixel(f,FRAMEPOINT_TOPLEFT,FRAME_SLOT_CHANGER,FRAMEPOINT_TOPLEFT,16,-16)
-			call BlzFrameSetTextAlignment(f,TEXT_JUSTIFY_BOTTOM,TEXT_JUSTIFY_CENTER)
-			call BlzFrameSetText(f,"|cffffcc00단축키 변경 (G)|r")
+			// set f = BlzCreateFrameByType("FRAME","",FRAME_SLOT_CHANGER,"",0)
+			// call BlzFrameSetAllPoints(f,FRAME_SLOT_CHANGER)
+			// set f = BlzCreateFrameByType("BACKDROP","",FRAME_SLOT_CHANGER,"",0)
+			// call BlzFrameSetPointPixel(f,FRAMEPOINT_BOTTOMLEFT,FRAME_SLOT_CHANGER,FRAMEPOINT_BOTTOMLEFT,12,12)
+			// call BlzFrameSetPointPixel(f,FRAMEPOINT_TOPRIGHT,FRAME_SLOT_CHANGER,FRAMEPOINT_TOPRIGHT,-12,-12)
+			// call BlzFrameSetTexture(f,"textures\\black32.blp",0,true)
+			// set f = BlzCreateFrame("MyText",FRAME_SLOT_CHANGER,0,0)
+			// call BlzFrameSetPointPixel(f,FRAMEPOINT_TOPLEFT,FRAME_SLOT_CHANGER,FRAMEPOINT_TOPLEFT,16,-16)
+			// call BlzFrameSetTextAlignment(f,TEXT_JUSTIFY_BOTTOM,TEXT_JUSTIFY_CENTER)
+			// call BlzFrameSetText(f,"|cffffcc00단축키 변경 (G)|r")
 			/*인벤토리*/
 			set FRAME_INVENTORY = BlzCreateFrame("MBEdge",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],0,0)
 			call BlzFrameSetPointPixel(FRAME_INVENTORY,FRAMEPOINT_BOTTOMRIGHT,FRAME_ORIGIN,FRAMEPOINT_BOTTOMRIGHT,INVENTORY_OFFSET_X,INVENTORY_OFFSET_Y)
@@ -632,45 +654,24 @@ library UI requires User, Frame
 			set f = BlzCreateFrame("MyTextLarge",FRAME_ABILITY_MANAGER,0,0)
 			call BlzFrameSetPointPixel(f,FRAMEPOINT_TOP,FRAME_ABILITY_MANAGER,FRAMEPOINT_TOP,0.,-32)
 			call BlzFrameSetText(f,"|cffffcc00스킬 관리 (V)|r")
-			/*UI버튼*/
-			//! textmacro createUIButton takes prime, const, icon, hangul, shortcut
-				set FRAME_$const$_BUTTON = BlzCreateFrame("$prime$UIButton",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC],0,0)
-				call BlzFrameSetSizePixel(FRAME_$const$_BUTTON,48,48)
-				set f = BlzGetFrameByName("$prime$UIButtonIcon",0)
-				call BlzFrameSetPointPixel(f,FRAMEPOINT_CENTER,FRAME_$const$_BUTTON,FRAMEPOINT_CENTER,0,0)
-				call BlzFrameSetSizePixel(f,32,32)
-				call BlzFrameSetTexture(f,"replaceabletextures\\commandbuttons\\$icon$.blp",0,true)
-				call Frame.addTooltipSimple(FRAMEPOINT_BOTTOMLEFT,FRAME_$const$_BUTTON,FRAMEPOINT_TOPLEFT,"|cffffcc00$hangul$|r |cffffffff($shortcut$)|r",0.,0.)
-			//! endtextmacro
-			//! runtextmacro createUIButton("Inventory","INVENTORY","btnUI_bag_08","소지품","B")
-			//! runtextmacro createUIButton("SlotChanger","SLOT_CHANGER","BTNEngineeringUpgrade","단축키 변경","G")
-			//! runtextmacro createUIButton("SkillShop","SKILL_SHOP","BTNMerchant","상점","T")
-			//! runtextmacro createUIButton("StatIndicator","STAT_INDICATOR","BTNStatUp","능력치","C")
-			//! runtextmacro createUIButton("AbilityManager","ABILITY_MANAGER","BTNSpellBookBLS","스킬 관리","V")
-				/*SET POINT*/
-			call BlzFrameSetPointPixel(FRAME_SKILL_SHOP_BUTTON,FRAMEPOINT_TOPLEFT,FRAME_PORTRAIT_BACKDROP,FRAMEPOINT_BOTTOMLEFT,0,0)
-			call BlzFrameSetPointPixel(FRAME_SLOT_CHANGER_BUTTON,FRAMEPOINT_BOTTOMLEFT,FRAME_SKILL_SHOP_BUTTON,FRAMEPOINT_BOTTOMRIGHT,0,0)
-			call BlzFrameSetPointPixel(FRAME_INVENTORY_BUTTON,FRAMEPOINT_BOTTOMLEFT,FRAME_SLOT_CHANGER_BUTTON,FRAMEPOINT_BOTTOMRIGHT,0,0)
-			call BlzFrameSetPointPixel(FRAME_STAT_INDICATOR_BUTTON,FRAMEPOINT_BOTTOMLEFT,FRAME_INVENTORY_BUTTON,FRAMEPOINT_BOTTOMRIGHT,0,0)
-			call BlzFrameSetPointPixel(FRAME_ABILITY_MANAGER_BUTTON,FRAMEPOINT_BOTTOMLEFT,FRAME_STAT_INDICATOR_BUTTON,FRAMEPOINT_BOTTOMRIGHT,0,0)
 			/*어빌리티 에러*/
 			set ABILITY_ERROR = BlzCreateFrame("MyText",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_POPUP],0,0)
 			call BlzFrameSetPoint(ABILITY_ERROR,FRAMEPOINT_BOTTOM,FRAME_ORIGIN,FRAMEPOINT_BOTTOM,0.,Math.px2Size(ABILITY_ERROR_OFFSET_Y))
 			call BlzFrameSetTextAlignment(ABILITY_ERROR,TEXT_JUSTIFY_BOTTOM,TEXT_JUSTIFY_CENTER)
 			/*트리거*/
 			set FRAME_BUTTON_TRIGGER = CreateTrigger()
-			call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_INVENTORY_BUTTON,FRAMEEVENT_CONTROL_CLICK)
-			call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_INVENTORY_BUTTON,FRAMEEVENT_MOUSE_LEAVE)
+			// call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_INVENTORY_BUTTON,FRAMEEVENT_CONTROL_CLICK)
+			// call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_INVENTORY_BUTTON,FRAMEEVENT_MOUSE_LEAVE)
 			call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_SLOT_CHANGER_BUTTON,FRAMEEVENT_CONTROL_CLICK)
 			call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_SLOT_CHANGER_BUTTON,FRAMEEVENT_MOUSE_LEAVE)
-			call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_SKILL_SHOP_BUTTON,FRAMEEVENT_CONTROL_CLICK)
-			call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_SKILL_SHOP_BUTTON,FRAMEEVENT_MOUSE_LEAVE)
+			// call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_POWERUP_UI_BUTTON,FRAMEEVENT_CONTROL_CLICK)
+			// call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_POWERUP_UI_BUTTON,FRAMEEVENT_MOUSE_LEAVE)
 			call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_STAT_INDICATOR_BUTTON,FRAMEEVENT_CONTROL_CLICK)
 			call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_STAT_INDICATOR_BUTTON,FRAMEEVENT_MOUSE_LEAVE)
-			call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_ABILITY_MANAGER_BUTTON,FRAMEEVENT_CONTROL_CLICK)
-			call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_ABILITY_MANAGER_BUTTON,FRAMEEVENT_MOUSE_LEAVE)
-			call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_INVENTORY_CATEGORY_BUTTON[0],FRAMEEVENT_CONTROL_CLICK)
-			call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_INVENTORY_CATEGORY_BUTTON[0],FRAMEEVENT_MOUSE_LEAVE)
+			// call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_ABILITY_MANAGER_BUTTON,FRAMEEVENT_CONTROL_CLICK)
+			// call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_ABILITY_MANAGER_BUTTON,FRAMEEVENT_MOUSE_LEAVE)
+			// call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_INVENTORY_CATEGORY_BUTTON[0],FRAMEEVENT_CONTROL_CLICK)
+			// call BlzTriggerRegisterFrameEvent(FRAME_BUTTON_TRIGGER,FRAME_INVENTORY_CATEGORY_BUTTON[0],FRAMEEVENT_MOUSE_LEAVE)
 			call TriggerAddCondition(FRAME_BUTTON_TRIGGER,function thistype.genericButtonAction)
 			/*외부프레임*/
 			call NPCUI.init(FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW])
@@ -747,7 +748,7 @@ library UI requires User, Frame
 
 endlibrary
 
-//! import "SkillShop.j"
+//! import "PowerupUI.j"
 //! import "CloseUI.j"
 //! import "SlotChanger.j"
 //! import "Inventory.j"

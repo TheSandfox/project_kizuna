@@ -1,4 +1,4 @@
-library SkillShop requires UI
+library PowerupUI requires UI
 
 	globals
 		integer array CHANCE_TIER1
@@ -18,7 +18,7 @@ library SkillShop requires UI
 		private constant integer LUMBER_MAX = 8
 	endglobals
 
-	struct SkillShopWidget extends array
+	struct PowerupUIWidget extends array
 
 		static constant integer ICON_SIZE = 96
 
@@ -138,7 +138,7 @@ library SkillShop requires UI
 			if BlzGetTriggerFrameEvent() == FRAMEEVENT_CONTROL_CLICK then
 				/*소지금 검사*/
 				if User.getGold(.owner) >= Ability.getTypeCost(.id) then
-					set i = User.getFocusUnit(.owner).getAbilityById(.id)
+					set i = Ability.getUnitAbilityById(User.getFocusUnit(.owner),.id)
 					/*이미 있는 경우*/
 					if i > 0 then
 						/*만렙이라서 더 올릴 수 없음(리턴)*/
@@ -160,7 +160,7 @@ library SkillShop requires UI
 					/*공간 있으면 추가(OK)*/
 					elseif i == 0 then
 						/*OK================================*/
-						/**/set i = User.getFocusUnit(.owner).addAbility(.id)
+						/**/set i = Ability.addUnitAbility(User.getFocusUnit(.owner),.id)
 						/**/call i.setUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_RED,i.getUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_RED) + Ability.getTypeCost(.id))
 						/*OK================================*/
 					/*자리 없음(리턴)*/
@@ -189,8 +189,8 @@ library SkillShop requires UI
 					/**/endif
 					/**//*장착중인 무기가 없으면 배운 능력으로*/
 					/**/if Ability.getTypeIsWeapon(i.id) then
-					/**/	if i.level == 1 and i.owner.weapon_ability == 0 then
-					/**/		call i.owner.setWeaponAbility(i)
+					/**/	if i.level == 1 and i.owner.getWeaponAbility() == 0 then
+					/**/		call Ability.setUnitWeaponAbility(i.owner,i)
 					/**/	endif
 					/**/endif
 					/**//*빈 슬롯으로 만들어 주기 전에 골드 차감*/
@@ -216,8 +216,8 @@ library SkillShop requires UI
 
 		static method initFrames takes framehandle parent, integer index returns nothing
 			set CONTAINER[index] = BlzCreateFrameByType("BACKDROP","",parent,"",0)
-			call BlzFrameSetPoint(CONTAINER[index],FRAMEPOINT_TOPLEFT,FRAME_SKILL_SHOP,FRAMEPOINT_TOPLEFT,index*BlzFrameGetWidth(FRAME_SKILL_SHOP)/5,0.)
-			call BlzFrameSetSize(CONTAINER[index],BlzFrameGetWidth(FRAME_SKILL_SHOP)/5,BlzFrameGetHeight(FRAME_SKILL_SHOP))
+			call BlzFrameSetPoint(CONTAINER[index],FRAMEPOINT_TOPLEFT,FRAME_POWERUP_UI,FRAMEPOINT_TOPLEFT,index*BlzFrameGetWidth(FRAME_POWERUP_UI)/5,0.)
+			call BlzFrameSetSize(CONTAINER[index],BlzFrameGetWidth(FRAME_POWERUP_UI)/5,BlzFrameGetHeight(FRAME_POWERUP_UI))
 			call BlzFrameSetTexture(CONTAINER[index],"Textures\\black32.blp",0,true)
 			/*버튼*/
 			set BTN[index] = BlzCreateFrame("SkillShopBuyButton",CONTAINER[index],0,index)
@@ -304,7 +304,7 @@ library SkillShop requires UI
 
 	endstruct
 
-	struct SkillShop extends array
+	struct PowerupUI extends array
 
 		static constant integer LUMBER_ADD_TIME = 30
 		static constant real EXP_GAUGE_WIDTH = 256-4-32-32	/*아웃라인 말고 내부게이지 기준*/
@@ -448,15 +448,15 @@ library SkillShop requires UI
 			if .visible_flag != flag then
 				if flag then
 					/*CLOSEUI*/
-					call CloseUI(this).add(CloseUI.ORDER_SKILL_SHOP)
+					call CloseUI(this).add(CloseUI.ORDER_POWERUP_UI)
 				else
 					/*CLOSEUI*/
-					call CloseUI(this).eraseFor(CloseUI.ORDER_SKILL_SHOP)
+					call CloseUI(this).eraseFor(CloseUI.ORDER_POWERUP_UI)
 				endif
 			endif
 			set .visible_flag = flag
 			if GetLocalPlayer()==.owner then
-				call BlzFrameSetVisible(FRAME_SKILL_SHOP_BACKDROP,flag)
+				call BlzFrameSetVisible(FRAME_POWERUP_UI_BACKDROP,flag)
 			endif
 			if .visible_flag then
 				call refreshChanceText()
@@ -476,7 +476,7 @@ library SkillShop requires UI
 			local integer i = 0
 			loop
 				exitwhen i >= 5
-				if SkillShopWidget.get(.owner,i).id > 0 then
+				if PowerupUIWidget.get(.owner,i).id > 0 then
 					return false
 				endif
 				set i = i + 1
@@ -509,7 +509,7 @@ library SkillShop requires UI
 		endmethod
 
 		method refresh takes nothing returns nothing
-			local SkillShopWidget sw = 0
+			local PowerupUIWidget sw = 0
 			local integer i = 0
 			loop
 				exitwhen i >= WIDGET_COUNT
@@ -629,11 +629,11 @@ library SkillShop requires UI
 		endmethod
 
 		static method initFrames takes nothing returns nothing
-			set CONTAINER = BlzCreateFrameByType("FRAME","",FRAME_SKILL_SHOP_BACKDROP,"",0)
-			call BlzFrameSetPoint(CONTAINER,FRAMEPOINT_TOPLEFT,FRAME_SKILL_SHOP,FRAMEPOINT_TOPLEFT,0.,0.)
+			set CONTAINER = BlzCreateFrameByType("FRAME","",FRAME_POWERUP_UI_BACKDROP,"",0)
+			call BlzFrameSetPoint(CONTAINER,FRAMEPOINT_TOPLEFT,FRAME_POWERUP_UI,FRAMEPOINT_TOPLEFT,0.,0.)
 			/*목재로 리프레시*/
 			set BTN_LUMBER_REFRESH = BlzCreateFrame("SkillShopLumberRefreshButton",CONTAINER,0,0)
-			call BlzFrameSetPoint(BTN_LUMBER_REFRESH,FRAMEPOINT_TOPRIGHT,FRAME_SKILL_SHOP_BACKDROP,FRAMEPOINT_BOTTOMRIGHT,0.,0.)
+			call BlzFrameSetPoint(BTN_LUMBER_REFRESH,FRAMEPOINT_TOPRIGHT,FRAME_POWERUP_UI_BACKDROP,FRAMEPOINT_BOTTOMRIGHT,0.,0.)
 			call BlzFrameSetSizePixel(BTN_LUMBER_REFRESH,240,56)
 			call BlzFrameClearAllPoints(BlzGetFrameByName("SkillShopLumberRefreshButtonText",0))
 			call BlzFrameSetPoint(BlzGetFrameByName("SkillShopLumberRefreshButtonText",0),FRAMEPOINT_CENTER,BTN_LUMBER_REFRESH,FRAMEPOINT_CENTER,Math.px2Size(12),0.)
@@ -648,11 +648,11 @@ library SkillShop requires UI
 			set LUMBER_REFRESH_TEXT = BlzCreateFrame("MyText",LUMBER_REFRESH_TEXT_BACKDROP,0,0)
 			call BlzFrameSetPoint(LUMBER_REFRESH_TEXT,FRAMEPOINT_CENTER,LUMBER_REFRESH_TEXT_BACKDROP,FRAMEPOINT_CENTER,0,0)
 			call BlzFrameSetTextAlignment(LUMBER_REFRESH_TEXT,TEXT_JUSTIFY_CENTER,TEXT_JUSTIFY_CENTER)
-			set LUMBER_SMALL_TIMER_BACKDROP = BlzCreateFrameByType("BACKDROP","",FRAME_SKILL_SHOP_BUTTON,"",0)
+			set LUMBER_SMALL_TIMER_BACKDROP = BlzCreateFrameByType("BACKDROP","",FRAME_POWERUP_UI_BUTTON,"",0)
 			call BlzFrameSetTexture(LUMBER_SMALL_TIMER_BACKDROP,"textures\\black32.blp",0,true)
 			call BlzFrameSetAlpha(LUMBER_SMALL_TIMER_BACKDROP,192)
-			set LUMBER_SMALL_TIMER_TEXT = BlzCreateFrame("MyTextSmall",FRAME_SKILL_SHOP_BUTTON,0,0)
-			call BlzFrameSetPoint(LUMBER_SMALL_TIMER_TEXT,FRAMEPOINT_TOP,FRAME_SKILL_SHOP_BUTTON,FRAMEPOINT_BOTTOM,0,0.)
+			set LUMBER_SMALL_TIMER_TEXT = BlzCreateFrame("MyTextSmall",FRAME_POWERUP_UI_BUTTON,0,0)
+			call BlzFrameSetPoint(LUMBER_SMALL_TIMER_TEXT,FRAMEPOINT_TOP,FRAME_POWERUP_UI_BUTTON,FRAMEPOINT_BOTTOM,0,0.)
 			call BlzFrameSetTextAlignment(LUMBER_SMALL_TIMER_TEXT,TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_CENTER)
 			call BlzFrameSetPoint(LUMBER_SMALL_TIMER_BACKDROP,FRAMEPOINT_TOPLEFT,LUMBER_SMALL_TIMER_TEXT,FRAMEPOINT_TOPLEFT,-0.002,0.002)
 			call BlzFrameSetPoint(LUMBER_SMALL_TIMER_BACKDROP,FRAMEPOINT_BOTTOMRIGHT,LUMBER_SMALL_TIMER_TEXT,FRAMEPOINT_BOTTOMRIGHT,0.002,-0.002)
@@ -669,7 +669,7 @@ library SkillShop requires UI
 			call BlzFrameSetSize(BlzGetFrameByName("SkillShopRefreshButtonIcon",0),Math.px2Size(24),Math.px2Size(24))
 			/*도네이션*/
 			set BTN_DONATE = BlzCreateFrame("SkillShopDonateButton",CONTAINER,0,0)
-			call BlzFrameSetPoint(BTN_DONATE,FRAMEPOINT_TOPLEFT,FRAME_SKILL_SHOP_BACKDROP,FRAMEPOINT_BOTTOMLEFT,0.,0.)
+			call BlzFrameSetPoint(BTN_DONATE,FRAMEPOINT_TOPLEFT,FRAME_POWERUP_UI_BACKDROP,FRAMEPOINT_BOTTOMLEFT,0.,0.)
 			call BlzFrameSetSizePixel(BTN_DONATE,256,56)
 			call BlzFrameClearAllPoints(BlzGetFrameByName("SkillShopDonateButtonText",0))
 			call BlzFrameSetPoint(BlzGetFrameByName("SkillShopDonateButtonText",0),FRAMEPOINT_CENTER,BTN_DONATE,FRAMEPOINT_CENTER,Math.px2Size(12),0.)
@@ -706,7 +706,7 @@ library SkillShop requires UI
 			call BlzFrameSetTexture(GOLD_BACKDROP,"Textures\\black32.blp",0,true)
 			call BlzFrameSetAlpha(GOLD_BACKDROP,128)
 			set GOLD_TEXT = BlzCreateFrame("MyTextLarge",CONTAINER,0,0)
-			call BlzFrameSetPoint(GOLD_TEXT,FRAMEPOINT_TOP,FRAME_SKILL_SHOP_BACKDROP,FRAMEPOINT_BOTTOM,0.0025+Math.px2Size(16),-0.005)
+			call BlzFrameSetPoint(GOLD_TEXT,FRAMEPOINT_TOP,FRAME_POWERUP_UI_BACKDROP,FRAMEPOINT_BOTTOM,0.0025+Math.px2Size(16),-0.005)
 			call BlzFrameSetTextAlignment(GOLD_TEXT,TEXT_JUSTIFY_TOP,TEXT_JUSTIFY_CENTER)
 			call BlzFrameSetText(GOLD_TEXT,"")
 			set GOLD_ICON = BlzCreateFrameByType("BACKDROP","",CONTAINER,"",0)
@@ -724,7 +724,7 @@ library SkillShop requires UI
 			call BlzFrameSetPoint(CHANCE_BACKDROP,FRAMEPOINT_BOTTOMRIGHT,CHANCE_TEXT,FRAMEPOINT_BOTTOMRIGHT,0.005,-0.005)
 			/*닫기버튼*/
 			set BTN_CLOSE = BlzCreateFrame("GenericCloseButton",CONTAINER,0,0)
-			call BlzFrameSetPointPixel(BTN_CLOSE,FRAMEPOINT_TOPLEFT,FRAME_SKILL_SHOP_BACKDROP,FRAMEPOINT_TOPRIGHT,0,0)
+			call BlzFrameSetPointPixel(BTN_CLOSE,FRAMEPOINT_TOPLEFT,FRAME_POWERUP_UI_BACKDROP,FRAMEPOINT_TOPRIGHT,0,0)
 			/*공용트리거*/
 			set KEYPRESS = CreateTrigger()
 			call BlzTriggerRegisterFrameEvent(KEYPRESS,BTN_REFRESH,FRAMEEVENT_CONTROL_CLICK)
@@ -759,7 +759,7 @@ library SkillShop requires UI
 			/*위젯 초기화*/
 			loop
 				exitwhen i >= WIDGET_COUNT
-				call SkillShopWidget.create(CONTAINER,Player(this),i)
+				call PowerupUIWidget.create(CONTAINER,Player(this),i)
 				set i = i + 1
 			endloop
 			/*리프레시 한 번*/

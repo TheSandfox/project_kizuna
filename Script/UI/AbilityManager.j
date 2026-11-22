@@ -502,10 +502,11 @@ library AbilityManager requires Frame
 					/*아이템 떨구기 재활성화*/
 					call Inventory(this).enableDrop()
 				endif
-				/*어빌리티 단축키 사용여부 스위칭*/
-				call User.enableAbilityHotkey(.owner,not flag)
-				/*어빌리티 아이콘 우클릭 가능여부 스위칭*/
-				call User.enableAbilityRightClick(.owner,not flag)
+			endif
+			if flag then
+				call User.addInputLayer(.owner,ENUM_INPUT_LAYER_ABILITY_MANAGER)
+			else
+				call User.removeInputLayer(.owner,ENUM_INPUT_LAYER_ABILITY_MANAGER)
 			endif
 			set .visible_flag = flag
 		endmethod
@@ -921,11 +922,11 @@ library AbilityManager requires Frame
 		endmethod
 
 		static method onInit takes nothing returns nothing
-			set KEYPRESS = CreateTrigger()
-			call TriggerAddCondition(KEYPRESS,function thistype.keypressCallback)
-			call Event.register(KEYPRESS,ENUM_EVENT_KEYPRESS)
-			set REFRESH_SKILLPOINT_TRIGGER = CreateTrigger()
-			call TriggerAddCondition(REFRESH_SKILLPOINT_TRIGGER,function thistype.refreshSkillpointCallback)
+			// set KEYPRESS = CreateTrigger()
+			// call TriggerAddCondition(KEYPRESS,function thistype.keypressCallback)
+			// call Event.register(KEYPRESS,ENUM_EVENT_KEYPRESS)
+			// set REFRESH_SKILLPOINT_TRIGGER = CreateTrigger()
+			// call TriggerAddCondition(REFRESH_SKILLPOINT_TRIGGER,function thistype.refreshSkillpointCallback)
 		endmethod
 
 	endstruct

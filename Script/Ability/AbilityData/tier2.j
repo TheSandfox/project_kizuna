@@ -300,7 +300,7 @@ scope Ability2040 initializer init
 				//! runtextmacro Ability2040_tm0()
 				static if CHANCE_MODE then
 					/*확정투척*/
-					local Ability a = .caster.getAbilityById(ID)
+					local Ability a = Ability.getUnitAbilityById(.caster,ID)
 					if a > 0 then				
 						call a.addValue(1)
 						if a.value >= COUNT then
@@ -754,7 +754,7 @@ scope Ability2070 initializer init
 			Effect ef2 = 0
 
 			method onComplete takes nothing returns nothing
-				local Ability a = .caster.getAbilityById(ID)
+				local Ability a = Ability.getUnitAbilityById(.caster,ID)
 				local Effect ef = 0
 				local Buff b = 0
 				set .damage = (.owner.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1) * (1+DAMAGE_PER_LEVEL*(.level))
@@ -1789,7 +1789,7 @@ scope Ability20h0 initializer init
 			Buff bf2 = 0
 
 			static method create takes Unit caster, Unit target, integer level returns thistype
-				local Ability a = caster.getAbilityById(ID)
+				local Ability a = Ability.getUnitAbilityById(caster,ID)
 				//! runtextmacro ridingAllocate("caster","target","level","ID")
 				call setPosition(450.,0,-90)
 				set .bf1 = Buff.add(.caster,.caster,'20h0',.level,0.)
@@ -1807,7 +1807,7 @@ scope Ability20h0 initializer init
 			endmethod
 
 			method onDestroy takes nothing returns nothing
-				local Ability a = .caster.getAbilityById(ID)
+				local Ability a = Ability.getUnitAbilityById(.caster,ID)
 				call .caster.minusStatus(ENUM_STATUS_HIDE)
 				call .caster.minusStatus(ENUM_STATUS_EVASION)
 				call .bf1.destroy()
@@ -2056,7 +2056,7 @@ scope Ability20i0 initializer init
 					set .block = 0
 				endif
 				/*사망 시 서번트 할당 해제*/
-				set MY_RESPOND_ABILITY = .caster.getAbilityById(ID)
+				set MY_RESPOND_ABILITY = Ability.getUnitAbilityById(.caster,ID)
 				if MY_RESPOND_ABILITY > 0 then
 					set MY_RESPOND_EVENT_ID = 1
 					set MY_RESPOND_TOWER = this
@@ -2114,7 +2114,7 @@ scope Ability20i0 initializer init
 			Block block = 0
 
 			method onComplete takes nothing returns nothing
-				set MY_RESPOND_ABILITY = .caster.getAbilityById(ID)
+				set MY_RESPOND_ABILITY = Ability.getUnitAbilityById(.caster,ID)
 				if MY_RESPOND_ABILITY > 0 then
 					set .caster.mp = .caster.mp - .manacost
 					set .caster.hp = .caster.hp - .caster.hp*DATA_REAL1
@@ -2296,7 +2296,7 @@ scope Buff20j0 initializer init
 
 		method init takes nothing returns boolean
 			set .permanent = true
-			set MY_RESPOND_ABILITY = .caster.getAbilityById(ID)
+			set MY_RESPOND_ABILITY = Ability.getUnitAbilityById(.caster,ID)
 			if MY_RESPOND_ABILITY > 0 then
 				set MY_RESPOND_EVENT_ID = 0
 				set MY_RESPOND_BUFF = this
@@ -2322,7 +2322,7 @@ scope Buff20j0 initializer init
 			call .target.multiplyStatValue(ENUM_STAT_ATTACK_SPEED,-.as)
 			call .target.plusStatValue(ENUM_STAT_MOVEMENT_SPEED,-DATA_INTEGER1)
 			call .target.removeSkin(SKIN_ID)
-			set MY_RESPOND_ABILITY = .caster.getAbilityById(ID)
+			set MY_RESPOND_ABILITY = Ability.getUnitAbilityById(.caster,ID)
 			if MY_RESPOND_ABILITY > 0 then
 				set MY_RESPOND_EVENT_ID = 1
 				call TriggerEvaluate(MY_RESPOND)
@@ -2479,7 +2479,7 @@ scope Buff20k0 initializer init
 
 		method init takes nothing returns boolean
 			set .permanent = true
-			set MY_RESPOND_ABILITY = .caster.getAbilityById(ID)
+			set MY_RESPOND_ABILITY = Ability.getUnitAbilityById(.caster,ID)
 			if MY_RESPOND_ABILITY > 0 then
 				set MY_RESPOND_EVENT_ID = 0
 				set MY_RESPOND_BUFF = this
@@ -2504,7 +2504,7 @@ scope Buff20k0 initializer init
 			call .target.multiplyStatValue(ENUM_STAT_MAXHP,-DATA_REAL1)
 			call .target.plusStatValue(ENUM_STAT_MOVEMENT_SPEED,-DATA_INTEGER1)
 			call .target.removeSkin(SKIN_ID)
-			set MY_RESPOND_ABILITY = .caster.getAbilityById(ID)
+			set MY_RESPOND_ABILITY = Ability.getUnitAbilityById(.caster,ID)
 			if MY_RESPOND_ABILITY > 0 then
 				set MY_RESPOND_EVENT_ID = 1
 				call TriggerEvaluate(MY_RESPOND)
@@ -2975,7 +2975,7 @@ scope Ability20o0 initializer init
 		public struct main extends Ability
 	
 			method useFilterAdditional takes nothing returns boolean
-				if .owner.weapon_ability.weapon_is_ranged then
+				if Ability(.owner.getWeaponAbility()).weapon_is_ranged then
 					set CUSTOM_RESPOND_ERROR_MESSAGE = "원거리 무기로 사용할 수 없는 능력입니다."
 					return false
 				else

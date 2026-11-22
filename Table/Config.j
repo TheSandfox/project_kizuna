@@ -35,8 +35,4 @@ globals
 	constant integer CONFIG_FRAME_LEVEL_MINIMAP = 3
 	constant integer CONFIG_FRAME_LEVEL_TOOLTIP = 4
 	constant integer CONFIG_FRAME_LEVEL_POPUP = 5
-	constant integer CONFIG_MINIMAP_OFFSET_X = 0
-	constant integer CONFIG_MINIMAP_OFFSET_Y = 16
-	constant integer CONFIG_MINIMAP_SIZE = 240
-	constant integer CONFIG_MINIMAP_INSET = 96
 endglobals

@@ -88,11 +88,11 @@ library Waygate requires User
 				if flag then
 					/*열림*/
 					call CloseUI(GetPlayerId(p)).add(CloseUI.ORDER_WARP)
-					call User.enableAbilityHotkey(p,false)
+					call User.addInputLayer(p,ENUM_INPUT_LAYER_WARP_UI)
 				else
 					/*닫힘*/
 					call CloseUI(GetPlayerId(p)).eraseFor(CloseUI.ORDER_WARP)
-					call User.enableAbilityHotkey(p,true)
+					call User.removeInputLayer(p,ENUM_INPUT_LAYER_WARP_UI)
 				endif
 			endif
 			set VISIBLE[GetPlayerId(p)] = flag
@@ -123,7 +123,7 @@ library Waygate requires User
 			endif
 			set CASTER[GetPlayerId(p)] = caster
 			set ACTOR_ID[GetPlayerId(p)] = actorinstance
-			call caster.releaseAbilityAll()
+			call Ability.releaseUnitAbilityAll(caster)
 		endmethod
 
 		static method press takes nothing returns nothing

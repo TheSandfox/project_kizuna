@@ -8,7 +8,7 @@
 //! import "TreeOfLife.j"
 //! import "Shuffle.j"
 
-library Game requires Unit, UI
+library Game requires Unit, Ability, UI
 
 	globals
 		private trigger LEAVE_TRIGGER = CreateTrigger()	
@@ -23,8 +23,8 @@ library Game requires Unit, UI
 	struct Game extends array
 
 		static method playerLeave takes nothing returns nothing
-			if SkillShop(GetPlayerId(GetTriggerPlayer())) > 0 then
-				call SkillShop(GetPlayerId(GetTriggerPlayer())).destroy()
+			if PowerupUI(GetPlayerId(GetTriggerPlayer())) > 0 then
+				call PowerupUI(GetPlayerId(GetTriggerPlayer())).destroy()
 			endif
 			if UI(GetPlayerId(GetTriggerPlayer())) > 0 then
 				call UI(GetPlayerId(GetTriggerPlayer())).destroy()
@@ -50,11 +50,11 @@ library Game requires Unit, UI
 				exitwhen i >= 4
 				set u = User.getFocusUnit(Player(i))
 				call u.kill()
-				call u.clearAbility()
+				call Ability.clearUnitAbility(u)
 				set i = i + 1
 			endloop
 			call Timer.pause(Round.TIMER)
-			set SkillShop.DEFEAT = true
+			set PowerupUI.DEFEAT = true
 		endmethod
 
 		static method systemMessage takes string msg returns nothing
@@ -108,7 +108,7 @@ library Game requires Unit, UI
 		static method endSelect takes nothing returns nothing
 			local integer i = 0
 			/*꿀팁 활성화*/
-			call Tip.init()
+			// call Tip.init()
 			/*프레임관련*/
 			call UI.init()
 			call Inventory.init()
@@ -129,7 +129,7 @@ library Game requires Unit, UI
 			/*웨이브 가동*/
 			// call Round.init()
 			/*상호작용물*/
-			call Interactive.init()
+			// call Interactive.init()
 			/*필드*/
 			// call Field.init()
 			/*내비게이터*/
@@ -192,6 +192,8 @@ library Game requires Unit, UI
 			call BlzFrameClearAllPoints(BlzGetFrameByName("ConsoleUI",0))
 			/*상단바*/
 			call BlzFrameClearAllPoints(BlzGetFrameByName("ConsoleTopBar",0))
+			call BlzFrameSetVisible(BlzGetFrameByName("UpperButtonBarFrame",0),true)
+			call BlzFrameClearAllPoints(BlzGetFrameByName("UpperButtonBarFrame",0))
 			/*하단바*/
 			call BlzFrameClearAllPoints(BlzGetFrameByName("ConsoleBottomBar",0))
 			/*명령창 포인트 클리어*/
@@ -199,9 +201,11 @@ library Game requires Unit, UI
 			/*디버그창*/
 			call BlzFrameSetAbsPoint(BlzGetOriginFrame(ORIGIN_FRAME_UNIT_MSG,0),FRAMEPOINT_BOTTOMLEFT,0.,0.205)
 			call BlzFrameSetSize(BlzGetOriginFrame(ORIGIN_FRAME_UNIT_MSG,0),1,1)
+			call BlzFrameSetParent(BlzGetOriginFrame(ORIGIN_FRAME_UNIT_MSG,0),FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC])
 			/*채팅창 살리기*/
 			call BlzFrameSetAbsPoint(BlzGetOriginFrame(ORIGIN_FRAME_CHAT_MSG,0),FRAMEPOINT_BOTTOMLEFT,0.,0.165)
 			call BlzFrameSetSize(BlzGetOriginFrame(ORIGIN_FRAME_CHAT_MSG,0),1,1)
+			call BlzFrameSetParent(BlzGetOriginFrame(ORIGIN_FRAME_CHAT_MSG,0),FRAME_GAME_UI[CONFIG_FRAME_LEVEL_BASIC])
 			/*유닛선택못하게*/
 			call BlzEnableSelections(false,false)
 			/*전장의 안개 끄기*/
@@ -241,7 +245,10 @@ library Game requires Unit, UI
 					call u.plusStatus(ENUM_STATUS_CAST)
 					set i = i + 1
 				endloop
-				call BossB000.create(15,GetRectCenterX(gg_rct_Warp006),GetRectCenterY(gg_rct_Warp006))
+				call BossB000.create(15,GetRectCenterX(gg_rct_TreeOfLife),GetRectCenterY(gg_rct_TreeOfLife))
+			elseif BlzGetTriggerPlayerKey() == OSKEY_K then
+				/*죽이기*/
+				set User.getFocusUnit(Player(0)).hp = 0.
 			elseif BlzGetTriggerPlayerKey() == OSKEY_P then
 				/*디버그절취선*/
 				call BJDebugMsg("================디버그절취선================")
@@ -263,6 +270,7 @@ library Game requires Unit, UI
 				call BlzTriggerRegisterPlayerKeyEvent(CHEAT,Player(0),OSKEY_9,0,true)
 				call BlzTriggerRegisterPlayerKeyEvent(CHEAT,Player(0),OSKEY_0,0,true)
 				call BlzTriggerRegisterPlayerKeyEvent(CHEAT,Player(0),OSKEY_O,0,true)
+				call BlzTriggerRegisterPlayerKeyEvent(CHEAT,Player(0),OSKEY_K,0,true)
 				call BlzTriggerRegisterPlayerKeyEvent(CHEAT,Player(0),OSKEY_P,0,true)
 				call TriggerAddCondition(CHEAT,function thistype.cheatCallback)
 			endif

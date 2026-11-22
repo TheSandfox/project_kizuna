@@ -84,10 +84,10 @@ library AbilityMix initializer init
 			/*어빌리티추가해주기..*/
 			/*이미 갖고있지 않으면서 슬롯도 있는지*/
 			/*빈 공간이 있어야만 0을 반환함*/
-			set oa = User.getFocusUnit(USER).getAbilityById(.ability_id)
+			set oa = Ability.getUnitAbilityById(User.getFocusUnit(USER),.ability_id)
 			if oa == 0 then
 				/*어빌추가 OK*/
-				set na = User.getFocusUnit(USER).addAbility(.ability_id)
+				set na = Ability.addUnitAbility(User.getFocusUnit(USER),.ability_id)
 				if na > 0 then
 					/*레벨복사*/
 					call na.addLevel(.level-1)
@@ -547,7 +547,7 @@ library AbilityMix initializer init
 				return false
 			endif
 			/*주재료가 어빌리티이면서 이미 레시피에 해당하는 어빌리티를 가지고 있음*/
-			if am1.element_type == AbilityMixElement.TYPE_ABILITY and target.getAbilityById(recipe.result) > 0 then
+			if am1.element_type == AbilityMixElement.TYPE_ABILITY and Ability.getUnitAbilityById(target,recipe.result) > 0 then
 				set CUSTOM_RESPOND_ERROR_PLAYER = target.owner
 				set CUSTOM_RESPOND_ERROR_MESSAGE = "해당 유형의 스킬을 이미 보유하고 있습니다."
 				call Event.activate(ENUM_EVENT_ERROR)
@@ -561,7 +561,7 @@ library AbilityMix initializer init
 			call am2.kill()
 			if am1.element_type == AbilityMixElement.TYPE_ABILITY then
 				/*새 어빌리티 주기*/
-				set na = target.addAbility(recipe.result)
+				set na = Ability.addUnitAbility(target,recipe.result)
 				/*새 어빌리티 레벨 설정*/
 				call Ability(na).addLevel(nlv-1)
 				/*새 어빌리티 고유능력 여부*/
@@ -670,7 +670,7 @@ library AbilityMix initializer init
 				call am2.kill()
 				if am1.element_type == AbilityMixElement.TYPE_ABILITY then
 					/*새 어빌리티 주기*/
-					set na = target.addAbility(rabil)
+					set na = Ability.addUnitAbility(target,rabil)
 					/*새 어빌리티 레벨 설정*/
 					call Ability(na).addLevel(nlv-1)
 					/*새 어빌리티 고유능력 여부*/

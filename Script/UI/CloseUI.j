@@ -11,7 +11,7 @@ library CloseUI requires UI
 		static constant integer ORDER_INVENTORY = 3
 		static constant integer ORDER_STAT_INDICATOR = 4
 		static constant integer ORDER_SLOT_CHANGER = 5
-		static constant integer ORDER_SKILL_SHOP = 6
+		static constant integer ORDER_POWERUP_UI = 6
 		static constant integer ORDER_WARP = 7
 		static constant integer ORDER_ABILITY_MANAGER = 8
 
@@ -36,8 +36,8 @@ library CloseUI requires UI
 				call SlotChanger(this).close()
 				return
 			endif
-			if order == ORDER_SKILL_SHOP then
-				call SkillShop(this).close()
+			if order == ORDER_POWERUP_UI then
+				call PowerupUI(this).close()
 				return
 			endif
 			if order == ORDER_WARP then

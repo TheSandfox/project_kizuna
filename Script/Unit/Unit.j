@@ -37,16 +37,16 @@ library Unit requires UnitData
 			local Ability ta = 0
 			loop
 				exitwhen i >= CONFIG_ABILITY_SIZE
-				set ta = target.getAbility(i)
+				set ta = Ability(target.getAbility(i))
 				if ta > 0 then
 					/*타겟의 어빌리티 복제*/
-					set a = addAbility(ta.id)
+					set a = Ability.addUnitAbility(this,a.id)
 					if a > 0 then
 						/*레벨싱크*/
 						call a.addLevel(ta.level-1)
 						/*무기어빌 싱크*/
-						if target.weapon_ability == ta then
-							call setWeaponAbility(a)
+						if target.getWeaponAbility() == ta then
+							call Ability.setUnitWeaponAbility(this,a)
 						endif
 					endif
 				endif
@@ -194,12 +194,12 @@ library Unit requires UnitData
 			endif
 			loop
 				exitwhen i >= CONFIG_ABILITY_SIZE or UnitData.getInitialAbility(.id,i) <= 0
-				set lc = addAbility(UnitData.getInitialAbility(.id,i))
+				set lc = Ability.addUnitAbility(this,UnitData.getInitialAbility(.id,i))
 				/*EXP적립*/
 				call lc.setUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_BLUE,Ability.getTypeTier(lc.id))
 				set lc.signature = true
 				if Ability.getTypeCastType(lc.id) == ENUM_CAST_TYPE_WEAPON then
-					call setWeaponAbility(lc)
+					call Ability.setUnitWeaponAbility(this,lc)
 				endif
 				set i = i + 1
 			endloop
