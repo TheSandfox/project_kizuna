@@ -36,10 +36,10 @@ library Hellgate
 		endmethod
 
 		static method init takes nothing returns nothing
-			call create(GetRectMinX(gg_rct_GateWest)-128,GetRectCenterY(gg_rct_GateWest),0.,0)
-			call create(GetRectMaxX(gg_rct_GateEast)+128,GetRectCenterY(gg_rct_GateEast),180.,2)
-			call create(GetRectCenterX(gg_rct_GateNorth),GetRectMaxY(gg_rct_GateNorth)+128,270.,3)
-			call create(GetRectCenterX(gg_rct_GateSouth),GetRectMinY(gg_rct_GateSouth)-128,90.,1)
+			// call create(GetRectMinX(gg_rct_GateWest)-128,GetRectCenterY(gg_rct_GateWest),0.,0)
+			// call create(GetRectMaxX(gg_rct_GateEast)+128,GetRectCenterY(gg_rct_GateEast),180.,2)
+			// call create(GetRectCenterX(gg_rct_GateNorth),GetRectMaxY(gg_rct_GateNorth)+128,270.,3)
+			// call create(GetRectCenterX(gg_rct_GateSouth),GetRectMinY(gg_rct_GateSouth)-128,90.,1)
 		endmethod
 
 	endstruct

@@ -2,11 +2,8 @@
 //! import "CustomString.j"
 //! import "Tip.j"
 //! import "CharacterSelect.j"
-//! import "Wave.j"
-//! import "Guardians.j"
-//! import "Round.j"
-//! import "TreeOfLife.j"
 //! import "Shuffle.j"
+//! import "PowerupManager.j"
 
 library Game requires Unit, Ability, UI
 
@@ -45,7 +42,7 @@ library Game requires Unit, Ability, UI
 			local integer i = 0
 			local Unit u = 0
 			set Tombstone.GAME_OVER = true
-			call Guardians.kill()
+			// call Guardians.kill()
 			loop
 				exitwhen i >= 4
 				set u = User.getFocusUnit(Player(i))
@@ -53,8 +50,6 @@ library Game requires Unit, Ability, UI
 				call Ability.clearUnitAbility(u)
 				set i = i + 1
 			endloop
-			call Timer.pause(Round.TIMER)
-			set PowerupUI.DEFEAT = true
 		endmethod
 
 		static method systemMessage takes string msg returns nothing
@@ -92,6 +87,8 @@ library Game requires Unit, Ability, UI
 			call User.new(p)
 			call User.setFocusUnit(p,u)
 			call User.selectFocusUnit(p)
+			/*파워업 매니저*/
+			call PowerupManager.create(p)
 			/*어빌리티테이블*/
 			call AbilityTable.createExtra(GetPlayerId(p),uid)
 			/*메인 UI*/
@@ -129,7 +126,7 @@ library Game requires Unit, Ability, UI
 			/*웨이브 가동*/
 			// call Round.init()
 			/*상호작용물*/
-			// call Interactive.init()
+			call Interactive.init()
 			/*필드*/
 			// call Field.init()
 			/*내비게이터*/

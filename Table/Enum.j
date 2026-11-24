@@ -154,6 +154,7 @@ globals
 	constant real ENUM_EVENT_WEAPON_ATTACK_SPEED_REFRESH = 37
 	constant real ENUM_EVENT_ABILITY_CREATE = 38
 	constant real ENUM_EVENT_UNIT_CLEAR_ABILITY = 39
+	constant real ENUM_EVENT_POWERUP = 40
 	constant integer ENUM_CAST_TYPE_TARGET_LOCATION = 0
 	constant integer ENUM_CAST_TYPE_TARGET_UNIT = 1
 	constant integer ENUM_CAST_TYPE_IMMEDIATE = 2
@@ -223,7 +224,8 @@ globals
 	constant integer ENUM_INPUT_LAYER_DEFAULT = 0
 	constant integer ENUM_INPUT_LAYER_SLOT_CHANGER = 1
 	constant integer ENUM_INPUT_LAYER_ABILITY_MANAGER = 2
-	constant integer ENUM_INPUT_LAYER_WARP_UI = 3
+	constant integer ENUM_INPUT_LAYER_POWERUP_UI = 3
+	constant integer ENUM_INPUT_LAYER_WARP_UI = 4
 	constant integer ENUM_UNIT_EXTRADATA_CAN_ATTACK_ALLY = 0
 	constant integer ENUM_UNIT_EXTRADATA_CANT_ATTACK_ENEMY = 1
 	constant integer ENUM_UNIT_EXTRADATA_ADDICT = 2
@@ -234,4 +236,7 @@ globals
 	constant integer ENUM_POWERUP_TYPE_LEVEL = 0
 	constant integer ENUM_POWERUP_TYPE_GATHER_LUMBER = 1
 	constant integer ENUM_POWERUP_TYPE_GATHER_ORE = 2
+	constant integer ENUM_POWERUP_TYPE_BOSS = 3
+	constant integer ENUM_POWERUP_ITEM_TYPE_STAT = 1
+	constant integer  ENUM_POWERUP_ITEM_TYPE_ABILITY = 2
 endglobals

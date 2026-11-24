@@ -1,6 +1,5 @@
 //! import "UnitData.j"
 //! import "Tombstone.j"
-//! import "Undead\\Undead.j"
 //! import "LuckyBonus.j"
 
 library Unit requires UnitData
@@ -55,36 +54,36 @@ library Unit requires UnitData
 		endmethod
 
 		static method onLevel takes nothing returns nothing
-			local integer i = 0
-			local Ability a = 0
-			local thistype this = CUSTOM_RESPOND_LEVEL_UNIT
-			if CUSTOM_RESPOND_LEVEL_UNIT <= 0 or CUSTOM_RESPOND_LEVEL_LEVEL <= 0 then
-				return
-			endif
-			loop
-				exitwhen i >= CONFIG_ABILITY_SIZE
-				set a = getAbility(i)
-				if a > 0 and a.signature then
-					if a.level + CUSTOM_RESPOND_LEVEL_LEVEL > a.level_max then
-						/*초과분 환급*/
-						call User.addGold(.owner,Ability.getTypeCost(a.id)*(CUSTOM_RESPOND_LEVEL_LEVEL-a.level_max+a.level))
-						call a.addLevel(a.level_max-a.level)
-						/*EXP적립*/
-						call a.setUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_BLUE,a.getUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_BLUE)+Ability.getTypeTier(a.id)*(a.level_max-a.level))
-					else
-						/*그냥레벨업*/
-						call a.addLevel(CUSTOM_RESPOND_LEVEL_LEVEL)
-						/*EXP적립*/
-						call a.setUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_BLUE,a.getUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_BLUE)+Ability.getTypeTier(a.id)*CUSTOM_RESPOND_LEVEL_LEVEL)
-					endif
-				endif
-				set i = i + 1
-			endloop
-			call setUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_RED,getUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_RED) + CUSTOM_RESPOND_LEVEL_LEVEL*SKILLPOINT_PER_LEVEL)
-			set .removepoint = .removepoint + CUSTOM_RESPOND_LEVEL_LEVEL*REMOVEPOINT_PER_LEVEL
-			/**/set CUSTOM_RESPOND_UI_REFRESH_PLAYER = .owner
-			/**/call Event.activate(ENUM_EVENT_ABILITY_UI_REFRESH)
-			/**/set CUSTOM_RESPOND_UI_REFRESH_PLAYER = null
+			// local integer i = 0
+			// local Ability a = 0
+			// local thistype this = CUSTOM_RESPOND_LEVEL_UNIT
+			// if CUSTOM_RESPOND_LEVEL_UNIT <= 0 or CUSTOM_RESPOND_LEVEL_LEVEL <= 0 then
+			// 	return
+			// endif
+			// loop
+			// 	exitwhen i >= CONFIG_ABILITY_SIZE
+			// 	set a = getAbility(i)
+			// 	if a > 0 and a.signature then
+			// 		if a.level + CUSTOM_RESPOND_LEVEL_LEVEL > a.level_max then
+			// 			/*초과분 환급*/
+			// 			call User.addGold(.owner,Ability.getTypeCost(a.id)*(CUSTOM_RESPOND_LEVEL_LEVEL-a.level_max+a.level))
+			// 			call a.addLevel(a.level_max-a.level)
+			// 			/*EXP적립*/
+			// 			call a.setUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_BLUE,a.getUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_BLUE)+Ability.getTypeTier(a.id)*(a.level_max-a.level))
+			// 		else
+			// 			/*그냥레벨업*/
+			// 			call a.addLevel(CUSTOM_RESPOND_LEVEL_LEVEL)
+			// 			/*EXP적립*/
+			// 			call a.setUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_BLUE,a.getUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_BLUE)+Ability.getTypeTier(a.id)*CUSTOM_RESPOND_LEVEL_LEVEL)
+			// 		endif
+			// 	endif
+			// 	set i = i + 1
+			// endloop
+			// call setUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_RED,getUpgradePoint(ENUM_ABILITY_UPGRADE_TYPE_RED) + CUSTOM_RESPOND_LEVEL_LEVEL*SKILLPOINT_PER_LEVEL)
+			// set .removepoint = .removepoint + CUSTOM_RESPOND_LEVEL_LEVEL*REMOVEPOINT_PER_LEVEL
+			// /**/set CUSTOM_RESPOND_UI_REFRESH_PLAYER = .owner
+			// /**/call Event.activate(ENUM_EVENT_ABILITY_UI_REFRESH)
+			// /**/set CUSTOM_RESPOND_UI_REFRESH_PLAYER = null
 		endmethod
 
 		static method loveDamageCallback takes nothing returns nothing

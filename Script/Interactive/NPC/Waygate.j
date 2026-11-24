@@ -292,11 +292,24 @@ library Waygate requires User
 		endmethod
 
 		static method init takes nothing returns nothing
-			/*생명의 나무쪽 두개*/
-			call create(GetRectCenterX(gg_rct_WaygateV1),GetRectCenterY(gg_rct_WaygateV1))
-			call create(GetRectCenterX(gg_rct_WaygateV2),GetRectCenterY(gg_rct_WaygateV2))
+			/*워프게이트*/
+			call create(GetRectCenterX(gg_rct_Waygate001),GetRectCenterY(gg_rct_Waygate001))
+			call create(GetRectCenterX(gg_rct_Waygate002),GetRectCenterY(gg_rct_Waygate002))
+			call create(GetRectCenterX(gg_rct_Waygate003),GetRectCenterY(gg_rct_Waygate003))
+			call create(GetRectCenterX(gg_rct_Waygate004),GetRectCenterY(gg_rct_Waygate004))
+			call create(GetRectCenterX(gg_rct_Waygate005),GetRectCenterY(gg_rct_Waygate005))
+			call create(GetRectCenterX(gg_rct_Waygate006),GetRectCenterY(gg_rct_Waygate006))
+			call create(GetRectCenterX(gg_rct_Waygate007),GetRectCenterY(gg_rct_Waygate007))
+			call create(GetRectCenterX(gg_rct_Waygate008),GetRectCenterY(gg_rct_Waygate008))
 			/*워프도착지*/
-			call WarpWidget.create(GetRectCenterX(gg_rct_WarpV1),GetRectCenterY(gg_rct_WarpV1))
+			call WarpWidget.create(GetRectCenterX(gg_rct_Warp001),GetRectCenterY(gg_rct_Warp001))
+			call WarpWidget.create(GetRectCenterX(gg_rct_Warp002),GetRectCenterY(gg_rct_Warp002))
+			call WarpWidget.create(GetRectCenterX(gg_rct_Warp003),GetRectCenterY(gg_rct_Warp003))
+			call WarpWidget.create(GetRectCenterX(gg_rct_Warp004),GetRectCenterY(gg_rct_Warp004))
+			call WarpWidget.create(GetRectCenterX(gg_rct_Warp005),GetRectCenterY(gg_rct_Warp005))
+			call WarpWidget.create(GetRectCenterX(gg_rct_Warp006),GetRectCenterY(gg_rct_Warp006))
+			call WarpWidget.create(GetRectCenterX(gg_rct_Warp007),GetRectCenterY(gg_rct_Warp007))
+			call WarpWidget.create(GetRectCenterX(gg_rct_Warp008),GetRectCenterY(gg_rct_Warp008))
 		endmethod
 
 	endstruct

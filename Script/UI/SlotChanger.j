@@ -6,7 +6,7 @@ library SlotChanger requires UI
 		
 		integer state	/*0:기본상태, 1:임시변경중*/
 		integer first_index
-		Trigger keypress_trigger
+		trigger keypress_trigger
 
 		static integer array ABILITY_TEMP[10]
 		static integer array MAP
@@ -20,8 +20,6 @@ library SlotChanger requires UI
 		static framehandle CONFIRM_BUTTON_TEXT = null
 		static framehandle CLOSE_BUTTON = null
 		static boolean ACTIVATED = false
-		private static trigger P_KEYPRESS_CALLBACK = null
-		private static trigger P_ICON_CLICK_CALLBACK = null
 
 		method getMap takes integer index returns integer
 			return MAP[this*10 + index]
@@ -146,18 +144,22 @@ library SlotChanger requires UI
 		method visibleForPlayer takes boolean flag returns nothing
 			if .visible_flag != flag then
 				if flag then
-					/*열림*/
-					call stateDefault()
-					if User.getFocusUnit(.owner) > 0 then
-						call Ability.releaseUnitAbilityAll(User.getFocusUnit(.owner))
+					if User.getCurrentInputLayer(.owner) < ENUM_INPUT_LAYER_POWERUP_UI then
+						/*열림*/
+						call stateDefault()
+						if User.getFocusUnit(.owner) > 0 then
+							call Ability.releaseUnitAbilityAll(User.getFocusUnit(.owner))
+						endif
+						call EnableTrigger(.keypress_trigger)
+						/*CLOSEUI*/
+						call CloseUI(this).add(CloseUI.ORDER_SLOT_CHANGER)
+						call User.addInputLayer(.owner,ENUM_INPUT_LAYER_SLOT_CHANGER)
+					else
+						return
 					endif
-					call EnableTrigger(.keypress_trigger.main_trigger)
-					/*CLOSEUI*/
-					call CloseUI(this).add(CloseUI.ORDER_SLOT_CHANGER)
-					call User.addInputLayer(.owner,ENUM_INPUT_LAYER_SLOT_CHANGER)
 				else
 					/*닫힘*/
-					call DisableTrigger(.keypress_trigger.main_trigger)
+					call DisableTrigger(.keypress_trigger)
 					/*CLOSEUI*/
 					call CloseUI(this).eraseFor(CloseUI.ORDER_SLOT_CHANGER)
 					call User.removeInputLayer(.owner,ENUM_INPUT_LAYER_SLOT_CHANGER)
@@ -273,9 +275,10 @@ library SlotChanger requires UI
 			endif
 		endmethod
 
+		/*어빌리티 단축키 누릉*/
 		static method keypressCallback takes nothing returns nothing
-			local thistype this = Trigger.getData(GetTriggeringTrigger())
-			if CUSTOM_RESPOND_KEYPRESS_PLAYER != .owner then
+			local thistype this = GetPlayerId(CUSTOM_RESPOND_KEYPRESS_PLAYER)
+			if this >= CONFIG_PLAYER_MAX then
 				return
 			endif
 			if User.oskey2Index(CUSTOM_RESPOND_KEYPRESS_KEY) <= CONFIG_ABILITY_SIZE and CUSTOM_RESPOND_KEYPRESS_PRESS then
@@ -285,12 +288,27 @@ library SlotChanger requires UI
 			return
 		endmethod
 
+		/*상위 UI 활성화 시 닫힘*/
+		static method inputLayerChangeCallback takes nothing returns nothing
+			local thistype this = GetPlayerId(CUSTOM_RESPOND_INPUT_LAYER_CHANGE_PLAYER)
+			if this >= CONFIG_PLAYER_MAX then
+				return
+			endif
+			if CUSTOM_RESPOND_INPUT_LAYER_CHANGE_LAYER > ENUM_INPUT_LAYER_SLOT_CHANGER and /*
+			*/.visible_flag then
+				call DisableTrigger(GetTriggeringTrigger())
+				call visibleForPlayer(false)
+				call EnableTrigger(GetTriggeringTrigger())
+			endif
+		endmethod
+
 		static method initFrames takes nothing returns nothing
 			local integer i = 0
 			local integer buttonsTotalWidth = P_BUTTON_SIZE * 10 + P_BUTTON_GAP * 9
 			local integer buttonX = 0
 			local integer buttonY = 0
 			local framehandle f = null
+			local trigger t = CreateTrigger()
 			/**/
 			loop
 				exitwhen i >= CONFIG_ABILITY_SIZE
@@ -300,7 +318,7 @@ library SlotChanger requires UI
 				set buttonY = P_BUTTON_OFFSET_Y
 				call BlzFrameSetPointPixel(f,FRAMEPOINT_TOPLEFT,FRAME_SLOT_CHANGER,FRAMEPOINT_BOTTOM,buttonX,buttonY+P_BUTTON_SIZE)
 				call BlzFrameSetPointPixel(f,FRAMEPOINT_BOTTOMRIGHT,FRAME_SLOT_CHANGER,FRAMEPOINT_BOTTOM,buttonX+P_BUTTON_SIZE,buttonY)
-				call BlzTriggerRegisterFrameEvent(P_KEYPRESS_CALLBACK,f,FRAMEEVENT_CONTROL_CLICK)
+				call BlzTriggerRegisterFrameEvent(t,f,FRAMEEVENT_CONTROL_CLICK)
 				set BUTTON[i] = f
 				/*버튼텍스트*/
 				set f = BlzGetFrameByName("CSlotChangerButtonHotkeyText",i)
@@ -309,14 +327,15 @@ library SlotChanger requires UI
 			endloop
 			/*컨펌버튼*/
 			set CONFIRM_BUTTON = BlzGetFrameByName("CSlotChangerConfirmButton",0)
-			call BlzTriggerRegisterFrameEvent(P_KEYPRESS_CALLBACK,CONFIRM_BUTTON,FRAMEEVENT_CONTROL_CLICK)
+			call BlzTriggerRegisterFrameEvent(t,CONFIRM_BUTTON,FRAMEEVENT_CONTROL_CLICK)
 			set CONFIRM_BUTTON_TEXT = BlzGetFrameByName("CSlotChangerConfirmButtonText",0)
 			call BlzFrameSetText(CONFIRM_BUTTON_TEXT,"|cff999999적용|r")
 			call BlzFrameSetEnable(CONFIRM_BUTTON,false)
 			/*닫기버튼*/
 			set CLOSE_BUTTON = BlzGetFrameByName("CSlotChangerCloseButton",0)
-			call BlzTriggerRegisterFrameEvent(P_KEYPRESS_CALLBACK,CLOSE_BUTTON,FRAMEEVENT_CONTROL_CLICK)
+			call BlzTriggerRegisterFrameEvent(t,CLOSE_BUTTON,FRAMEEVENT_CONTROL_CLICK)
 			set f = null
+			set t = null
 		endmethod
 
 		static method create takes player p returns thistype
@@ -337,28 +356,30 @@ library SlotChanger requires UI
 				set ACTIVATED = true
 			endif
 			/*트리거*/
-			set .keypress_trigger = Trigger.create(this)
-			call .keypress_trigger.addCondition(function thistype.keypressCallback)
-			call Event.register(.keypress_trigger.main_trigger,ENUM_EVENT_KEYPRESS)
-			call DisableTrigger(.keypress_trigger.main_trigger)
+			set .keypress_trigger = CreateTrigger()/*UI 보임 상태에 따라 온오프해야해서 멤버변수로 따로 관리*/
+			call Event.register(.keypress_trigger,ENUM_EVENT_KEYPRESS)
+			call TriggerAddCondition(.keypress_trigger,function thistype.keypressCallback)
+			call DisableTrigger(.keypress_trigger)
 			/**/
 			set f = null
 			return this
 		endmethod
 
 		method destroy takes nothing returns nothing
-			call .keypress_trigger.destroy()
+			call DestroyTrigger(.keypress_trigger)
 		endmethod
 
 		static method onInit takes nothing returns nothing
+			local trigger t = CreateTrigger()
 			/*키입력*/
-			set P_KEYPRESS_CALLBACK = CreateTrigger()
-			call TriggerAddCondition(P_KEYPRESS_CALLBACK,function thistype.act)
-			call Event.register(P_KEYPRESS_CALLBACK,ENUM_EVENT_KEYPRESS)
-			/*어빌아이콘 클릭*/
-			// set P_ICON_CLICK_CALLBACK = CreateTrigger()
-			// call TriggerAddCondition(P_ICON_CLICK_CALLBACK,function thistype.iconClickCallback)
-			// call Event.register(P_ICON_CLICK_CALLBACK,ENUM_EVENT_ABILITY_ICON_CLICK)
+			call Event.register(t,ENUM_EVENT_KEYPRESS)
+			call TriggerAddCondition(t,function thistype.act)
+			/*인풋레이어 변경 시(파워업창 열리면 슬롯체인져를 닫아야함*/
+			set t = CreateTrigger()
+			call Event.register(t,ENUM_EVENT_INPUT_LAYER_CHANGE)
+			call TriggerAddCondition(t,function thistype.inputLayerChangeCallback)
+			/**/
+			set t = null
 		endmethod
 
 	endstruct

@@ -7,6 +7,7 @@ library Table initializer init
 //! import "GeneratedBuffParams.j"
 //! import "GeneratedAbilityParams.j"
 //! import "GeneratedAbilityTooltips.j"
+//! import "GeneratedPowerupItems.j"
 
 private function init takes nothing returns nothing
   call InitEnumLookup()

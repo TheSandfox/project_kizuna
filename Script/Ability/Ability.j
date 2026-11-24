@@ -252,7 +252,7 @@ endlibrary
 	private function init takes nothing returns nothing
 		/*어빌리티 생성 콜백*/
 		local trigger t = CreateTrigger()
-		call Event.register(t,ENUM_EVENT_ABILITY_CREATE)
+		call SaveTriggerHandle(ABILITY_CREATE_TRIGGER_TABLE,ID,0,t)
 		call TriggerAddCondition(t,function act)
 		/*기본설정*/
 		call Ability.setTypeIconPath(ID,ICON_PATH)
