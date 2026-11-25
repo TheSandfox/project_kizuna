@@ -291,7 +291,7 @@ library Boss requires Frame
 		/*휴식중에 피격 시 전투 시작*/
 		private static method damageCallback takes nothing returns nothing
 			local thistype this = Trigger.getData(GetTriggeringTrigger())
-			if CUSTOM_RESPOND_DAMAGE_TARGET != this then
+			if EVT_DAMAGE_TARGET != this then
 				return
 			endif
 			// call BJDebugMsg("데미지콜백")

@@ -35,17 +35,17 @@ library ExtraAbilityIcon requires UI
 			/*TODO REFRESH FRAME*/
 			call BlzFrameSetVisible(.container,GetLocalPlayer() == Player(.pid))
 			/*쿨다운*/
-			call BlzFrameSetVisible(.cooldown_backdrop,.target.getUICooldown()>0. and .target.getCarculatedMaxCooldown() > 0.)
-			call BlzFrameSetVisible(.cooldown_backdrop2,.target.getUICooldown()>0. and .target.getCarculatedMaxCooldown() > 0.)
+			call BlzFrameSetVisible(.cooldown_backdrop,.target.getUICooldown()>0. and .target.getCalculatedMaxCooldown() > 0.)
+			call BlzFrameSetVisible(.cooldown_backdrop2,.target.getUICooldown()>0. and .target.getCalculatedMaxCooldown() > 0.)
 			if .target.getCount() == 0 then
 				call BlzFrameSetAlpha(.cooldown_backdrop,64)
 			endif
-			if .target.getCarculatedMaxCooldown() > 0. then
+			if .target.getCalculatedMaxCooldown() > 0. then
 				call BlzFrameSetPointPixel(.cooldown_backdrop2,FRAMEPOINT_TOPLEFT,.icon_backdrop,FRAMEPOINT_BOTTOMRIGHT,/*
-					*/-SIZE,SIZE*(.target.getUICooldown()/.target.getCarculatedMaxCooldown()))
+					*/-SIZE,SIZE*(.target.getUICooldown()/.target.getCalculatedMaxCooldown()))
 			endif
 			/*낫이너프마나*/
-			call BlzFrameSetVisible(.nem_backdrop,.target.owner.mp < .target.getCarculatedManacost())
+			call BlzFrameSetVisible(.nem_backdrop,.target.owner.mp < .target.getCalculatedManacost())
 			/**/
 		endmethod
 
@@ -87,7 +87,7 @@ library ExtraAbilityIcon requires UI
         	call BlzFrameSetAlpha(.nem_backdrop,168)
 			call BlzFrameSetVisible(.container,false)
 			set .icon_backdrop2 = BlzCreateFrameByType("BACKDROP","",.container,"",this)
-			call BlzFrameSetTexture(.icon_backdrop2,UnitData.getIconPath(.target.owner.id),0,true)
+			call BlzFrameSetTexture(.icon_backdrop2,UnitData.getString(.target.owner.id,ENUM_UNIT_PARAM_ICON_PATH),0,true)
 			call BlzFrameSetSizePixel(.icon_backdrop2,SIZE*0.5,SIZE*0.5)
 			call BlzFrameSetPointPixel(.icon_backdrop2,FRAMEPOINT_BOTTOMRIGHT,.icon_backdrop,FRAMEPOINT_BOTTOMRIGHT,0,0)
 			/*ARRAY*/

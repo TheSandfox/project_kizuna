@@ -14,3 +14,5 @@ private function init takes nothing returns nothing
 endfunction
 
 endlibrary
+
+//! import "UnitData.j"

@@ -16,7 +16,7 @@ private struct rockexplosion extends Explosion
 		call Buff.addWithValue(.owner,target,'Slow',0,0.5,90)
 		/*마지막 일격*/
 		if .strong then
-			set .damage = .owner.getCarculatedStatValue(ENUM_STAT_ATTACK) * 1.0 + target.maxhp*0.5 
+			set .damage = .owner.getCalculatedStatValue(ENUM_STAT_ATTACK) * 1.0 + target.maxhp*0.5 
 			/*50범위 이내일 때 제자리*/
 			if Math.distancePoints(.x,.y,target.x,target.y) <= 50. then
 				call SpinningKnockback.create(target,0,0,550.,3.,0.5)
@@ -28,7 +28,7 @@ private struct rockexplosion extends Explosion
 			call Buff.add(0,target,'Stun',0,0.5)
 		/*마지막 일격 아님*/
 		else
-			set .damage = .owner.getCarculatedStatValue(ENUM_STAT_ATTACK) * 1.0 + target.maxhp*0.33
+			set .damage = .owner.getCalculatedStatValue(ENUM_STAT_ATTACK) * 1.0 + target.maxhp*0.33
 		endif
 		call damageTarget(target)
 	endmethod

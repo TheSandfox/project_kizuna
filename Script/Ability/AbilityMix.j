@@ -101,26 +101,26 @@ library AbilityMix initializer init
 					/*이펙트출력*/
 					call AttatchedEffect.create(EFFECT_PATH4,User.getFocusUnit(USER)).setDuration(2.0)
 					/*UI리프레시*/
-					set CUSTOM_RESPOND_UI_REFRESH_PLAYER = USER
+					set EVT_UI_REFRESH_PLAYER = USER
 					call Event.activate(ENUM_EVENT_ABILITY_UI_REFRESH)
-					set CUSTOM_RESPOND_UI_REFRESH_PLAYER = null
+					set EVT_UI_REFRESH_PLAYER = null
 					set result = true
 				else
 					set result = false
 				endif
 			elseif oa == -1 then
 				/*공간없음*/
-				set CUSTOM_RESPOND_ERROR_PLAYER = USER
-				set CUSTOM_RESPOND_ERROR_MESSAGE = "더이상 스킬을 습득할 수 없습니다."
+				set EVT_ERROR_PLAYER = USER
+				set EVT_ERROR_MESSAGE = "더이상 스킬을 습득할 수 없습니다."
 				call Event.activate(ENUM_EVENT_ERROR)
 				set result = false
 			else
 				/*이미 보유한 능력*/
-				set CUSTOM_RESPOND_ERROR_PLAYER = USER
-				set CUSTOM_RESPOND_ERROR_MESSAGE = "이미 해당 유형의 스킬을 보유하고 있습니다.\n스킬 파편을 이용한 레벨업은 '스킬 관리(V) > 합성' 탭을 이용해주세요."
-				set CUSTOM_RESPOND_ERROR_TIME = 3.0
+				set EVT_ERROR_PLAYER = USER
+				set EVT_ERROR_MESSAGE = "이미 해당 유형의 스킬을 보유하고 있습니다.\n스킬 파편을 이용한 레벨업은 '스킬 관리(V) > 합성' 탭을 이용해주세요."
+				set EVT_ERROR_TIME = 3.0
 				call Event.activate(ENUM_EVENT_ERROR)
-				set CUSTOM_RESPOND_ERROR_TIME = 0.
+				set EVT_ERROR_TIME = 0.
 				set result = false
 			endif
 			set USER = null
@@ -527,29 +527,29 @@ library AbilityMix initializer init
 			set recipe = getRecipe(am1.getId(),am2.getId())
 			/*유효하지 않은 레시피임*/
 			if recipe.result <= 0 then
-				set CUSTOM_RESPOND_ERROR_PLAYER = target.owner
-				set CUSTOM_RESPOND_ERROR_MESSAGE = "유효하지 않은 레시피입니다."
+				set EVT_ERROR_PLAYER = target.owner
+				set EVT_ERROR_MESSAGE = "유효하지 않은 레시피입니다."
 				call Event.activate(ENUM_EVENT_ERROR)
 				return false
 			endif
 			/*레벨부족*/
 			if am1.getLevel() < LEVEL_REQUIRE or am2.getLevel() < LEVEL_REQUIRE then
-				set CUSTOM_RESPOND_ERROR_PLAYER = target.owner
-				set CUSTOM_RESPOND_ERROR_MESSAGE = "스킬,스킬 파편의 레벨이 부족합니다."
+				set EVT_ERROR_PLAYER = target.owner
+				set EVT_ERROR_MESSAGE = "스킬,스킬 파편의 레벨이 부족합니다."
 				call Event.activate(ENUM_EVENT_ERROR)
 				return false
 			endif
 			/*보유중인 어빌리티는 부재료로 쓸 수 없음*/
 			if am2.element_type == AbilityMixElement.TYPE_ABILITY then
-				set CUSTOM_RESPOND_ERROR_PLAYER = target.owner
-				set CUSTOM_RESPOND_ERROR_MESSAGE = "보유중인 스킬은 부 재료로 등록할 수 없습니다."
+				set EVT_ERROR_PLAYER = target.owner
+				set EVT_ERROR_MESSAGE = "보유중인 스킬은 부 재료로 등록할 수 없습니다."
 				call Event.activate(ENUM_EVENT_ERROR)
 				return false
 			endif
 			/*주재료가 어빌리티이면서 이미 레시피에 해당하는 어빌리티를 가지고 있음*/
 			if am1.element_type == AbilityMixElement.TYPE_ABILITY and Ability.getUnitAbilityById(target,recipe.result) > 0 then
-				set CUSTOM_RESPOND_ERROR_PLAYER = target.owner
-				set CUSTOM_RESPOND_ERROR_MESSAGE = "해당 유형의 스킬을 이미 보유하고 있습니다."
+				set EVT_ERROR_PLAYER = target.owner
+				set EVT_ERROR_MESSAGE = "해당 유형의 스킬을 이미 보유하고 있습니다."
 				call Event.activate(ENUM_EVENT_ERROR)
 				return false
 			endif
@@ -612,22 +612,22 @@ library AbilityMix initializer init
 			local boolean result = false
 			/*고유 능력은 랜덤합성을 진행할 수 없음*/
 			if am1.isSignature() then
-				set CUSTOM_RESPOND_ERROR_PLAYER = target.owner
-				set CUSTOM_RESPOND_ERROR_MESSAGE = "고유 스킬은 랜덤 합성이 불가능합니다."
+				set EVT_ERROR_PLAYER = target.owner
+				set EVT_ERROR_MESSAGE = "고유 스킬은 랜덤 합성이 불가능합니다."
 				call Event.activate(ENUM_EVENT_ERROR)
 				return false
 			endif
 			/*보유중인 어빌리티는 부재료로 쓸 수 없음*/
 			if am2.element_type == AbilityMixElement.TYPE_ABILITY then
-				set CUSTOM_RESPOND_ERROR_PLAYER = target.owner
-				set CUSTOM_RESPOND_ERROR_MESSAGE = "보유중인 스킬은 부 재료로 등록할 수 없습니다."
+				set EVT_ERROR_PLAYER = target.owner
+				set EVT_ERROR_MESSAGE = "보유중인 스킬은 부 재료로 등록할 수 없습니다."
 				call Event.activate(ENUM_EVENT_ERROR)
 				return false
 			endif
 			/*레벨부족*/
 			if am1.getLevel() < LEVEL_REQUIRE or am2.getLevel() < LEVEL_REQUIRE then
-				set CUSTOM_RESPOND_ERROR_PLAYER = target.owner
-				set CUSTOM_RESPOND_ERROR_MESSAGE = "스킬,스킬 파편의 레벨이 부족합니다."
+				set EVT_ERROR_PLAYER = target.owner
+				set EVT_ERROR_MESSAGE = "스킬,스킬 파편의 레벨이 부족합니다."
 				call Event.activate(ENUM_EVENT_ERROR)
 				return false
 			endif
@@ -651,12 +651,12 @@ library AbilityMix initializer init
 			/*테이블에 든 게 없음...*/
 			if rabil <= 0 then
 				if am1.element_type == AbilityMixElement.TYPE_ABILITY then
-					set CUSTOM_RESPOND_ERROR_PLAYER = target.owner
-					set CUSTOM_RESPOND_ERROR_MESSAGE = "이미 해당 티어의 스킬을 모두 습득했습니다."
+					set EVT_ERROR_PLAYER = target.owner
+					set EVT_ERROR_MESSAGE = "이미 해당 티어의 스킬을 모두 습득했습니다."
 					call Event.activate(ENUM_EVENT_ERROR)
 				else
-					set CUSTOM_RESPOND_ERROR_PLAYER = target.owner
-					set CUSTOM_RESPOND_ERROR_MESSAGE = "합성할 수 있는 무작위 스킬 레시피가 없습니다."
+					set EVT_ERROR_PLAYER = target.owner
+					set EVT_ERROR_MESSAGE = "합성할 수 있는 무작위 스킬 레시피가 없습니다."
 					call Event.activate(ENUM_EVENT_ERROR)
 				endif
 				set result = false
@@ -722,8 +722,8 @@ library AbilityMix initializer init
 			local integer currentlv = am1.getLevel()
 			/*이미 만렙임*/
 			if am1.getLevel() >= maxlv then
-				set CUSTOM_RESPOND_ERROR_PLAYER = target.owner
-				set CUSTOM_RESPOND_ERROR_MESSAGE = "최대레벨에 도달한 스킬은 레벨업 합성이 불가능합니다."
+				set EVT_ERROR_PLAYER = target.owner
+				set EVT_ERROR_MESSAGE = "최대레벨에 도달한 스킬은 레벨업 합성이 불가능합니다."
 				call Event.activate(ENUM_EVENT_ERROR)
 				return false
 			/*레벨업시키기*/
@@ -788,9 +788,9 @@ library AbilityMix initializer init
 			/*추출이펙트*/
 			call AttatchedEffect.create("Abilities\\Spells\\Human\\DispelMagic\\DispelMagicTarget.mdl",a.owner).setDuration(2.0)
 			call AttatchedEffect.create("Abilities\\Spells\\Items\\AIil\\AIilTarget.mdl",a.owner).setDuration(2.0)
-			set CUSTOM_RESPOND_UI_REFRESH_PLAYER = a.owner.owner
+			set EVT_UI_REFRESH_PLAYER = a.owner.owner
 			call Event.activate(ENUM_EVENT_ABILITY_UI_REFRESH)
-			set CUSTOM_RESPOND_UI_REFRESH_PLAYER = null
+			set EVT_UI_REFRESH_PLAYER = null
 			return true
 		endmethod
 

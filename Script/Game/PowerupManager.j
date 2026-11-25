@@ -1,7 +1,8 @@
 library PowerupManager initializer init requires Object, Ability, User, Table 
 
   globals
-    
+    private integer array P_RANDOM_STAT
+    private integer P_RANDOM_STAT_SIZE = 0
   endglobals
 
   /*최대로 동시에 플레이어 수*출력할 파워업아이템개수 만큼 존재할 수 있다.*/
@@ -37,7 +38,7 @@ library PowerupManager initializer init requires Object, Ability, User, Table
     /*유닛에게 파워업 적용하기*/
     method apply takes Unit target returns boolean
       local integer ability_create_result = 0
-      if isEmpty() then
+      if isEmpty() or target <= 0 then
         return false
       endif
       /*TODO 파워업아이템 유형에 따라 실행*/
@@ -50,6 +51,7 @@ library PowerupManager initializer init requires Object, Ability, User, Table
         endif
       elseif .type == ENUM_POWERUP_ITEM_TYPE_STAT then
         /*TODO 스탯증가*/
+        call target.plusBaseStatValue(.value,CONFIG_POWERUP_STAT_AMOUNT*CONSTANT_STAT_NORMAL_VALUE[.value])
       else
       endif
       return true
@@ -84,6 +86,7 @@ library PowerupManager initializer init requires Object, Ability, User, Table
 
     player owner
     delegate Array powerup_list
+    Array random_stat_list
 
     method getPowerupItem takes integer index returns PowerupItem
       return PowerupItem(CONFIG_POWERUP_ITEM_MAX*GetPlayerId(owner)+index)
@@ -93,11 +96,14 @@ library PowerupManager initializer init requires Object, Ability, User, Table
       local Powerup pu = Powerup(getValue(0))
       local integer i = 0
       if pu > 0 then
+        call .random_stat_list.shuffle()
         /*TODO 파워업아이템들 조정하기*/
         loop
           exitwhen i >= CONFIG_POWERUP_ITEM_MAX
-          call getPowerupItem(i).setType(ENUM_POWERUP_ITEM_TYPE_ABILITY)
-          call getPowerupItem(i).setValue('1000')
+          // call getPowerupItem(i).setType(ENUM_POWERUP_ITEM_TYPE_ABILITY)
+          // call getPowerupItem(i).setValue('1000')
+          call getPowerupItem(i).setType(ENUM_POWERUP_ITEM_TYPE_STAT)
+          call getPowerupItem(i).setValue(.random_stat_list.getValue(i))
           set i = i + 1
         endloop
       endif
@@ -110,10 +116,9 @@ library PowerupManager initializer init requires Object, Ability, User, Table
       if .size == 1 then
         call extract()
       endif
-      set CUSTOM_RESPOND_UI_REFRESH_ABILITY = -1
-      set CUSTOM_RESPOND_UI_REFRESH_PLAYER = .owner
-      set CUSTOM_RESPOND_UI_REFRESH_SLOT = -1
-      call Event.activate(ENUM_EVENT_ABILITY_UI_REFRESH)
+      set EVT_POWERUP_ADD_PLAYER = .owner
+      set EVT_POWERUP_ADD_UNIT = User.getFocusUnit(.owner)
+      call Event.activate(ENUM_EVENT_POWERUP_ADD)
     endmethod
 
     /*첫 칸의 파워업 제거하고 땡겨오기*/
@@ -153,17 +158,17 @@ library PowerupManager initializer init requires Object, Ability, User, Table
       call removePowerup()
       /*적용 성공 시*/
       if result then
-        set CUSTOM_RESPOND_POWERUP_PLAYER = .owner
-        set CUSTOM_RESPOND_POWERUP_UNIT = target
+        set EVT_POWERUP_PLAYER = .owner
+        set EVT_POWERUP_UNIT = target
         call Event.activate(ENUM_EVENT_POWERUP)
         if GetLocalPlayer() == .owner then
           call PlaySoundBJ(gg_snd_BigButtonClick)
         endif
       endif
       /*UIREFRESH*/
-      set CUSTOM_RESPOND_UI_REFRESH_ABILITY = -1
-      set CUSTOM_RESPOND_UI_REFRESH_PLAYER = .owner
-      set CUSTOM_RESPOND_UI_REFRESH_SLOT = -1
+      set EVT_UI_REFRESH_ABILITY = -1
+      set EVT_UI_REFRESH_PLAYER = .owner
+      set EVT_UI_REFRESH_SLOT = -1
       call Event.activate(ENUM_EVENT_ABILITY_UI_REFRESH)
     endmethod
 
@@ -172,18 +177,25 @@ library PowerupManager initializer init requires Object, Ability, User, Table
     endmethod
 
     static method create takes player owner returns thistype
+      local integer i = 0
       local thistype this = GetPlayerId(owner)
       set .owner = owner
-      /**/
+      /*파워업 배열 초기화*/
       set .powerup_list = Array.create()
-      /**/
+      /*랜덤스탯 배열 초기화(스탯증강 능력치 선택할 때 필요함)*/
+      set .random_stat_list = Array.create()
+      loop
+        exitwhen i >= P_RANDOM_STAT_SIZE
+        call .random_stat_list.add(P_RANDOM_STAT[i])
+        set i = i + 1
+      endloop
       return this
     endmethod
 
     /*레벨업 콜백*/
     static method levelCallback takes nothing returns nothing
-      local Unit u = Unit(CUSTOM_RESPOND_LEVEL_UNIT)
-      local integer diff = CUSTOM_RESPOND_LEVEL_LEVEL
+      local Unit u = Unit(EVT_LEVEL_UNIT)
+      local integer diff = EVT_LEVEL_LEVEL
       local thistype this = 0
       local integer i = 0
       if GetPlayerId(u.owner) < CONFIG_PLAYER_MAX and diff > 0 then
@@ -207,8 +219,46 @@ library PowerupManager initializer init requires Object, Ability, User, Table
 
   endstruct
 
+  /*랜덤스탯으로 줄거 초기화*/
   private function init takes nothing returns nothing
-
+    set P_RANDOM_STAT_SIZE = 0
+    /**/
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_MAXMP
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_HPREGEN
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_MAXMP
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_MPREGEN
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_ATTACK
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_DEFENSE
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_ARMOR_PENET
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_MAGICPOWER
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_RESISTANCE
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_MAGIC_PENET
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_ACCURACY
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_EVASION
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_SPELL_BOOST
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_LUCK
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_RODONG
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_INSIGHT
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_LOVE
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_GREED
+    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
   endfunction
 
 endlibrary

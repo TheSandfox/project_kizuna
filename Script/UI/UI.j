@@ -126,18 +126,18 @@ library UI requires User, Frame
 
 		method displayError takes nothing returns nothing
 			if GetLocalPlayer() == Player(this) then
-				call BlzFrameSetText(ABILITY_ERROR,CUSTOM_RESPOND_ERROR_MESSAGE)
+				call BlzFrameSetText(ABILITY_ERROR,EVT_ERROR_MESSAGE)
 				call PlaySoundBJ(gg_snd_Error)
 			endif
-			if CUSTOM_RESPOND_ERROR_TIME <= 0. then
+			if EVT_ERROR_TIME <= 0. then
 				set .ability_error_lifespan = 2.0
 			else
-				set .ability_error_lifespan = CUSTOM_RESPOND_ERROR_TIME
+				set .ability_error_lifespan = EVT_ERROR_TIME
 			endif
 		endmethod
 
 		static method errorCondition takes nothing returns nothing
-			local thistype this = GetPlayerId(CUSTOM_RESPOND_ERROR_PLAYER)
+			local thistype this = GetPlayerId(EVT_ERROR_PLAYER)
 			call displayError()
 		endmethod
 
@@ -252,9 +252,9 @@ library UI requires User, Frame
 		endmethod
 
 		static method onLevel takes nothing returns nothing
-			local Unit u = CUSTOM_RESPOND_LEVEL_UNIT
+			local Unit u = EVT_LEVEL_UNIT
 			local thistype this = 0
-			if CUSTOM_RESPOND_LEVEL_UNIT <= 0 then
+			if EVT_LEVEL_UNIT <= 0 then
 				return
 			endif
 			set this = GetPlayerId(u.owner)
@@ -278,13 +278,11 @@ library UI requires User, Frame
 			call PowerupUI.create(p)
 			call SlotChanger.create(p)
 			call CloseUI.create(p)
-			call Inventory.create(p)
 			call Numberpad.create(p)
 			call StatIndicator.create(p,FRAME_STAT_INDICATOR)
 			call Scouter.create(p)
 			call CameraSetup.create(p)
 			call BuffIndicator.create(p)
-			call AbilityManager.create(p)
 			/*타겟리프레시*/
 			call setTarget(User.getFocusUnit(p))
 			/*타이머*/
@@ -313,24 +311,9 @@ library UI requires User, Frame
 			elseif BlzGetTriggerFrame() == FRAME_SLOT_CHANGER_BUTTON then
 				call SlotChanger(GetPlayerId(GetTriggerPlayer())).switch()
 				return
-			elseif BlzGetTriggerFrame() == FRAME_INVENTORY_BUTTON then
-				call Inventory(GetPlayerId(GetTriggerPlayer())).switch()
-				return
 			elseif BlzGetTriggerFrame() == FRAME_STAT_INDICATOR_BUTTON then
 				call StatIndicator(GetPlayerId(GetTriggerPlayer())).switch()
 				return
-			elseif BlzGetTriggerFrame() == FRAME_ABILITY_MANAGER_BUTTON then
-				call AbilityManager(GetPlayerId(GetTriggerPlayer())).switch()
-				return
-			// elseif BlzGetTriggerFrame() == FRAME_INVENTORY_CATEGORY_BUTTON[0] then
-			// 	call Inventory(GetPlayerId(GetTriggerPlayer())).changeCategory(0)
-			// 	return
-			// elseif BlzGetTriggerFrame() == FRAME_INVENTORY_CATEGORY_BUTTON[ITEMTYPE_FOOD] then
-			// 	call Inventory(GetPlayerId(GetTriggerPlayer())).changeCategory(ITEMTYPE_FOOD)
-			// 	return
-			// elseif BlzGetTriggerFrame() == FRAME_INVENTORY_CATEGORY_BUTTON[ITEMTYPE_GACHA] then
-			// 	call Inventory(GetPlayerId(GetTriggerPlayer())).changeCategory(ITEMTYPE_GACHA)
-			// 	return
 			endif
 		endmethod
 
@@ -432,11 +415,11 @@ library UI requires User, Frame
 				set f = BlzCreateFrame("MyTextLarge",FRAME_ABILITY_ICON[i],0,0)
 				call BlzFrameSetAllPoints(f,FRAME_ABILITY_ICON[i])
 				if i < 4 then
-					call BlzFrameSetText(f,"|cff663333"+CONSTANT_ABILITY_HOTKEY_NAME[i]+"|r")
+					call BlzFrameSetText(f,"|cff663333"+CONSTANT_ABILITY_SLOT_NAME[i]+"|r")
 				elseif i < 6 then
-					call BlzFrameSetText(f,"|cff333366"+CONSTANT_ABILITY_HOTKEY_NAME[i]+"|r")
+					call BlzFrameSetText(f,"|cff333366"+CONSTANT_ABILITY_SLOT_NAME[i]+"|r")
 				else
-					call BlzFrameSetText(f,"|cff336633"+CONSTANT_ABILITY_HOTKEY_NAME[i]+"|r")
+					call BlzFrameSetText(f,"|cff336633"+CONSTANT_ABILITY_SLOT_NAME[i]+"|r")
 				endif
 				call BlzFrameSetTextAlignment(f,TEXT_JUSTIFY_CENTER,TEXT_JUSTIFY_CENTER)
 				set i = i + 1
@@ -459,7 +442,7 @@ library UI requires User, Frame
 			call BlzFrameSetPoint(f,FRAMEPOINT_TOPLEFT,bf,FRAMEPOINT_TOPLEFT,0.,0.)
 			call BlzFrameSetSizePixel(f,20,20)
 			call BlzFrameSetTextAlignment(f,TEXT_JUSTIFY_CENTER,TEXT_JUSTIFY_CENTER)
-			call BlzFrameSetText(f,"|cffffcc00"+CONSTANT_ABILITY_HOTKEY_NAME[ENUM_ABILITY_HOTKEY_UNRIDE]+"|r")
+			call BlzFrameSetText(f,"|cffffcc00"+CONSTANT_ABILITY_SLOT_NAME[ENUM_ABILITY_SLOT_UNRIDE]+"|r")
 			call Frame.addTooltipSimple(FRAMEPOINT_BOTTOMLEFT,FRAME_UNRIDE_ICON,FRAMEPOINT_TOPLEFT,"내리기|cffffcc00(Z)|r",0.,0.)
 			/*일단 숨김*/call BlzFrameSetVisible(FRAME_UNRIDE_ICON,false)
 			/*내려놓기 아이콘*/
@@ -480,7 +463,7 @@ library UI requires User, Frame
 			call BlzFrameSetPoint(f,FRAMEPOINT_TOPLEFT,bf,FRAMEPOINT_TOPLEFT,0.,0.)
 			call BlzFrameSetSizePixel(f,20,20)
 			call BlzFrameSetTextAlignment(f,TEXT_JUSTIFY_CENTER,TEXT_JUSTIFY_CENTER)
-			call BlzFrameSetText(f,"|cffffcc00"+CONSTANT_ABILITY_HOTKEY_NAME[ENUM_ABILITY_HOTKEY_UNGRAB]+"|r")
+			call BlzFrameSetText(f,"|cffffcc00"+CONSTANT_ABILITY_SLOT_NAME[ENUM_ABILITY_SLOT_UNGRAB]+"|r")
 			call Frame.addTooltipSimple(FRAMEPOINT_BOTTOMLEFT,FRAME_UNGRAB_ICON,FRAMEPOINT_TOPLEFT,"내려놓기|cffffcc00(X)|r",0.,0.)
 			/*일단 숨김*/call BlzFrameSetVisible(FRAME_UNGRAB_ICON,false)
 			/*능력치(C)*/
@@ -673,25 +656,25 @@ library UI requires User, Frame
 		endmethod
 
 		private static method refreshCond takes nothing returns nothing
-			local thistype this = GetPlayerId(CUSTOM_RESPOND_UI_REFRESH_PLAYER)
+			local thistype this = GetPlayerId(EVT_UI_REFRESH_PLAYER)
 			call refreshAbilityIconsTarget()
 			call SlotChanger(this).stateDefault()
-			call AbilityManager(this).loadAbility()
-			call Inventory(this).refresh()
+			// call AbilityManager(this).loadAbility()
+			// call Inventory(this).refresh()
 		endmethod
 
 		private static method itemDestroyRespond takes nothing returns nothing
 			local thistype this = 0
-			if CUSTOM_RESPOND_ITEM_DESTROY_ADDRESS1 != ItemAddress.UNIT then
+			if EVT_ITEM_DESTROY_ADDRESS1 != ItemAddress.UNIT then
 				return
 			endif
-			set this = GetPlayerId(Unit(CUSTOM_RESPOND_ITEM_DESTROY_ADDRESS2).owner)
+			set this = GetPlayerId(Unit(EVT_ITEM_DESTROY_ADDRESS2).owner)
 		endmethod
 
 		private static method ridingCallback takes nothing returns nothing
-			local thistype this = GetPlayerId(Unit_prototype(CUSTOM_RESPOND_RIDING_CASTER).owner)
+			local thistype this = GetPlayerId(Unit_prototype(EVT_RIDING_CASTER).owner)
 			if GetLocalPlayer() == Player(this) then
-				if CUSTOM_RESPOND_RIDING_FLAG then
+				if EVT_RIDING_FLAG then
 					call BlzFrameSetTexture(FRAME_UNRIDE_ICON_BACKDROP,"ReplaceableTextures\\CommandButtons\\BTNUnLoad.blp",0,true)
 				else
 					call BlzFrameSetTexture(FRAME_UNRIDE_ICON_BACKDROP,"ReplaceableTextures\\CommandButtonsDisabled\\DISBTNUnLoad.blp",0,true)
@@ -700,10 +683,10 @@ library UI requires User, Frame
 		endmethod
 
 		private static method grabbingCallback takes nothing returns nothing
-			local thistype this = GetPlayerId(Unit_prototype(CUSTOM_RESPOND_GRABBING_CASTER).owner)
+			local thistype this = GetPlayerId(Unit_prototype(EVT_GRABBING_CASTER).owner)
 			if GetLocalPlayer() == Player(this) then
-				if CUSTOM_RESPOND_GRABBING_FLAG then
-					if CUSTOM_RESPOND_GRABBING_REFRESH_UI then
+				if EVT_GRABBING_FLAG then
+					if EVT_GRABBING_REFRESH_UI then
 						call BlzFrameSetTexture(FRAME_UNGRAB_ICON_BACKDROP,"ReplaceableTextures\\CommandButtons\\BTNPickUpItem.blp",0,true)
 					else
 						call BlzFrameSetTexture(FRAME_UNGRAB_ICON_BACKDROP,"ReplaceableTextures\\CommandButtonsDisabled\\DISBTNPickUpItem.blp",0,true)
@@ -742,10 +725,8 @@ endlibrary
 //! import "PowerupUI.j"
 //! import "CloseUI.j"
 //! import "SlotChanger.j"
-//! import "Inventory.j"
 //! import "Numberpad.j"
 //! import "ExtraAbilityIcon.j"
 //! import "Scouter.j"
 //! import "CameraSetup.j"
 //! import "BuffIndicator.j"
-//! import "AbilityManager.j"

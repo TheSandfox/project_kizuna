@@ -125,7 +125,7 @@ scope BuffSlow initializer init
 		endmethod
 
 		method init takes nothing returns boolean
-			set .val = CUSTOM_RESPOND_BUFF_VALUE
+			set .val = EVT_BUFF_VALUE
 			call .target.divideStatValue(ENUM_STAT_MOVEMENT_SPEED,.val)
 			if .target.getStatus(ENUM_STATUS_UNSTOP) > 0 then
 				call destroy()
@@ -166,7 +166,7 @@ scope BuffPmgm initializer init
 		integer val = 0
 
 		method init takes nothing returns boolean
-			set .val = CUSTOM_RESPOND_BUFF_VALUE
+			set .val = EVT_BUFF_VALUE
 			set .extra = I2S(.val)
 			call UnitClass(.target).addClass(ENUM_UNIT_CLASS_POMANGAM,.val)
 			return true
@@ -204,7 +204,7 @@ scope BuffPadt initializer init
 		integer val = 0
 
 		method init takes nothing returns boolean
-			set .val = CUSTOM_RESPOND_BUFF_VALUE
+			set .val = EVT_BUFF_VALUE
 			set .extra = I2S(.val)
 			call UnitClass(.target).addClass(ENUM_UNIT_CLASS_ADDICT,.val)
 			return true

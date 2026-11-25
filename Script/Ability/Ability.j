@@ -177,7 +177,7 @@ library Ability requires AbilityPrototype
 				call UI(GetPlayerId(.owner.owner)).refreshAbilityIconsTarget()
 			elseif User.getCurrentInputLayer(.owner.owner) == ENUM_INPUT_LAYER_ABILITY_MANAGER then
 				/*비활성화상태임(조합창에 올릴때 등 액션은 여기에 작성)*/
-				call AbilityManager(GetPlayerId(.owner.owner)).abilityMixRegisterRequest(this,AbilityMixElement.TYPE_ABILITY)
+				// call AbilityManager(GetPlayerId(.owner.owner)).abilityMixRegisterRequest(this,AbilityMixElement.TYPE_ABILITY)
 			endif
 		endmethod
 
@@ -193,10 +193,10 @@ library Ability requires AbilityPrototype
 			endif
 			set ind1 = getTypeBonusStatIndex(.id,0)
 			set ind2 = getTypeBonusStatIndex(.id,1)
-			call .owner.plusBaseStatValue(ind1,v*STAT_NORMAL_VALUE[ind1]*getTypeTier(.id)*0.5)
-			call .owner.plusBaseStatValue(ind2,v*STAT_NORMAL_VALUE[ind2]*getTypeTier(.id)*0.5)
-			set .stat_bonus1 = .stat_bonus1 + v*STAT_NORMAL_VALUE[ind1]*getTypeTier(.id)*0.5
-			set .stat_bonus2 = .stat_bonus2 + v*STAT_NORMAL_VALUE[ind2]*getTypeTier(.id)*0.5
+			call .owner.plusBaseStatValue(ind1,v*CONSTANT_STAT_NORMAL_VALUE[ind1]*getTypeTier(.id)*0.5)
+			call .owner.plusBaseStatValue(ind2,v*CONSTANT_STAT_NORMAL_VALUE[ind2]*getTypeTier(.id)*0.5)
+			set .stat_bonus1 = .stat_bonus1 + v*CONSTANT_STAT_NORMAL_VALUE[ind1]*getTypeTier(.id)*0.5
+			set .stat_bonus2 = .stat_bonus2 + v*CONSTANT_STAT_NORMAL_VALUE[ind2]*getTypeTier(.id)*0.5
 		endmethod
 
 		method addLevel takes integer v returns nothing
@@ -240,12 +240,12 @@ endlibrary
 //! textmacro abilityDataEnd
 	private function act takes nothing returns nothing
 		local main a = 0
-		if CUSTOM_RESPOND_ABILITY_CREATE_ID == ID then
+		if EVT_ABILITY_CREATE_ID == ID then
 			set a = main.create()
-			set a.owner = CUSTOM_RESPOND_ABILITY_CREATE_UNIT
+			set a.owner = EVT_ABILITY_CREATE_UNIT
 			call a.essentialInit()
 			call a.init()
-			set CUSTOM_RESPOND_ABILITY_CREATE_RESULT = a
+			set EVT_ABILITY_CREATE_RESULT = a
 		endif
 	endfunction
 
@@ -316,7 +316,7 @@ endlibrary
 //! endtextmacro
 
 //! import "AbilityData\\AbilityData.j"
-//! import "AbilityMix.j"
-//! import "AbilityTable.j"
+// //! import "AbilityMix.j"
+// //! import "AbilityTable.j"
 //! import "GenericBuffs/GenericBuffs.j"
 //! import "Powerup.j"

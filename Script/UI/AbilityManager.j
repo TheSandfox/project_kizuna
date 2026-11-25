@@ -243,9 +243,9 @@ library AbilityManager requires Frame
 				/**/call a.addLevel(1)
 				/*이펙트출력*/
 				call AttatchedEffect.create("Abilities\\Spells\\Items\\AIem\\AIemTarget.mdl",.target).setDuration(2.0)
-				/**/set CUSTOM_RESPOND_UI_REFRESH_PLAYER = .owner
+				/**/set EVT_UI_REFRESH_PLAYER = .owner
 				/**/call Event.activate(ENUM_EVENT_ABILITY_UI_REFRESH)
-				/**/set CUSTOM_RESPOND_UI_REFRESH_PLAYER = null
+				/**/set EVT_UI_REFRESH_PLAYER = null
 				return
 			endif
 		endmethod
@@ -404,8 +404,8 @@ library AbilityManager requires Frame
 			local boolean result = false
 			if am2.element_type == AbilityMixElement.TYPE_ABILITY then
 				/*보유중인 스킬은 부재료로 못씀*/
-				set CUSTOM_RESPOND_ERROR_PLAYER = .owner
-				set CUSTOM_RESPOND_ERROR_MESSAGE = "보유중인 스킬은 부 재료로 등록할 수 없습니다."
+				set EVT_ERROR_PLAYER = .owner
+				set EVT_ERROR_MESSAGE = "보유중인 스킬은 부 재료로 등록할 수 없습니다."
 				call Event.activate(ENUM_EVENT_ERROR)
 				return
 			endif
@@ -434,9 +434,9 @@ library AbilityManager requires Frame
 					call setAbilityMixTarget(0,0)
 				endif
 				call setAbilityMixTarget(1,0)
-				set CUSTOM_RESPOND_UI_REFRESH_PLAYER = .owner
+				set EVT_UI_REFRESH_PLAYER = .owner
 				call Event.activate(ENUM_EVENT_ABILITY_UI_REFRESH)
-				set CUSTOM_RESPOND_UI_REFRESH_PLAYER = null
+				set EVT_UI_REFRESH_PLAYER = null
 			endif
 		endmethod
 
@@ -459,8 +459,8 @@ library AbilityManager requires Frame
 			elseif .ability_mix_element2 <= 0 then
 				if et == AbilityMixElement.TYPE_ABILITY then
 					/*보유중인 스킬은 부 재료로 등록 불가*/
-					set CUSTOM_RESPOND_ERROR_PLAYER = .owner
-					set CUSTOM_RESPOND_ERROR_MESSAGE = "보유중인 스킬은 부 재료로 등록할 수 없습니다."
+					set EVT_ERROR_PLAYER = .owner
+					set EVT_ERROR_MESSAGE = "보유중인 스킬은 부 재료로 등록할 수 없습니다."
 					call Event.activate(ENUM_EVENT_ERROR)
 					return
 				elseif et == AbilityMixElement.TYPE_ABILITY_SHARD then
@@ -594,8 +594,8 @@ library AbilityManager requires Frame
 			local boolean b = false
 			/*V키 입력*/
 			if Event.getValue() == ENUM_EVENT_KEYPRESS then
-				set this = GetPlayerId(CUSTOM_RESPOND_KEYPRESS_PLAYER)
-				if CUSTOM_RESPOND_KEYPRESS_KEY == OSKEY_V and CUSTOM_RESPOND_KEYPRESS_PRESS then
+				set this = GetPlayerId(EVT_KEYPRESS_PLAYER)
+				if EVT_KEYPRESS_KEY == OSKEY_V and EVT_KEYPRESS_PRESS then
 					call switch()
 					return
 				endif

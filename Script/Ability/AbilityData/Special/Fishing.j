@@ -99,7 +99,7 @@ scope Ability2080 initializer init
 			Effect ef = 0
 
 			private method pick takes nothing returns nothing
-				set ItemDynamicDrop.create(AbilityShard.create(AbilityTable.getRandomAbility(GetPlayerId(.caster.owner),AbilityTable.FISHING_1)),.x,.y,.caster.x,.caster.y,1.5).target = .caster
+				// set ItemDynamicDrop.create(AbilityShard.create(AbilityTable.getRandomAbility(GetPlayerId(.caster.owner),AbilityTable.FISHING_1)),.x,.y,.caster.x,.caster.y,1.5).target = .caster
 				call Effect.create(EFFECT_PATH3,.x,.y,0.,270.).kill()
 				call .caster.setAnim("attack")
 				call .caster.queueAnim("stand")
@@ -197,7 +197,7 @@ scope Ability2080 initializer init
 
 			static method record takes nothing returns nothing
 				local thistype this = Trigger.getData(GetTriggeringTrigger())
-				if CUSTOM_RESPOND_CLICK_BUTTON_TYPE == MOUSE_BUTTON_TYPE_RIGHT then
+				if EVT_CLICK_BUTTON_TYPE == MOUSE_BUTTON_TYPE_RIGHT then
 					set .click = true
 				endif
 			endmethod
@@ -257,7 +257,7 @@ scope Ability2080 initializer init
 				if GetTerrainCliffLevel(.command_x,.command_y) < CONFIG_CLIFF_HEIGHT_DEFAULT then
 					return true
 				else
-					set CUSTOM_RESPOND_ERROR_MESSAGE = "해당 지점에 사용할 수 없습니다."
+					set EVT_ERROR_MESSAGE = "해당 지점에 사용할 수 없습니다."
 					return false
 				endif
 			endmethod

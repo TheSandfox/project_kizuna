@@ -9,132 +9,229 @@ try {
     // ignore
 }
 
-const XLSX = require('xlsx');
 const fs = require('fs');
+const XLSX = require('xlsx');
 
-// 상대 경로를 절대 경로로 안전하게 생성
-const xlsxFile = path.resolve(__dirname, './Master.xlsx');
+const INPUT_FILE = path.join(__dirname, 'Master.xlsx');
+const SHEET_NAME = 'AbilityParams';
+const OUTPUT_FILE = path.join(__dirname, 'GeneratedAbilityParams.j');
 
-function wwrite(workbook, sheetName, mode) {
-    const sheet = workbook.Sheets[sheetName];
-    if (!sheet) {
-        console.warn(`시트를 찾을 수 없습니다: ${sheetName}`);
-        return;
+// 빈 셀일 때 2행 헤더 타입별 기본값
+const DEFAULT_BY_HEADER_TYPE = {
+    integer: '0',
+    fourcc: '0',
+    real: '0.0',
+    boolean: 'false',
+    string: '""',
+    iconpath: '""',
+    casttype: '0',
+    abilitytag: '-1',
+    enum: '0',
+};
+
+function isEmpty(val) {
+    if (val === null || val === undefined) return true;
+    if (typeof val === 'string' && val.trim() === '') return true;
+    return false;
+}
+
+function toCleanString(val) {
+    if (val === null || val === undefined) return '';
+    return String(val).trim();
+}
+
+function escapeJassString(str) {
+    return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+}
+
+function formatRealLiteral(val) {
+    const num = typeof val === 'number' ? val : Number(String(val).trim());
+    if (Number.isNaN(num)) {
+        const raw = toCleanString(val);
+        return raw.includes('.') ? raw : `${raw}.0`;
+    }
+    const str = String(num);
+    return str.includes('.') ? str : `${str}.0`;
+}
+
+function formatBooleanLiteral(val) {
+    if (typeof val === 'boolean') return val ? 'true' : 'false';
+    const normalized = toCleanString(val).toLowerCase();
+    return normalized === 'true' || normalized === '1' ? 'true' : 'false';
+}
+
+function formatFourccLiteral(val) {
+    const raw = toCleanString(val);
+    if (!raw) return '0';
+    // 이미 'A1B2' 형태면 그대로 두고, 4글자 rawcode면 작은따옴표로 감쌈
+    if (raw.startsWith("'") && raw.endsWith("'") && raw.length >= 2) {
+        return raw;
+    }
+    return `'${raw}'`;
+}
+
+function formatIconPathLiteral(val) {
+    const raw = toCleanString(val);
+    if (!raw) return '""';
+    // 이미 ReplaceableTextures\... 또는 .blp가 붙어있을 경우를 대비해 정리
+    let body = raw
+        .replace(/^replaceabletextures[\\/]+commandbuttons[\\/]+/i, '')
+        .replace(/\.blp$/i, '');
+    body = escapeJassString(body);
+    return `"ReplaceableTextures\\\\CommandButtons\\\\${body}.blp"`;
+}
+
+function formatField(header1, header2Raw, cellVal) {
+    const varName = toCleanString(header1);
+    const rawType = toCleanString(header2Raw).toLowerCase();
+
+    if (!varName || !rawType || rawType === 'ignore') {
+        return null;
     }
 
-    // 2차원 배열 형태로 시트 데이터 로드 (header: 1)
-    const rows = XLSX.utils.sheet_to_json(sheet, { header: 1, defval: null });
-    if (!rows || rows.length === 0) return;
-
-    let outJass = '';
-    let prefix = '';
-    if (mode === 'ability') {
-        outJass = path.resolve(__dirname, './GeneratedAbilityParams.j');
-        prefix = 'private';
-    } else if (mode === 'buff') {
-        outJass = path.resolve(__dirname, './GeneratedBuffParams.j');
-        prefix = 'public';
+    if (isEmpty(cellVal)&& (rawType!=='abilitytag')) {
+        return null;
     }
 
-    const datafromX = 3;
-    const dataType = 2;
-    const allowNull = 1;
-    let i = 0;
-    let j = datafromX;
+    let jassType = rawType;
+    let jassValue = '';
 
-    // 출력 파일 초기화
-    fs.writeFileSync(outJass, '', 'utf-8');
-
-    while (true) {
-        // 끝까지 가면 루프 탈출
-        if (j === rows[0].length || rows[0][j] == null) {
+    switch (rawType) {
+        case 'fourcc': {
+            jassType = 'integer';
+            jassValue = isEmpty(cellVal) ? DEFAULT_BY_HEADER_TYPE.fourcc : formatFourccLiteral(cellVal);
             break;
         }
-
-        // 텍매열기 J
-        fs.appendFileSync(outJass, '//! textmacro ' + mode + 'Param' + rows[0][j] + "\nglobals\n", 'utf-8');
-
-        // 셀 데이터 기록
-        i = 0;
-        while (true) {
-            if (i === rows.length) {
-                break;
-            }
-
-            // 빈 값이 아닐 때만 (또는 allowNull이 "true"일 때)
-            if ((rows[i][j] != null || String(rows[i][allowNull]) === "true") && rows[i][dataType] !== "ignore") {
-                const cellVal = rows[i][j];
-                const typeVal = rows[i][dataType];
-                const varName = rows[i][0];
-
-                switch (typeVal) {
-                    case 'iconpath':
-                        fs.appendFileSync(outJass, '\t' + prefix + ' constant string ' + varName + ' = "ReplaceableTextures\\\\CommandButtons\\\\' + cellVal + '.blp"\n', 'utf-8');
-                        break;
-                    case 'fourcc':
-                        fs.appendFileSync(outJass, '\t' + prefix + ' constant integer ' + varName + " = '" + cellVal + "'\n", 'utf-8');
-                        break;
-                    case 'string':
-                        fs.appendFileSync(outJass, '\t' + prefix + ' constant string ' + varName + ' = "' + cellVal + '"\n', 'utf-8');
-                        break;
-                    case 'abilitytag':
-                        if (cellVal != null) {
-                            fs.appendFileSync(outJass, '\t' + prefix + ' constant integer ' + varName + " = ENUM_ABILITY_TAG_" + cellVal + "\n", 'utf-8');
-                        } else {
-                            fs.appendFileSync(outJass, '\t' + prefix + ' constant integer ' + varName + " = -1\n", 'utf-8');
-                        }
-                        break;
-                    case 'casttype':
-                        if (cellVal != null) {
-                            fs.appendFileSync(outJass, '\t' + prefix + ' constant integer ' + varName + " = ENUM_CAST_TYPE_" + cellVal + "\n", 'utf-8');
-                        } else {
-                            fs.appendFileSync(outJass, '\t' + prefix + ' constant integer ' + varName + " = -1\n", 'utf-8');
-                        }
-                        break;
-                    case 'enum':
-                        if (cellVal != null) {
-                            fs.appendFileSync(outJass, '\t' + prefix + ' constant integer ' + varName + " = ENUM_" + cellVal + "\n", 'utf-8');
-                        } else {
-                            fs.appendFileSync(outJass, '\t' + prefix + ' constant integer ' + varName + " = -1\n", 'utf-8');
-                        }
-                        break;
-                    case 'real':
-                        if (typeof cellVal === 'string' && cellVal[cellVal.length - 1] === '%') {
-                            let pure = Number(cellVal.substring(0, cellVal.length - 1)) / 100.0;
-                            // 퍼센트임
-                            fs.appendFileSync(outJass, '\t' + prefix + ' constant real ' + varName + " = " + String(pure) + "\n", 'utf-8');
-                        } else {
-                            // 아님
-                            fs.appendFileSync(outJass, '\t' + prefix + ' constant real ' + varName + " = " + cellVal + "\n", 'utf-8');
-                        }
-                        break;
-                    case 'ignore':
-                        /* 기록 안 함 */
-                        break;
-                    default:
-                        fs.appendFileSync(outJass, '\t' + prefix + ' constant ' + typeVal + " " + varName + " = " + cellVal + "\n", 'utf-8');
-                        break;
-                }
-            }
-
-            i++;
+        case 'iconpath': {
+            jassType = 'string';
+            jassValue = isEmpty(cellVal) ? DEFAULT_BY_HEADER_TYPE.iconpath : formatIconPathLiteral(cellVal);
+            break;
         }
-
-        // 괄호 닫기 J
-        fs.appendFileSync(outJass, "endglobals\n//! endtextmacro\n", 'utf-8');
-        j++;
+        case 'casttype': {
+            jassType = 'integer';
+            if (isEmpty(cellVal)) {
+                jassValue = DEFAULT_BY_HEADER_TYPE.casttype;
+            } else {
+                const v = toCleanString(cellVal);
+                jassValue = v.startsWith('ENUM_CAST_TYPE_') ? v : `ENUM_CAST_TYPE_${v}`;
+            }
+            break;
+        }
+        case 'abilitytag': {
+            jassType = 'integer';
+            if (isEmpty(cellVal)) {
+                jassValue = '-1';
+            } else {
+                const v = toCleanString(cellVal);
+                jassValue = v.startsWith('ENUM_ABILITY_TAG_') ? v : `ENUM_ABILITY_TAG_${v}`;
+            }
+            break;
+        }
+        case 'enum': {
+            jassType = 'integer'; // 별도 타입 지정이 없으므로 2행 헤더 타입 유지
+            if (isEmpty(cellVal)) {
+                jassValue = DEFAULT_BY_HEADER_TYPE.enum;
+            } else {
+                const v = toCleanString(cellVal);
+                jassValue = v.startsWith('ENUM_') ? v : `ENUM_${v}`;
+            }
+            break;
+        }
+        case 'real': {
+            jassType = 'real';
+            jassValue = isEmpty(cellVal) ? DEFAULT_BY_HEADER_TYPE.real : formatRealLiteral(cellVal);
+            break;
+        }
+        case 'integer': {
+            jassType = 'integer';
+            jassValue = isEmpty(cellVal) ? DEFAULT_BY_HEADER_TYPE.integer : String(parseInt(toCleanString(cellVal), 10));
+            break;
+        }
+        case 'boolean': {
+            jassType = 'boolean';
+            jassValue = isEmpty(cellVal) ? DEFAULT_BY_HEADER_TYPE.boolean : formatBooleanLiteral(cellVal);
+            break;
+        }
+        case 'string': {
+            jassType = 'string';
+            jassValue = isEmpty(cellVal) ? DEFAULT_BY_HEADER_TYPE.string : `"${escapeJassString(toCleanString(cellVal))}"`;
+            break;
+        }
+        default: {
+            // 별도 언급이 없는 기타 2행 헤더는 타입 및 값 그대로 파싱
+            jassType = toCleanString(header2Raw);
+            jassValue = isEmpty(cellVal) ? '0' : toCleanString(cellVal);
+            break;
+        }
     }
+
+    return `\tprivate constant ${jassType} ${varName} = ${jassValue}`;
 }
 
 function main() {
-    const workbook = XLSX.readFile(xlsxFile);
+    if (!fs.existsSync(INPUT_FILE)) {
+        console.error(`입력 파일을 찾을 수 없습니다: ${INPUT_FILE}`);
+        process.exit(1);
+    }
 
-    wwrite(workbook, 'AbilityParams', 'ability');
-    wwrite(workbook, 'BuffParams', 'buff');
+    const workbook = XLSX.readFile(INPUT_FILE);
+    const worksheet = workbook.Sheets[SHEET_NAME];
+    if (!worksheet) {
+        console.error(`시트 '${SHEET_NAME}'을(를) 찾을 수 없습니다.`);
+        process.exit(1);
+    }
 
-    console.log('파싱 완료!');
+    // 2차원 배열로 변환 (빈 셀은 null로 채움)
+    const rows = XLSX.utils.sheet_to_json(worksheet, {
+        header: 1,
+        defval: null,
+        raw: true,
+    });
+
+    if (rows.length < 3) {
+        console.error('헤더(1~2행) 또는 데이터(3행 이상)가 충분하지 않습니다.');
+        process.exit(1);
+    }
+
+    const row1Headers = rows[0];
+    const row2Types = rows[1];
+    const colCount = Math.max(row1Headers.length, row2Types.length);
+
+    const blocks = [];
+
+    // 3행(index 2)부터 순회하며 1열(index 0) ID가 비면 종료
+    for (let r = 2; r < rows.length; r++) {
+        const row = rows[r];
+        const idRaw = row[0];
+
+        if (isEmpty(idRaw)) {
+            break;
+        }
+
+        const idStr = toCleanString(idRaw);
+        const lines = [];
+        lines.push(`//! textmacro abilityParam${idStr}`);
+        lines.push('globals');
+
+        for (let c = 0; c < colCount; c++) {
+            const h1 = row1Headers[c];
+            const h2 = row2Types[c];
+            const val = c < row.length ? row[c] : null;
+
+            const formatted = formatField(h1, h2, val);
+            if (formatted !== null) {
+                lines.push(formatted);
+            }
+        }
+
+        lines.push('endglobals');
+        lines.push('//! endtextmacro');
+        blocks.push(lines.join('\n'));
+    }
+
+    const outputContent = blocks.join('\n\n') + (blocks.length > 0 ? '\n' : '');
+    fs.writeFileSync(OUTPUT_FILE, outputContent, 'utf8');
+    console.log(`완료: 총 ${blocks.length}개의 abilityParam 텍스트매크로를 '${OUTPUT_FILE}'에 생성했습니다.`);
 }
-
-module.exports = main;
 
 main();

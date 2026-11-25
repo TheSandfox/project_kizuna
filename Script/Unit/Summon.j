@@ -159,8 +159,8 @@ library Summon requires Unit
 
 		private static method deathCallback takes nothing returns nothing
 			local thistype this = 0
-			if UnitClass(CUSTOM_RESPOND_DEATH_UNIT).isClass(ENUM_UNIT_CLASS_SUMMON) then
-				set this = CUSTOM_RESPOND_DEATH_UNIT
+			if UnitClass(EVT_DEATH_UNIT).isClass(ENUM_UNIT_CLASS_SUMMON) then
+				set this = EVT_DEATH_UNIT
 				call summonDeathEssential()
 				call summonDeath()
 				call summonUnregister()

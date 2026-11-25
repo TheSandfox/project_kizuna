@@ -90,11 +90,11 @@ struct AbilityIcon extends array
 			/*무기사거리 & 무기딜레이*/
 			if Ability.getTypeIsWeapon(.target.id) then
 				call BlzFrameSetText(TOOLTIP_MANACOST_TEXT[.index], "|cff00ffff" + I2S(R2I(.target.weapon_range)) + "|r")
-				call BlzFrameSetText(TOOLTIP_COOLDOWN_TEXT[.index], "|cffffff99" + R2SW(.target.weapon_delay / .target.getAttackSpeedValue(.target.owner.getCarculatedStatValue(ENUM_STAT_ATTACK_SPEED)), 2, 2) + "|r")
+				call BlzFrameSetText(TOOLTIP_COOLDOWN_TEXT[.index], "|cffffff99" + R2SW(.target.weapon_delay / .target.getAttackSpeedValue(.target.owner.getCalculatedStatValue(ENUM_STAT_ATTACK_SPEED)), 2, 2) + "|r")
         /*마나코스트 & 쿨다운*/
 			else
-				call BlzFrameSetText(TOOLTIP_MANACOST_TEXT[.index], "|cff0099ff" + I2S(R2I(.target.getCarculatedManacost())) + "|r")
-				call BlzFrameSetText(TOOLTIP_COOLDOWN_TEXT[.index], "|cffffff99" + R2SW(.target.getCarculatedMaxCooldown(), 2, 2) + "|r\n" +/*
+				call BlzFrameSetText(TOOLTIP_MANACOST_TEXT[.index], "|cff0099ff" + I2S(R2I(.target.getCalculatedManacost())) + "|r")
+				call BlzFrameSetText(TOOLTIP_COOLDOWN_TEXT[.index], "|cffffff99" + R2SW(.target.getCalculatedMaxCooldown(), 2, 2) + "|r\n" +/*
         */ "|cff999999/" + R2SW(.target.cooldown_min, 2, 2) + "|r")
 			endif
 			/*커스텀 코스트*/
@@ -107,21 +107,21 @@ struct AbilityIcon extends array
 			/*쿨타임 백드롭*/
 			call BlzFrameSetVisible(COOLDOWN_TEXT[.index], .target.getUICooldown() > 0.)
 			call BlzFrameSetVisible(COOLDOWN_TEXT_BACKDROP[.index], .target.getUICooldown() > 0.)
-			call BlzFrameSetVisible(COOLDOWN_BACKDROP[.index], .target.getUICooldown() > 0. and .target.getCarculatedMaxCooldown() > 0.)
+			call BlzFrameSetVisible(COOLDOWN_BACKDROP[.index], .target.getUICooldown() > 0. and .target.getCalculatedMaxCooldown() > 0.)
 			call BlzFrameSetText(COOLDOWN_TEXT[.index], R2SW(.target.getUICooldown(), 1, 1))
 			if .target.getCount() == 0 then
 				call BlzFrameSetAlpha(COOLDOWN_BACKDROP[.index], 128)
 			else
 				call BlzFrameSetAlpha(COOLDOWN_BACKDROP[.index], 32)
 			endif
-			if .target.getCarculatedMaxCooldown() > 0. then
+			if .target.getCalculatedMaxCooldown() > 0. then
 				call BlzFrameSetPoint(COOLDOWN_BACKDROP[.index], FRAMEPOINT_TOPRIGHT, ICON_BACKDROP[.index], FRAMEPOINT_BOTTOMRIGHT, /*
-        */ 0., Math.px2Size(ABILITY_ICON_SIZE) * (.target.getUICooldown() /.target.getCarculatedMaxCooldown()))
+        */ 0., Math.px2Size(ABILITY_ICON_SIZE) * (.target.getUICooldown() /.target.getCalculatedMaxCooldown()))
 			endif
 			/*디저블 백드롭*/
 			call BlzFrameSetVisible(DISABLED_BACKDROP[.index], not (.target.enableFilter() and .target.useFilterAdditional()))
 			/*마나부족백드롭*/
-			call BlzFrameSetVisible(NEM_BACKDROP[.index], .target.owner.mp < .target.getCarculatedManacost())
+			call BlzFrameSetVisible(NEM_BACKDROP[.index], .target.owner.mp < .target.getCalculatedManacost())
 			/*엑스트라밸류*/
 			call BlzFrameSetVisible(EXTRA_BACKDROP[.index], .target.count_max > 1)
 			call BlzFrameSetVisible(EXTRA_TEXT[.index], .target.count_max > 1)
@@ -178,14 +178,14 @@ struct AbilityIcon extends array
         /*단축키색깔(스마트여부)*/
         if Ability.getTypeIsWeapon(.target.id) then
 					/*무기*/
-          call BlzFrameSetText(HOTKEY_TEXT[.index], "|cffcc0000" + CONSTANT_ABILITY_HOTKEY_NAME[.index] + "|r")
+          call BlzFrameSetText(HOTKEY_TEXT[.index], "|cffcc0000" + CONSTANT_ABILITY_SLOT_NAME[.index] + "|r")
         else
           if .target.smart == 0 then
-            call BlzFrameSetText(HOTKEY_TEXT[.index], "|cff999999" + CONSTANT_ABILITY_HOTKEY_NAME[.index] + "|r")
+            call BlzFrameSetText(HOTKEY_TEXT[.index], "|cff999999" + CONSTANT_ABILITY_SLOT_NAME[.index] + "|r")
           elseif .target.smart == 1 then
-            call BlzFrameSetText(HOTKEY_TEXT[.index], "|cffffcc00" + CONSTANT_ABILITY_HOTKEY_NAME[.index] + "|r")
+            call BlzFrameSetText(HOTKEY_TEXT[.index], "|cffffcc00" + CONSTANT_ABILITY_SLOT_NAME[.index] + "|r")
           elseif .target.smart == 2 then
-            call BlzFrameSetText(HOTKEY_TEXT[.index], "|cff00ffff" + CONSTANT_ABILITY_HOTKEY_NAME[.index] + "|r")
+            call BlzFrameSetText(HOTKEY_TEXT[.index], "|cff00ffff" + CONSTANT_ABILITY_SLOT_NAME[.index] + "|r")
           endif
         endif
         /*어빌리티 캐스트타입*/
@@ -282,10 +282,10 @@ struct AbilityIcon extends array
         call .target.iconClick()
         call setTarget(.target)
         /*아이콘클릭 이벤트 작동*/
-        set CUSTOM_RESPOND_ABILITY_ICON_CLICK_PLAYER = .target.owner.owner
-        set CUSTOM_RESPOND_ABILITY_ICON_CLICK_UNIT = .target.owner
-        set CUSTOM_RESPOND_ABILITY_ICON_CLICK_ABILITY = .target
-        set CUSTOM_RESPOND_ABILITY_ICON_CLICK_SLOT = index
+        set EVT_ABILITY_ICON_CLICK_PLAYER = .target.owner.owner
+        set EVT_ABILITY_ICON_CLICK_UNIT = .target.owner
+        set EVT_ABILITY_ICON_CLICK_ABILITY = .target
+        set EVT_ABILITY_ICON_CLICK_SLOT = index
         call Event.activate(ENUM_EVENT_ABILITY_ICON_CLICK)
       endif
       return
@@ -349,7 +349,7 @@ struct AbilityIcon extends array
     set HOTKEY_TEXT[index] = BlzCreateFrame("MyText", ICON_CONTAINER[index], 0, 0)
     call BlzFrameSetAllPoints(HOTKEY_TEXT[index], HOTKEY_BACKDROP[index])
     call BlzFrameSetTextAlignment(HOTKEY_TEXT[index], TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_CENTER)
-    call BlzFrameSetText(HOTKEY_TEXT[index], "|cffffcc00" + CONSTANT_ABILITY_HOTKEY_NAME[index] + "|r")
+    call BlzFrameSetText(HOTKEY_TEXT[index], "|cffffcc00" + CONSTANT_ABILITY_SLOT_NAME[index] + "|r")
 		/*게이지*/
     set GAUGE_BACKDROP[index] = BlzCreateFrameByType("BACKDROP", "", ICON_CONTAINER[index], "", 0)
     call BlzFrameSetPoint(GAUGE_BACKDROP[index], FRAMEPOINT_TOPLEFT, pivot, FRAMEPOINT_BOTTOMLEFT, 0., 0.)
@@ -512,18 +512,18 @@ struct AbilityIcon extends array
 	static method forceRefresh takes nothing returns nothing
 		local thistype this = 0
 		local integer i = 0
-		if CUSTOM_RESPOND_UI_REFRESH_PLAYER == null then
+		if EVT_UI_REFRESH_PLAYER == null then
 			return
 		endif
-		if CUSTOM_RESPOND_UI_REFRESH_SLOT < 0 then
+		if EVT_UI_REFRESH_SLOT < 0 then
 			/*특정 '어빌리티 인스턴스' 리프레시*/
-			if CUSTOM_RESPOND_UI_REFRESH_ABILITY <= 0 then
+			if EVT_UI_REFRESH_ABILITY <= 0 then
 				return
 			endif
 			loop
 				exitwhen i >= CONFIG_ABILITY_SIZE
-				set this = GetPlayerId(CUSTOM_RESPOND_UI_REFRESH_PLAYER) * CONFIG_ABILITY_SIZE + i
-				if .target == CUSTOM_RESPOND_UI_REFRESH_ABILITY then
+				set this = GetPlayerId(EVT_UI_REFRESH_PLAYER) * CONFIG_ABILITY_SIZE + i
+				if .target == EVT_UI_REFRESH_ABILITY then
 					call setTarget(.target)
 					return
 				endif
@@ -531,7 +531,7 @@ struct AbilityIcon extends array
 			endloop
 		else
 			/*특정 '인덱스' 리프레시*/
-			set this = GetPlayerId(CUSTOM_RESPOND_UI_REFRESH_PLAYER) * CONFIG_ABILITY_SIZE + CUSTOM_RESPOND_UI_REFRESH_SLOT
+			set this = GetPlayerId(EVT_UI_REFRESH_PLAYER) * CONFIG_ABILITY_SIZE + EVT_UI_REFRESH_SLOT
 			call setTarget(.target)
 		endif
 	endmethod

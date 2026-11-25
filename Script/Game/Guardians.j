@@ -16,7 +16,7 @@ library Guardians requires UnitData
 		static trigger DEATH_TRIGGER = null
 
 		static method guardianDeath takes nothing returns nothing
-			local thistype this = CUSTOM_RESPOND_DEATH_UNIT
+			local thistype this = EVT_DEATH_UNIT
 			local integer i = 0
 			local unit u = null
 			local Undead ud = 0

@@ -510,12 +510,12 @@ library Inventory requires UI, User
 			local thistype this = 0
 			local integer cat = 0
 			local integer index = 0
-			if CUSTOM_RESPOND_ITEM_DESTROY_ADDRESS1 != ItemAddress.INVENTORY then
+			if EVT_ITEM_DESTROY_ADDRESS1 != ItemAddress.INVENTORY then
 				return
 			endif
-			set this = CUSTOM_RESPOND_ITEM_DESTROY_ADDRESS2
-			set cat = 0 //Item.getTypeItemType(Item(CUSTOM_RESPOND_ITEM_DESTROY_ITEM).id)
-			set index = ItemList(.inventories.getValue(cat)).seek(CUSTOM_RESPOND_ITEM_DESTROY_ITEM)
+			set this = EVT_ITEM_DESTROY_ADDRESS2
+			set cat = 0 //Item.getTypeItemType(Item(EVT_ITEM_DESTROY_ITEM).id)
+			set index = ItemList(.inventories.getValue(cat)).seek(EVT_ITEM_DESTROY_ITEM)
 			if index > -1 then
 				call pull(cat,index)
 			endif
@@ -562,10 +562,10 @@ library Inventory requires UI, User
 		static method press takes nothing returns nothing
 			local thistype this = Trigger.getData(GetTriggeringTrigger())
 			if Event.getValue() == ENUM_EVENT_KEYPRESS then
-				if CUSTOM_RESPOND_KEYPRESS_PLAYER != .owner then
+				if EVT_KEYPRESS_PLAYER != .owner then
 					return
 				endif
-				if CUSTOM_RESPOND_KEYPRESS_KEY == OSKEY_B and CUSTOM_RESPOND_KEYPRESS_PRESS then
+				if EVT_KEYPRESS_KEY == OSKEY_B and EVT_KEYPRESS_PRESS then
 					call switch()
 					return
 				endif
@@ -679,17 +679,17 @@ library Inventory requires UI, User
 
 		/*Item.pick(유닛)의 콜백*/
 		static method itemPick takes nothing returns nothing
-			local Unit picker = Unit(CUSTOM_RESPOND_ITEM_PICK_UNIT)
+			local Unit picker = Unit(EVT_ITEM_PICK_UNIT)
 			local thistype this = GetPlayerId(picker.owner)
-			local Item it = CUSTOM_RESPOND_ITEM_PICK_ITEM
+			local Item it = EVT_ITEM_PICK_ITEM
 			/*포커스 유닛이 주운게 아니면 인벤으로 안들어감*/
 			if it <= 0 or User.getFocusUnit(picker.owner) != picker then
-				set CUSTOM_RESPOND_ITEM_PICK_RESULT = false
+				set EVT_ITEM_PICK_RESULT = false
 				return
 			endif
 			/*자리없으면 떨구는 코드 내장돼있음*/
 			call addItem(it)
-			set CUSTOM_RESPOND_ITEM_PICK_RESULT = true
+			set EVT_ITEM_PICK_RESULT = true
 		endmethod
 
 		static method numberpadSummit takes nothing returns nothing

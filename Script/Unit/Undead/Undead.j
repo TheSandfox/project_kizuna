@@ -270,10 +270,10 @@ library Undead requires Unit
 
 		static method cond takes nothing returns nothing
 			local thistype this = 0
-			if Unit(CUSTOM_RESPOND_DAMAGE_ATTACKER).class == "Undead" then
-				set this = CUSTOM_RESPOND_DAMAGE_ATTACKER
-			elseif Unit(CUSTOM_RESPOND_DAMAGE_TARGET).class == "Undead" then
-				set this = CUSTOM_RESPOND_DAMAGE_TARGET
+			if Unit(EVT_DAMAGE_ATTACKER).class == "Undead" then
+				set this = EVT_DAMAGE_ATTACKER
+			elseif Unit(EVT_DAMAGE_TARGET).class == "Undead" then
+				set this = EVT_DAMAGE_TARGET
 			else
 				return
 			endif
@@ -330,10 +330,10 @@ library Undead requires Unit
 		endmethod
 
 		static method unregister2 takes nothing returns nothing
-			if CUSTOM_RESPOND_UNREGISTER_GROUP_UNIT == null then
+			if EVT_UNREGISTER_GROUP_UNIT == null then
 				return
 			else
-				call GroupRemoveUnit(GROUP,CUSTOM_RESPOND_UNREGISTER_GROUP_UNIT)
+				call GroupRemoveUnit(GROUP,EVT_UNREGISTER_GROUP_UNIT)
 			endif
 		endmethod
 

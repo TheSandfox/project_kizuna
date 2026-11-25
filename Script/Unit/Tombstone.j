@@ -30,7 +30,7 @@ library Tombstone
 			else
 				call .owner.healUnit(.owner,.owner.maxhp*HEAL_PER_SEC*TICK)
 				/*부활 예상시간 계산*/
-				set val = (.owner.maxhp - .owner.hp) / ( (.owner.maxhp*HEAL_PER_SEC+.owner.hpregen)*.owner.getCarculatedStatValue(ENUM_STAT_HEAL_AMP) )
+				set val = (.owner.maxhp - .owner.hp) / ( (.owner.maxhp*HEAL_PER_SEC+.owner.hpregen)*.owner.getCalculatedStatValue(ENUM_STAT_HEAL_AMP) )
 				if GetLocalPlayer() == .owner.owner then
 					call BlzFrameSetText(.text,"|cffff0000"+I2S(R2I(val)+1)+"|r")
 				endif
@@ -90,29 +90,29 @@ library Tombstone
 		endmethod
 
 		static method death takes nothing returns nothing
-			if CUSTOM_RESPOND_DEATH_UNIT <= 0 then
+			if EVT_DEATH_UNIT <= 0 then
 				return
 			endif
-			if not thistype(CUSTOM_RESPOND_DEATH_UNIT).exists then
-				call create(CUSTOM_RESPOND_DEATH_UNIT)
+			if not thistype(EVT_DEATH_UNIT).exists then
+				call create(EVT_DEATH_UNIT)
 			endif
 		endmethod
 
 		static method revive takes nothing returns nothing
-			if CUSTOM_RESPOND_REVIVE_UNIT <= 0 then
+			if EVT_REVIVE_UNIT <= 0 then
 				return
 			endif
-			if thistype(CUSTOM_RESPOND_REVIVE_UNIT).exists then
-				call thistype(CUSTOM_RESPOND_REVIVE_UNIT).destroy()
+			if thistype(EVT_REVIVE_UNIT).exists then
+				call thistype(EVT_REVIVE_UNIT).destroy()
 			endif
 		endmethod
 
 		static method decay takes nothing returns nothing
-			if CUSTOM_RESPOND_DECAY_UNIT <= 0 then
+			if EVT_DECAY_UNIT <= 0 then
 				return
 			endif
-			if thistype(CUSTOM_RESPOND_DECAY_UNIT).exists then
-				call thistype(CUSTOM_RESPOND_DECAY_UNIT).destroy()
+			if thistype(EVT_DECAY_UNIT).exists then
+				call thistype(EVT_DECAY_UNIT).destroy()
 			endif
 		endmethod
 

@@ -37,6 +37,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ARMOR_PENET
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam1010
 globals
 	private constant integer ID = '1010'
@@ -54,7 +55,7 @@ globals
 	private constant integer MANACOST = 27
 	private constant real CAST = 0.25
 	private constant real DELAY = 0.65
-	private constant real RANGE = 500.
+	private constant real RANGE = 500.0
 	private constant boolean IS_WEAPON = false
 	private constant real DAMAGE_PER_LEVEL = 0.06
 	private constant real DAMAGE_AMPLIFIER1 = 2.25
@@ -72,6 +73,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAGIC_PENET
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam1020
 globals
 	private constant integer ID = '1020'
@@ -115,6 +117,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ARMOR_PENET
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam1030
 globals
 	private constant integer ID = '1030'
@@ -131,7 +134,7 @@ globals
 	private constant real COOLDOWN_MIN = 0.5
 	private constant integer MANACOST = 25
 	private constant real DELAY = 0.2
-	private constant real RANGE = 750.
+	private constant real RANGE = 750.0
 	private constant real BACKSWING = 0.15
 	private constant real RADIUS2 = 65.0
 	private constant real RADIUS3 = 145.0
@@ -154,6 +157,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_SPELL_BOOST
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam1040
 globals
 	private constant integer ID = '1040'
@@ -194,6 +198,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ACCURACY
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam1050
 globals
 	private constant integer ID = '1050'
@@ -234,9 +239,10 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAXHP
 	private constant real DATA_REAL1 = 0.01
 	private constant real DATA_REAL2 = 0.3
-	private constant real DATA_REAL3 = 4
+	private constant real DATA_REAL3 = 4.0
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam1060
 globals
 	private constant integer ID = '1060'
@@ -260,6 +266,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ACCURACY
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam1070
 globals
 	private constant integer ID = '1070'
@@ -297,6 +304,7 @@ globals
 	private constant real DATA_REAL1 = 24.0
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam1080
 globals
 	private constant integer ID = '1080'
@@ -338,6 +346,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ACCURACY
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam1090
 globals
 	private constant integer ID = '1090'
@@ -377,6 +386,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAXHP
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10a0
 globals
 	private constant integer ID = '10a0'
@@ -414,6 +424,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ARMOR_PENET
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10b0
 globals
 	private constant integer ID = '10b0'
@@ -453,6 +464,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAXHP
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10c0
 globals
 	private constant integer ID = '10c0'
@@ -493,6 +505,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ARMOR_PENET
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10d0
 globals
 	private constant integer ID = '10d0'
@@ -510,7 +523,7 @@ globals
 	private constant integer MANACOST = 38
 	private constant real DELAY = 0.22
 	private constant real DURATION = 8.0
-	private constant real RADIUS1 = 450.
+	private constant real RADIUS1 = 450.0
 	private constant real ROTSPEED = 6.0
 	private constant real INTERVAL = 0.25
 	private constant integer COUNT = 8
@@ -522,6 +535,7 @@ globals
 	private constant real DATA_REAL1 = 5.0
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10e0
 globals
 	private constant integer ID = '10e0'
@@ -561,6 +575,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ARMOR_PENET
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10f0
 globals
 	private constant integer ID = '10f0'
@@ -603,6 +618,7 @@ globals
 	private constant real DATA_REAL3 = 3.5
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10g0
 globals
 	private constant integer ID = '10g0'
@@ -643,6 +659,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_EVASION
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10h0
 globals
 	private constant integer ID = '10h0'
@@ -683,6 +700,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ARMOR_PENET
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10i0
 globals
 	private constant integer ID = '10i0'
@@ -725,6 +743,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ACCURACY
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10j0
 globals
 	private constant integer ID = '10j0'
@@ -761,6 +780,7 @@ globals
 	private constant real DATA_REAL1 = 0.12
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10k0
 globals
 	private constant integer ID = '10k0'
@@ -801,6 +821,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ACCURACY
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10l0
 globals
 	private constant integer ID = '10l0'
@@ -828,6 +849,7 @@ globals
 	private constant real DATA_REAL2 = 0.5
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10m0
 globals
 	private constant integer ID = '10m0'
@@ -870,6 +892,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ACCURACY
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10n0
 globals
 	private constant integer ID = '10n0'
@@ -909,6 +932,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAGICPOWER
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10o0
 globals
 	private constant integer ID = '10o0'
@@ -951,6 +975,7 @@ globals
 	private constant integer DATA_INTEGER1 = 1
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10p0
 globals
 	private constant integer ID = '10p0'
@@ -987,6 +1012,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ARMOR_PENET
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10q0
 globals
 	private constant integer ID = '10q0'
@@ -1024,6 +1050,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ACCURACY
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10r0
 globals
 	private constant integer ID = '10r0'
@@ -1047,6 +1074,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAXHP
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10s0
 globals
 	private constant integer ID = '10s0'
@@ -1070,6 +1098,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ATTACK
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10t0
 globals
 	private constant integer ID = '10t0'
@@ -1093,6 +1122,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAXHP
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10u0
 globals
 	private constant integer ID = '10u0'
@@ -1129,6 +1159,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ARMOR_PENET
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10v0
 globals
 	private constant integer ID = '10v0'
@@ -1171,6 +1202,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ACCURACY
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10w0
 globals
 	private constant integer ID = '10w0'
@@ -1207,6 +1239,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ACCURACY
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10x0
 globals
 	private constant integer ID = '10x0'
@@ -1249,6 +1282,7 @@ globals
 	private constant real DATA_REAL1 = 0.2
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10y0
 globals
 	private constant integer ID = '10y0'
@@ -1290,6 +1324,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAXHP
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10z0
 globals
 	private constant integer ID = '10z0'
@@ -1313,6 +1348,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MPREGEN
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10A0
 globals
 	private constant integer ID = '10A0'
@@ -1336,6 +1372,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MPREGEN
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10B0
 globals
 	private constant integer ID = '10B0'
@@ -1360,6 +1397,7 @@ globals
 	private constant integer DATA_INTEGER2 = 2
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam10C0
 globals
 	private constant integer ID = '10C0'
@@ -1399,6 +1437,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_HPREGEN
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam2000
 globals
 	private constant integer ID = '2000'
@@ -1422,6 +1461,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_HPREGEN
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam2030
 globals
 	private constant integer ID = '2030'
@@ -1458,6 +1498,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ARMOR_PENET
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam2040
 globals
 	private constant integer ID = '2040'
@@ -1502,6 +1543,7 @@ globals
 	private constant real DATA_REAL2 = 255.0
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam2050
 globals
 	private constant integer ID = '2050'
@@ -1541,6 +1583,7 @@ globals
 	private constant real DATA_REAL1 = 1.25
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam2060
 globals
 	private constant integer ID = '2060'
@@ -1584,6 +1627,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ACCURACY
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam2070
 globals
 	private constant integer ID = '2070'
@@ -1624,6 +1668,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_HPREGEN
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam2080
 globals
 	private constant integer ID = '2080'
@@ -1647,6 +1692,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_LUCK
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam2090
 globals
 	private constant integer ID = '2090'
@@ -1683,6 +1729,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ARMOR_PENET
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20a0
 globals
 	private constant integer ID = '20a0'
@@ -1718,6 +1765,7 @@ globals
 	private constant real DATA_REAL5 = 2.5
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20b0
 globals
 	private constant integer ID = '20b0'
@@ -1741,6 +1789,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ATTACK
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20c0
 globals
 	private constant integer ID = '20c0'
@@ -1782,6 +1831,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ACCURACY
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20d0
 globals
 	private constant integer ID = '20d0'
@@ -1806,6 +1856,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ARMOR_PENET
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20e0
 globals
 	private constant integer ID = '20e0'
@@ -1843,6 +1894,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAXHP
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20f0
 globals
 	private constant integer ID = '20f0'
@@ -1886,6 +1938,7 @@ globals
 	private constant real DATA_REAL3 = 0.33
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20g0
 globals
 	private constant integer ID = '20g0'
@@ -1909,6 +1962,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ARMOR_PENET
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20h0
 globals
 	private constant integer ID = '20h0'
@@ -1933,6 +1987,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAXMP
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20i0
 globals
 	private constant integer ID = '20i0'
@@ -1959,6 +2014,7 @@ globals
 	private constant real DATA_REAL1 = 0.25
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20j0
 globals
 	private constant integer ID = '20j0'
@@ -1981,6 +2037,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ACCURACY
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20k0
 globals
 	private constant integer ID = '20k0'
@@ -2003,6 +2060,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_HPREGEN
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20l0
 globals
 	private constant integer ID = '20l0'
@@ -2047,6 +2105,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ACCURACY
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20m0
 globals
 	private constant integer ID = '20m0'
@@ -2090,6 +2149,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ARMOR_PENET
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20n0
 globals
 	private constant integer ID = '20n0'
@@ -2113,6 +2173,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_RESISTANCE
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20o0
 globals
 	private constant integer ID = '20o0'
@@ -2136,6 +2197,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAXHP
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20p0
 globals
 	private constant integer ID = '20p0'
@@ -2176,6 +2238,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ATTACK
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20q0
 globals
 	private constant integer ID = '20q0'
@@ -2222,6 +2285,7 @@ globals
 	private constant real DATA_REAL3 = 0.33
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20r0
 globals
 	private constant integer ID = '20r0'
@@ -2257,6 +2321,7 @@ globals
 	private constant real DATA_REAL1 = 0.66
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam20s0
 globals
 	private constant integer ID = '20s0'
@@ -2294,6 +2359,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_RESISTANCE
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam3000
 globals
 	private constant integer ID = '3000'
@@ -2333,6 +2399,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_ACCURACY
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam3010
 globals
 	private constant integer ID = '3010'
@@ -2375,6 +2442,7 @@ globals
 	private constant integer DATA_INTEGER1 = 15
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam3020
 globals
 	private constant integer ID = '3020'
@@ -2420,6 +2488,7 @@ globals
 	private constant integer DATA_INTEGER2 = 3
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam3030
 globals
 	private constant integer ID = '3030'
@@ -2447,7 +2516,7 @@ globals
 	private constant boolean WEAPON_CAN_ATTACK_ALLY = false
 	private constant boolean WEAPON_CANT_ATTACK_ENEMY = false
 	private constant real DAMAGE_PRIMARY = 0.2
-	private constant real DAMAGE_SECONDARY = 1
+	private constant real DAMAGE_SECONDARY = 1.0
 	private constant real DAMAGE_PER_LEVEL = 0.08
 	private constant real DAMAGE_AMPLIFIER1 = 1.3
 	private constant integer DAMAGE_STAT1 = ENUM_STAT_MAGICPOWER
@@ -2465,6 +2534,7 @@ globals
 	private constant real DATA_REAL1 = 400.0
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam3040
 globals
 	private constant integer ID = '3040'
@@ -2508,6 +2578,7 @@ globals
 	private constant real DATA_REAL3 = 2000.0
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam3050
 globals
 	private constant integer ID = '3050'
@@ -2531,6 +2602,7 @@ globals
 	private constant integer DATA_INTEGER1 = 110
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam3060
 globals
 	private constant integer ID = '3060'
@@ -2570,6 +2642,7 @@ globals
 	private constant real DATA_REAL3 = 155.0
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam3070
 globals
 	private constant integer ID = '3070'
@@ -2616,6 +2689,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAGICPOWER
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam3080
 globals
 	private constant integer ID = '3080'
@@ -2655,6 +2729,7 @@ globals
 	private constant real DATA_REAL1 = 26.0
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam4000
 globals
 	private constant integer ID = '4000'
@@ -2698,6 +2773,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_SPELL_BOOST
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam4010
 globals
 	private constant integer ID = '4010'
@@ -2736,6 +2812,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAXMP
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam5000
 globals
 	private constant integer ID = '5000'
@@ -2774,6 +2851,7 @@ globals
 	private constant real DATA_REAL1 = 0.5
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParam5010
 globals
 	private constant integer ID = '5010'
@@ -2816,6 +2894,7 @@ globals
 	private constant integer DATA_INTEGER1 = 20
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParamC000
 globals
 	private constant integer ID = 'C000'
@@ -2837,6 +2916,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_HPREGEN
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParamC001
 globals
 	private constant integer ID = 'C001'
@@ -2858,6 +2938,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_EVASION
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParamC002
 globals
 	private constant integer ID = 'C002'
@@ -2879,6 +2960,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_EVASION
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParamC003
 globals
 	private constant integer ID = 'C003'
@@ -2900,6 +2982,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAXMP
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParamC004
 globals
 	private constant integer ID = 'C004'
@@ -2921,6 +3004,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MPREGEN
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParamC005
 globals
 	private constant integer ID = 'C005'
@@ -2942,6 +3026,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_RESISTANCE
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParamC006
 globals
 	private constant integer ID = 'C006'
@@ -2963,6 +3048,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAGICPOWER
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParamC007
 globals
 	private constant integer ID = 'C007'
@@ -2984,6 +3070,7 @@ globals
 	private constant integer STAT_BONUS2 = ENUM_STAT_MAXHP
 endglobals
 //! endtextmacro
+
 //! textmacro abilityParamC008
 globals
 	private constant integer ID = 'C008'

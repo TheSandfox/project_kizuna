@@ -9,7 +9,7 @@ library Game requires Unit, Ability, UI
 
 	globals
 		private trigger LEAVE_TRIGGER = CreateTrigger()	
-		private integer TEST_UNIT_ID = 'HR0c'
+		private integer TEST_UNIT_ID = 'HR03'
 		private integer DUMMY_UNIT_ID1 = 'U001'
 		private integer DUMMY_UNIT_ID2 = 'U004'
 		constant boolean GAME_DEBUG = true
@@ -28,9 +28,6 @@ library Game requires Unit, Ability, UI
 			endif
 			if SlotChanger(GetPlayerId(GetTriggerPlayer())) > 0 then
 				call SlotChanger(GetPlayerId(GetTriggerPlayer())).destroy()
-			endif
-			if Inventory(GetPlayerId(GetTriggerPlayer())) > 0 then
-				call Inventory(GetPlayerId(GetTriggerPlayer())).destroy()
 			endif
 			if User.getFocusUnit(GetTriggerPlayer()) > 0 then
 				set User.getFocusUnit(GetTriggerPlayer()).is_revive = false
@@ -89,8 +86,6 @@ library Game requires Unit, Ability, UI
 			call User.selectFocusUnit(p)
 			/*파워업 매니저*/
 			call PowerupManager.create(p)
-			/*어빌리티테이블*/
-			call AbilityTable.createExtra(GetPlayerId(p),uid)
 			/*메인 UI*/
 			call UI.create(p)
 			/*초기소지금*/
@@ -108,7 +103,6 @@ library Game requires Unit, Ability, UI
 			// call Tip.init()
 			/*프레임관련*/
 			call UI.init()
-			call Inventory.init()
 			call Numberpad.init()
 			/*플레이어별 초기화*/
 			loop
@@ -119,18 +113,8 @@ library Game requires Unit, Ability, UI
 				endif
 				set i = i + 1
 			endloop
-			/*생명의 나무*/
-			// call TreeOfLife.init()
-			/*수호자 초기화*/
-			// call Guardians.init()
-			/*웨이브 가동*/
-			// call Round.init()
 			/*상호작용물*/
 			call Interactive.init()
-			/*필드*/
-			// call Field.init()
-			/*내비게이터*/
-			// call Navigator.init()
 			/*탈주트리거*/
 			call TriggerAddCondition(LEAVE_TRIGGER,function thistype.playerLeave)
 		endmethod
@@ -252,10 +236,6 @@ library Game requires Unit, Ability, UI
 			elseif BlzGetTriggerPlayerKey() == OSKEY_7 then
 				/*렙업*/
 				set User.getFocusUnit(Player(0)).level = User.getFocusUnit(Player(0)).level + 1
-			elseif BlzGetTriggerPlayerKey() == OSKEY_8 then
-				/*어빌리티샤드 드랍*/
-				set i = AbilityShard.create(AbilityTable.getRandomAbility(0,AbilityTable.TIER_1)).addLevel(4).addUpgradePoint(AbilityShard.getRandomUpgradeType(),4*1)
-				call AbilityShard(i).drop(Mouse.getX(Player(0)),Mouse.getY(Player(0)))
 			endif
 		endmethod
 

@@ -29,16 +29,20 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 				if p_item_type > -1 then
 					/*아이콘*/
 					call BlzFrameSetVisible(P_ICON[.index],true)
+					/*스킬획득*/
 					if p_item_type == ENUM_POWERUP_ITEM_TYPE_ABILITY then
+						/*아이콘*/
 						call BlzFrameSetTexture(P_ICON[.index],Ability.getTypeIconPath(p_item_value),0,true)
+					/*스탯증강*/
 					elseif p_item_type == ENUM_POWERUP_ITEM_TYPE_STAT then
+						/*아이콘*/
 						call BlzFrameSetTexture(P_ICON[.index],CONSTANT_STAT_ICON[p_item_value],0,true)
 					endif
 					/*버튼활성화*/
 					call BlzFrameSetEnable(P_BTN[.index],true)
 				else
 					/*아이콘 숨기기*/
-					call BlzFrameSetTexture(P_ICON[.index],"icons\\btnblackicon.blp",0,true)
+					call BlzFrameSetVisible(P_ICON[.index],false)
 					/*버튼비활성화*/
 					call BlzFrameSetEnable(P_BTN[.index],false)
 				endif
@@ -254,8 +258,8 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 			local integer i = 0
 			/*UI 여닫 단축키*/
 			if Event.getValue() == ENUM_EVENT_KEYPRESS then
-				set this = GetPlayerId(CUSTOM_RESPOND_KEYPRESS_PLAYER)
-				if CUSTOM_RESPOND_KEYPRESS_KEY == OSKEY_T and CUSTOM_RESPOND_KEYPRESS_PRESS then
+				set this = GetPlayerId(EVT_KEYPRESS_PLAYER)
+				if EVT_KEYPRESS_KEY == OSKEY_T and EVT_KEYPRESS_PRESS then
 					call switch()
 					return
 				endif
@@ -279,7 +283,7 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 		endmethod
 
 		static method refreshCallback takes nothing returns nothing
-			local thistype this = GetPlayerId(CUSTOM_RESPOND_UI_REFRESH_PLAYER)
+			local thistype this = GetPlayerId(EVT_UI_REFRESH_PLAYER)
 			if this >= CONFIG_PLAYER_MAX then
 				return
 			endif
@@ -291,7 +295,7 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 		endmethod
 
 		static method powerupCallback takes nothing returns nothing
-			local thistype this = GetPlayerId(CUSTOM_RESPOND_POWERUP_PLAYER)
+			local thistype this = GetPlayerId(EVT_POWERUP_PLAYER)
 			local PowerupManager p_manager = PowerupManager(this)
 			if .visible_flag then
 				if p_manager.size > 0 then
@@ -301,6 +305,16 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 					/*없으면 파워업 UI 닫기*/
 					call visibleForPlayer(false)
 				endif
+			endif
+		endmethod
+
+		static method powerupAddCallback takes nothing returns nothing
+			local thistype this = GetPlayerId(EVT_POWERUP_PLAYER)
+			local PowerupManager p_manager = PowerupManager(this)
+			if .visible_flag and p_manager.size == 1 then
+				/*없었다가 생긴 케이스임, 페이드연출*/
+				call fadeIn()
+				call refresh()
 			endif
 		endmethod
 
@@ -376,6 +390,10 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 			set t = CreateTrigger()
 			call Event.register(t,ENUM_EVENT_POWERUP)
 			call TriggerAddCondition(t,function thistype.powerupCallback)
+			/*파워업 획득 시 페이드*/
+			set t = CreateTrigger()
+			call Event.register(t,ENUM_EVENT_POWERUP_ADD)
+			call TriggerAddCondition(t,function thistype.powerupAddCallback)
 			/**/
 			set t = null
 		endmethod

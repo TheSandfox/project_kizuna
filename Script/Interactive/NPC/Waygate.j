@@ -123,7 +123,7 @@ library Waygate requires User
 			endif
 			set CASTER[GetPlayerId(p)] = caster
 			set ACTOR_ID[GetPlayerId(p)] = actorinstance
-			call Ability.releaseUnitAbilityAll(caster)
+			call Ability.cancleUnitAbilityAll(caster)
 		endmethod
 
 		static method press takes nothing returns nothing

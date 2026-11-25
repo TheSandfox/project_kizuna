@@ -183,7 +183,7 @@ library Scouter
 		method refresh takes nothing returns nothing
 			/*유닛 아이콘&이름 변경*/
 			if GetLocalPlayer() == Player(this) then
-				call BlzFrameSetTexture(MY_ICON,UnitData.getIconPath(.target.id),0,true)
+				call BlzFrameSetTexture(MY_ICON,UnitData.getString(.target.id,ENUM_UNIT_PARAM_ICON_PATH),0,true)
 				call BlzFrameSetText(MY_NAME,.target.origin_name)
 				call BlzFrameSetTexture(MY_TEAMCOLOR,User.teamColorTexture(.target.owner),0,true)
 			endif
@@ -246,14 +246,14 @@ library Scouter
 		endmethod
 
 		static method clickCallback takes nothing returns nothing
-			local thistype this = GetPlayerId(CUSTOM_RESPOND_CLICK_PLAYER)
+			local thistype this = GetPlayerId(EVT_CLICK_PLAYER)
 			local Unit u = 0
-			if GetUnitAbilityLevel(CUSTOM_RESPOND_CLICK_TARGET,CONFIG_ABILITY_ID_CLASS_NONUNIT) != 0 then
+			if GetUnitAbilityLevel(EVT_CLICK_TARGET,CONFIG_ABILITY_ID_CLASS_NONUNIT) != 0 then
 				/*논유닛이면 컷*/
 				return
 			endif
-			if CUSTOM_RESPOND_CLICK_BUTTON_TYPE == MOUSE_BUTTON_TYPE_LEFT then
-				set u = Unit_prototype.get(CUSTOM_RESPOND_CLICK_TARGET)
+			if EVT_CLICK_BUTTON_TYPE == MOUSE_BUTTON_TYPE_LEFT then
+				set u = Unit_prototype.get(EVT_CLICK_TARGET)
 				if u > 0 /*and UnitClass(u).getClass(ENUM_UNIT_CLASS_BOSS) <= 0*/ then
 					call setTarget(u)
 				endif

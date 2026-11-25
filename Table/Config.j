@@ -24,6 +24,7 @@ globals
 	constant integer CONFIG_ABILITY_ID_STOP = 'Axx7'
 	constant integer CONFIG_ABILITY_ID_CLASS_NONUNIT = 'Axx8'
 	constant integer CONFIG_POWERUP_ITEM_MAX = 5
+	constant real CONFIG_POWERUP_STAT_AMOUNT = 5.0
 	constant string CONFIG_ORDER_STRING_FOLLOW = "channel"
 	constant string CONFIG_ORDER_STRING_CUSTOM_MOVE = "acolyteharvest"
 	constant string CONFIG_ORDER_STRING_INTERACT = "absorb"

@@ -5,7 +5,7 @@ private struct rollingstone_fall extends Explosion
 
 	method executeExplosion takes Unit target returns nothing
 		call Buff.addWithValue(.owner,target,'Slow',0,0.5,90)
-		set .damage = .owner.getCarculatedStatValue(ENUM_STAT_ATTACK) * 1.0 + target.maxhp*0.45
+		set .damage = .owner.getCalculatedStatValue(ENUM_STAT_ATTACK) * 1.0 + target.maxhp*0.45
 		call Airbourne.create(target,0.,0.,1550.,1.0)
 		call damageTarget(target)
 		call Effect.create(EF_ROCK,target.x,target.y,target.z+target.pivot_z,270.).setScale(1.75).kill()
@@ -82,7 +82,7 @@ private struct rollingstone_roll extends Missile
 
 	method executeWave takes Unit target returns nothing
 		call Buff.addWithValue(.owner,target,'Slow',0,0.5,90)
-		set .damage = .owner.getCarculatedStatValue(ENUM_STAT_ATTACK) * 1.0 + target.maxhp*0.45
+		set .damage = .owner.getCalculatedStatValue(ENUM_STAT_ATTACK) * 1.0 + target.maxhp*0.45
 		call damageTarget(target)
 		call Airbourne.create(target,200.,.owner.yaw,750.,1.0)
 		call Effect.create(EF_ROCK,target.x,target.y,target.z+target.pivot_z,270.).setScale(1.75).kill()

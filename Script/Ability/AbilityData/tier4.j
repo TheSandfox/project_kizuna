@@ -32,7 +32,7 @@ scope Ability4000 initializer init
 				call bz.setProjectedControlPoint(0,-800, 300, a)
 				call bz.setProjectedControlPoint(1, 0, 800, a)
 				call setDamageFlagById(ID)
-				set .damage = ( .owner.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(level) )
+				set .damage = ( .owner.getCalculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(level) )
 				set .weapon_type = WEAPON_TYPE_METAL_MEDIUM_BASH
 				set .movement.refresh_facing = true
 				return this
@@ -294,7 +294,7 @@ scope Ability4010 initializer init
 			call setTargetLocation(x,y,0.)
 			call setExplosion(RADIUS3)
 			call setDamageFlagById(ID)
-			set .damage = (.owner.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(.level) )
+			set .damage = (.owner.getCalculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(.level) )
 			/*원래사용지점&각도*/
 			set .ox = x
 			set .oy = y

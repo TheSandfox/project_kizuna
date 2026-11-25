@@ -131,7 +131,7 @@ scope Ability5000 initializer init
 				set .ef.z = DRAGON_DIST+(500.-(500.*.timeout/CAST))
 				if .timeout >= CAST then
 					set ex = explosion.create(.caster,.x,.y,RADIUS3,.level,.ef)
-					set ex.damage = ( .caster.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(.level) )
+					set ex.damage = ( .caster.getCalculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(.level) )
 					call ex.activate()
 					set .stage = 1
 					set .timeout = 0.
@@ -269,7 +269,7 @@ scope Ability5010 initializer init
 		static method create takes Unit owner, real x, real y, real z, real yaw, integer level returns thistype
 			local thistype this = allocate(owner,EFFECT_PATH3,x,y,z,yaw)
 			set .velo = VELO
-			set .damage = ( .owner.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(level) )
+			set .damage = ( .owner.getCalculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(level) )
 			call setDamageFlagById(ID)
 			set .weapon_type = WEAPON_TYPE_METAL_MEDIUM_BASH
 			call setWave(RADIUS2)

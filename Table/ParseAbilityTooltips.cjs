@@ -293,7 +293,7 @@ function processMonoTag(tagName, attr) {
       return { type: 'code', value: 'caster.level' };
     case 'statValue': {
       const did = getProperty(attr);
-      return { type: 'code', value: `caster.getCarculatedStatValue(ENUM_${did})` };
+      return { type: 'code', value: `caster.getCalculatedStatValue(ENUM_${did})` };
     }
     case 'lucky': {
       const [p1Raw, p2Raw] = attr.split(',');

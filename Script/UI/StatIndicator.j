@@ -33,7 +33,7 @@ struct StatItem extends array
 		local string color = ""
 		// local string tooltip = ""
 		// // call BJDebugMsg("옹")
-		set r = .target.getCarculatedStatValue(.stat_index) - .target.getPureStatValue(.stat_index)
+		set r = .target.getCalculatedStatValue(.stat_index) - .target.getPureStatValue(.stat_index)
 		if r <= -0.01 then
 			/*음수*/
 			set color = "|cffff0000"
@@ -48,13 +48,13 @@ struct StatItem extends array
 		if GetLocalPlayer() == .owner then
 			if .format == 0 then
 				/*정수*/
-				call BlzFrameSetText(STAT_VALUE[.index],color+I2S(MathRound(.target.getCarculatedStatValue(.stat_index)))+"|r")
+				call BlzFrameSetText(STAT_VALUE[.index],color+I2S(MathRound(.target.getCalculatedStatValue(.stat_index)))+"|r")
 			elseif .format == 1 then
 				/*소숫점한개*/
-				call BlzFrameSetText(STAT_VALUE[.index],color+R2SW(.target.getCarculatedStatValue(.stat_index),1,1)+"|r")
+				call BlzFrameSetText(STAT_VALUE[.index],color+R2SW(.target.getCalculatedStatValue(.stat_index),1,1)+"|r")
 			elseif .format == 2 then
 				/*퍼센트*/
-				call BlzFrameSetText(STAT_VALUE[.index],color+I2S(MathRound(.target.getCarculatedStatValue(.stat_index)*100.))+"%|r")
+				call BlzFrameSetText(STAT_VALUE[.index],color+I2S(MathRound(.target.getCalculatedStatValue(.stat_index)*100.))+"%|r")
 			endif
 		endif
 		// /*툴팁*/
@@ -76,7 +76,7 @@ struct StatItem extends array
 		// 		*/+"에 따라 증가할 수 있습니다."
 		// 	elseif .stat_index == ENUM_STAT_LOVE then
 		// 		/*애정*/
-		// 		set r2 = .target.getCarculatedStatValue(ENUM_STAT_LOVE)
+		// 		set r2 = .target.getCalculatedStatValue(ENUM_STAT_LOVE)
 		// 		if r2 >= 0. then
 		// 			/*애정 양수값*/
 		// 			set r = ((100.0+r2)/100.0) - 1.0
@@ -236,8 +236,8 @@ struct StatIndicator extends array
 		local thistype this = 0
 		local player p = GetTriggerPlayer()
 		if Event.getValue() == ENUM_EVENT_KEYPRESS then
-			set this = GetPlayerId(CUSTOM_RESPOND_KEYPRESS_PLAYER)
-			if CUSTOM_RESPOND_KEYPRESS_KEY == OSKEY_C and CUSTOM_RESPOND_KEYPRESS_PRESS then
+			set this = GetPlayerId(EVT_KEYPRESS_PLAYER)
+			if EVT_KEYPRESS_KEY == OSKEY_C and EVT_KEYPRESS_PRESS then
 				call switch()
 				return
 			endif

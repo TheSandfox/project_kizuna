@@ -16,16 +16,8 @@ library CloseUI requires UI
 		static constant integer ORDER_ABILITY_MANAGER = 8
 
 		method close takes integer order returns nothing
-			if order == ORDER_INVENTORY_DIALOG then
-				call Inventory(this).close()
-				return
-			endif
 			if order == ORDER_NUMBERPAD then
 				call Numberpad(this).close()	
-				return
-			endif
-			if order == ORDER_INVENTORY then
-				call Inventory(this).close()
 				return
 			endif
 			if order == ORDER_STAT_INDICATOR then
@@ -42,10 +34,6 @@ library CloseUI requires UI
 			endif
 			if order == ORDER_WARP then
 				call WarpWidget.show(Player(this),false)
-			endif
-			if order == ORDER_ABILITY_MANAGER then
-				call AbilityManager(this).close()
-				return
 			endif
 		endmethod
 

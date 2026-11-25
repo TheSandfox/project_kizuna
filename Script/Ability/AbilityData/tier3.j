@@ -19,7 +19,7 @@ scope Ability3000 initializer init
 				local thistype this = allocate(owner,EFFECT_PATH1,x,y,z,yaw)
 				local Effect ef
 				set .velo = VELO
-				set .damage = ( .owner.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(level) )
+				set .damage = ( .owner.getCalculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(level) )
 				call setDamageFlagById(ID)
 				call setCollision(RADIUS2)
 				call setDuration((RANGE-STARTAT)/VELO)
@@ -148,9 +148,9 @@ scope Buff3010 initializer init
 
 		method addValue takes integer level returns nothing
 			call .target.minusStatValue(ENUM_STAT_MOVEMENT_SPEED,DATA_INTEGER1)
-			call .target.plusStatValue(ENUM_STAT_EVASION,(.caster.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1) * (1+DAMAGE_PER_LEVEL*(level)) )
+			call .target.plusStatValue(ENUM_STAT_EVASION,(.caster.getCalculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1) * (1+DAMAGE_PER_LEVEL*(level)) )
 			set .val1 = .val1 + DATA_INTEGER1
-			set .val2 = .val2 + (.caster.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1) * (1+DAMAGE_PER_LEVEL*(level))
+			set .val2 = .val2 + (.caster.getCalculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1) * (1+DAMAGE_PER_LEVEL*(level))
 		endmethod
 
 		method update takes nothing returns boolean
@@ -237,7 +237,7 @@ scope Ability3010 initializer init
 
 		method onComplete takes nothing returns nothing
 			local explosion ex = explosion.create(.caster,.x,.y,RADIUS3,.level)
-			set ex.damage = ( .caster.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(.level) )
+			set ex.damage = ( .caster.getCalculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(.level) )
 			call ex.activate()
 		endmethod
 
@@ -361,10 +361,10 @@ scope Ability3020 initializer init
 
 		static method weaponChange takes nothing returns nothing
 			local thistype this = Trigger.getData(GetTriggeringTrigger())
-			if CUSTOM_RESPOND_WEAPON_CHANGE_UNIT != .owner then
+			if EVT_WEAPON_CHANGE_UNIT != .owner then
 				return
 			endif
-			if CUSTOM_RESPOND_WEAPON_CHANGE_OLD != CUSTOM_RESPOND_WEAPON_CHANGE_NEW then
+			if EVT_WEAPON_CHANGE_OLD != EVT_WEAPON_CHANGE_NEW then
 				set .cancle = true
 			endif
 		endmethod
@@ -409,7 +409,7 @@ scope Ability3020 initializer init
 			call SetUnitFacing(.caster.origin_unit,Math.anglePoints(.caster.x,.caster.y,.target.x,.target.y))
 			call .caster.setAnim("attack")
 			call .caster.setAnimSpeed(1.)
-			set .damage = ( .owner.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(.level) )
+			set .damage = ( .owner.getCalculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(.level) )
 			call setDamageFlagById(ID)
 			set .main_trigger = Trigger.new(this)
 			set .main_cond = TriggerAddCondition(.main_trigger,function thistype.weaponChange)
@@ -447,14 +447,14 @@ scope Ability3020 initializer init
 
 		static method cond takes nothing returns nothing
 			local thistype this = Trigger.getData(GetTriggeringTrigger())
-			if CUSTOM_RESPOND_DAMAGE_ATTACKER != .owner then
+			if EVT_DAMAGE_ATTACKER != .owner then
 				return
 			endif
-			if CUSTOM_RESPOND_DAMAGE_ATTACK_TYPE != Damage.ATTACK_TYPE_SPELL then
+			if EVT_DAMAGE_ATTACK_TYPE != Damage.ATTACK_TYPE_SPELL then
 				return
 			endif
 			if .value > 0 then
-				set CUSTOM_RESPOND_DAMAGE_PLUS = CUSTOM_RESPOND_DAMAGE_PLUS + ( .owner.getCarculatedStatValue(DAMAGE_STAT2) * DAMAGE_AMPLIFIER2 ) * ( 1+DAMAGE_PER_LEVEL*(.level) ) * .value
+				set EVT_DAMAGE_PLUS = EVT_DAMAGE_PLUS + ( .owner.getCalculatedStatValue(DAMAGE_STAT2) * DAMAGE_AMPLIFIER2 ) * ( 1+DAMAGE_PER_LEVEL*(.level) ) * .value
 				set .value = 0
 				set .gauge = 0.
 			endif
@@ -559,7 +559,7 @@ scope Ability3030 initializer init
 				set .velo = VELO
 				call setTarget(target)
 				set val = (DAMAGE_SECONDARY - DAMAGE_PRIMARY) * (dist/DATA_REAL1) + DAMAGE_PRIMARY
-				set .damage = (.owner.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1) * (1+DAMAGE_PER_LEVEL*(level)) * val
+				set .damage = (.owner.getCalculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1) * (1+DAMAGE_PER_LEVEL*(level)) * val
 				set .l = Lightning.create("CLSB",.owner.x,.owner.y,55.,0,0,0)
 				call .l.setTarget2(this)
 				call .l.refreshPosition()
@@ -591,7 +591,7 @@ scope Ability3030 initializer init
 				local thistype this = allocate(caster,EFFECT_PATH1,Math.pPX(caster.x,STARTAT,a),Math.pPY(caster.y,STARTAT,a),caster.pivot_z,a)
 				call setDamageFlagById(ID)
 				set .velo = VELO
-				set .damage = (.owner.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1) * (1+DAMAGE_PER_LEVEL*(level))
+				set .damage = (.owner.getCalculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1) * (1+DAMAGE_PER_LEVEL*(level))
 				set .weapon_type = WEAPON_TYPE_METAL_MEDIUM_BASH
 				call setTarget(target)
 				return this
@@ -724,7 +724,7 @@ scope Ability3040 initializer init
 				local thistype this = allocate(caster,EFFECT_PATH1,Math.pPX(caster.x,STARTAT,a),Math.pPY(caster.y,STARTAT,a),caster.pivot_z,a)
 				call setDamageFlagById(ID)
 				set .velo = VELO
-				set .damage = (.owner.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1) * (1+DAMAGE_PER_LEVEL*(level))
+				set .damage = (.owner.getCalculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1) * (1+DAMAGE_PER_LEVEL*(level))
 				set .weapon_type = WEAPON_TYPE_METAL_LIGHT_CHOP
 				call setScale(1.25)
 				call setRoll(GetRandomReal(-15,15))
@@ -967,7 +967,7 @@ scope Ability3050 initializer init
 
 			static method mR takes nothing returns nothing
 				local thistype this = Trigger.getData(GetTriggeringTrigger())
-				if CUSTOM_RESPOND_KEYPRESS_KEY == OSKEY_K then
+				if EVT_KEYPRESS_KEY == OSKEY_K then
 					if .servant <= 0 then
 						return
 					endif
@@ -1144,7 +1144,7 @@ scope Ability3060 initializer init
 
 			static method create takes Unit caster, real angle, integer level returns thistype
 				local thistype this = allocate(caster,EFFECT_PATH1,Math.pPX(caster.x,STARTAT,angle),Math.pPY(caster.y,STARTAT,angle),caster.pivot_z,angle)
-				set .damage = .owner.getCarculatedStatValue(DAMAGE_STAT1)*DAMAGE_AMPLIFIER1*(1+DAMAGE_PER_LEVEL*(level))
+				set .damage = .owner.getCalculatedStatValue(DAMAGE_STAT1)*DAMAGE_AMPLIFIER1*(1+DAMAGE_PER_LEVEL*(level))
 				call setDamageFlagById(ID)
 				set .weapon_type = WEAPON_TYPE_METAL_MEDIUM_BASH
 				call setCollision(RADIUS2)
@@ -1362,7 +1362,7 @@ scope Ability3070 initializer init
 
 			method onComplete takes nothing returns nothing
 				local Explosion ex = 0
-				local real dt = ((.owner.getCarculatedStatValue(DAMAGE_STAT2) * DAMAGE_AMPLIFIER2) + (.owner.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1)) * (1+DAMAGE_PER_LEVEL*(.level))
+				local real dt = ((.owner.getCalculatedStatValue(DAMAGE_STAT2) * DAMAGE_AMPLIFIER2) + (.owner.getCalculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1)) * (1+DAMAGE_PER_LEVEL*(.level))
 				/*DO DAMAGE*/
 				if .count < COUNT-1 then
 					/*부채꼴*/
@@ -1505,8 +1505,8 @@ scope Ability3080 initializer init
 				local thistype this = allocate(caster,x1,y1,x2,y2,RADIUS3)
 				local Effect ef = 0
 				set .count = 1
-				set .damage = ( .owner.getCarculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(level) ) + /*
-				*/( .owner.getCarculatedStatValue(DAMAGE_STAT2) * DAMAGE_AMPLIFIER2 ) * ( 1+DAMAGE_PER_LEVEL*(level) )
+				set .damage = ( .owner.getCalculatedStatValue(DAMAGE_STAT1) * DAMAGE_AMPLIFIER1 ) * ( 1+DAMAGE_PER_LEVEL*(level) ) + /*
+				*/( .owner.getCalculatedStatValue(DAMAGE_STAT2) * DAMAGE_AMPLIFIER2 ) * ( 1+DAMAGE_PER_LEVEL*(level) )
 				call setDamageFlagById(ID)
 				set .weapon_type = WEAPON_TYPE_METAL_MEDIUM_SLICE
 				/*이펙트*/
