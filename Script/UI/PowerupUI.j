@@ -119,6 +119,8 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 
 	struct PowerupUI extends array
 
+		private static string array P_NOTICE_COLORS
+		private static integer P_NOTICE_COLORS_COUNT = 16
 		private static boolean P_FRAME_CREATED = false
 		private static framehandle P_FRAME_INFO = null
 		private static framehandle P_FRAME_INFO_TEXT = null
@@ -129,13 +131,17 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 		private static framehandle P_FRAME_BTN_SELL = null
 		private static framehandle P_FRAME_BTN_CLOSE = null
 		private static framehandle P_FRAME_BTN_CLOSE_SECONDARY = null
+		private static framehandle P_FRAME_NOTICE = null
+		private static framehandle P_FRAME_NOTICE_TEXT = null
 
-		private static real P_FADE_TICK = 0.05
+		private static real P_FADE_TICK = 0.025
 		private static integer P_FADE_VALUE_PER_TICK = R2I(P_FADE_TICK*(255.0/0.3/* FADETIME */))
 
 		boolean visible_flag
 		timer fade_timer
 		integer fade_value /* MAX 255 */
+		timer notice_timer
+		integer notice_color_index
 
 		method operator owner takes nothing returns player
 			return Player(this)
@@ -216,6 +222,31 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 			set .fade_value = 0
 			call fadeRefresh(0)
 			call Timer.start(.fade_timer,P_FADE_TICK,true,function thistype.fadeAction)
+		endmethod
+
+		static method noticeAction takes nothing returns nothing
+			local thistype this = Timer.getData(GetExpiredTimer())
+			if GetLocalPlayer() == .owner then
+				call BlzFrameSetText(P_FRAME_NOTICE_TEXT,P_NOTICE_COLORS[.notice_color_index]+"◆|r")
+			endif
+			set .notice_color_index = .notice_color_index + 1
+			if .notice_color_index >= P_NOTICE_COLORS_COUNT then
+				set .notice_color_index = 0
+			endif
+		endmethod
+
+		method runNotice takes boolean flag returns nothing
+			if GetLocalPlayer() == .owner then
+				/*레드닷프레임 가시성처리*/
+				call BlzFrameSetVisible(P_FRAME_NOTICE,flag)
+			endif
+			if flag then
+				/*타이머 on*/
+				call Timer.start(.notice_timer,0.05,true,function thistype.noticeAction)
+			else
+				/*타이머 off*/
+				call Timer.pause(.notice_timer)
+			endif
 		endmethod
 
 		method visibleForPlayer takes boolean flag returns nothing
@@ -306,15 +337,24 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 					call visibleForPlayer(false)
 				endif
 			endif
+			if p_manager.size <= 0 then
+				/*지랄발광타이머 끄기*/
+				call runNotice(false)
+			endif
 		endmethod
 
 		static method powerupAddCallback takes nothing returns nothing
 			local thistype this = GetPlayerId(EVT_POWERUP_PLAYER)
 			local PowerupManager p_manager = PowerupManager(this)
-			if .visible_flag and p_manager.size == 1 then
-				/*없었다가 생긴 케이스임, 페이드연출*/
-				call fadeIn()
-				call refresh()
+			if p_manager.size == 1 then
+				/*없었다가 생긴 케이스*/
+				if .visible_flag then
+					/*켜져있으면 페이드연출*/
+					call fadeIn()
+					call refresh()
+				endif
+				/*지랄발광타이머 on*/
+				call runNotice(true)
 			endif
 		endmethod
 
@@ -345,6 +385,9 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 			/*닫기버튼*/
 			set P_FRAME_BTN_CLOSE = BlzGetFrameByName("CPowerupUICloseButton",0)
 			set P_FRAME_BTN_CLOSE_SECONDARY = BlzGetFrameByName("CPowerupUICloseButton2",0)
+			/*레드닷*/
+			set P_FRAME_NOTICE = BlzGetFrameByName("CPowerupUIButtonNotice",0)
+			set P_FRAME_NOTICE_TEXT = BlzGetFrameByName("CPowerupUIButtonNoticeText",0)
 			/*누름 콜백*/
 			call BlzTriggerRegisterFrameEvent(P_UI_CALLBACK,P_FRAME_BTN_CLOSE,FRAMEEVENT_CONTROL_CLICK)
 			call BlzTriggerRegisterFrameEvent(P_UI_CALLBACK,P_FRAME_BTN_CLOSE_SECONDARY,FRAMEEVENT_CONTROL_CLICK)
@@ -358,8 +401,10 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 			local thistype this = GetPlayerId(p)
 			local integer i = 0
 			set .visible_flag = false
+			set .notice_color_index = 0
 			/*타이머 생성*/
 			set .fade_timer = Timer.new(this)
+			set .notice_timer = Timer.new(this)
 			/*프레임 초기화*/
 			if not P_FRAME_CREATED then
 				call initFrames()
@@ -382,6 +427,23 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 
 		private static method onInit takes nothing returns nothing
 			local trigger t
+			/*랜덤색상초기화*/
+			set P_NOTICE_COLORS[0]  = "|cffff0000"
+			set P_NOTICE_COLORS[1]  = "|cffff2424"
+			set P_NOTICE_COLORS[2]  = "|cffff4949"
+			set P_NOTICE_COLORS[3]  = "|cffff6d6d"
+			set P_NOTICE_COLORS[4]  = "|cffff9292"
+			set P_NOTICE_COLORS[5]  = "|cffffb6b6"
+			set P_NOTICE_COLORS[6]  = "|cffffdbdb"
+			set P_NOTICE_COLORS[7]  = "|cffffffff"
+			set P_NOTICE_COLORS[8]  = "|cffffffff"
+			set P_NOTICE_COLORS[9]  = "|cffffdbdb"
+			set P_NOTICE_COLORS[10] = "|cffffb6b6"
+			set P_NOTICE_COLORS[11] = "|cffff9292"
+			set P_NOTICE_COLORS[12] = "|cffff6d6d"
+			set P_NOTICE_COLORS[13] = "|cffff4949"
+			set P_NOTICE_COLORS[14] = "|cffff2424"
+			set P_NOTICE_COLORS[15] = "|cffff0000"
 			/*UI리프레시*/
 			set t = CreateTrigger()
 			call Event.register(t,ENUM_EVENT_ABILITY_UI_REFRESH)

@@ -223,7 +223,7 @@ library PowerupManager initializer init requires Object, Ability, User, Table
   private function init takes nothing returns nothing
     set P_RANDOM_STAT_SIZE = 0
     /**/
-    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_MAXMP
+    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_MAXHP
     set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
     set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_HPREGEN
     set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
