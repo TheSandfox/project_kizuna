@@ -8,10 +8,10 @@ library SlotChanger requires UI
 		integer first_index
 		trigger keypress_trigger
 
-		static integer array ABILITY_TEMP[10]
+		static integer array ABILITY_TEMP
 		static integer array MAP
 
-		static framehandle array BUTTON[10]
+		static framehandle array BUTTON
 		private static integer P_BUTTON_GAP = 4
 		private static integer P_BUTTON_SIZE = 64
 		private static integer P_BUTTON_OFFSET_Y = 88//하단에서부터
@@ -21,12 +21,16 @@ library SlotChanger requires UI
 		static framehandle CLOSE_BUTTON = null
 		static boolean ACTIVATED = false
 
+		method mapIndex takes integer index returns integer
+			return this*CONFIG_ABILITY_SIZE + index
+		endmethod
+
 		method getMap takes integer index returns integer
-			return MAP[this*10 + index]
+			return MAP[mapIndex(index)]
 		endmethod
 
 		method setMap takes integer index, integer val returns nothing
-			set MAP[this*10 + index] = val
+			set MAP[mapIndex(index)] = val
 		endmethod
 
 		method operator owner takes nothing returns player
@@ -41,7 +45,7 @@ library SlotChanger requires UI
 			/*위젯 리프레시*/
 			set i = 0
 			loop
-				exitwhen i >= 10
+				exitwhen i >= CONFIG_ABILITY_SIZE
 				/*유닛어빌리티 가져오기*/
 				set a = Ability(User.getFocusUnit(.owner).getAbility(getMap(i)))
 				/*아이콘 설정*/
@@ -63,16 +67,16 @@ library SlotChanger requires UI
 					if User.getFocusUnit(.owner) <= 0 or a <= 0 then
 						if GetLocalPlayer() == Player(this) then
 							call BlzFrameSetEnable(f,false)
-							call BlzFrameSetText(BlzGetFrameByName("CSlotChangerButtonHotkeyText",i),"|cff999999"+CONSTANT_ABILITY_SLOT_NAME[i]+"|r")
+							call BlzFrameSetText(BlzGetFrameByName("CSlotChangerButtonHotkeyText",i),"|cff999999"+UDG_ABILITY_SLOT_NAME[i]+"|r")
 						endif
 					/*비어있지 않은 어빌리티의 위치에만 시작지 버튼 출력*/
 					else
 						if GetLocalPlayer() == Player(this) then
 							call BlzFrameSetEnable(f,true)
 							if .state == 0 then
-								call BlzFrameSetText(BlzGetFrameByName("CSlotChangerButtonHotkeyText",i),"|cffffcc00"+CONSTANT_ABILITY_SLOT_NAME[i]+"|r")
+								call BlzFrameSetText(BlzGetFrameByName("CSlotChangerButtonHotkeyText",i),"|cffffcc00"+UDG_ABILITY_SLOT_NAME[i]+"|r")
 							elseif .state == 2 then
-								call BlzFrameSetText(BlzGetFrameByName("CSlotChangerButtonHotkeyText",i),"|cff00ccff"+CONSTANT_ABILITY_SLOT_NAME[i]+"|r")
+								call BlzFrameSetText(BlzGetFrameByName("CSlotChangerButtonHotkeyText",i),"|cff00ccff"+UDG_ABILITY_SLOT_NAME[i]+"|r")
 							endif
 						endif
 					endif
@@ -88,9 +92,9 @@ library SlotChanger requires UI
 						if GetLocalPlayer() == Player(this) then
 							call BlzFrameSetEnable(f,true)
 							if i == .first_index then
-								call BlzFrameSetText(bf,"|cffffff00"+CONSTANT_ABILITY_SLOT_NAME[i]+"|r")
+								call BlzFrameSetText(bf,"|cffffff00"+UDG_ABILITY_SLOT_NAME[i]+"|r")
 							else
-								call BlzFrameSetText(bf,"|cff00cc00"+CONSTANT_ABILITY_SLOT_NAME[i]+"|r")
+								call BlzFrameSetText(bf,"|cff00cc00"+UDG_ABILITY_SLOT_NAME[i]+"|r")
 							endif
 						endif
 					endif
@@ -107,7 +111,7 @@ library SlotChanger requires UI
 			elseif .state == 2 then
 				set f = CONFIRM_BUTTON_TEXT
 				if GetLocalPlayer() == Player(this) then
-					call BlzFrameSetText(f,"|cff00ccff적용 ("+CONSTANT_MENU_NAME[ENUM_MENU_SLOT_CHANGER]+")|r")
+					call BlzFrameSetText(f,"|cff00ccff적용 ("+UDG_MENU_NAME[ENUM_MENU_SLOT_CHANGER]+")|r")
 					call BlzFrameSetEnable(CONFIRM_BUTTON,true)
 				endif
 			endif
@@ -134,7 +138,7 @@ library SlotChanger requires UI
 			set .state = 0
 			set .first_index = -1
 			loop
-				exitwhen i >= 10
+				exitwhen i >= CONFIG_ABILITY_SIZE
 				call setMap(i,i)
 				set i = i + 1
 			endloop
@@ -144,7 +148,7 @@ library SlotChanger requires UI
 		method visibleForPlayer takes boolean flag returns nothing
 			if .visible_flag != flag then
 				if flag then
-					if User.getCurrentInputLayer(.owner) < ENUM_INPUT_LAYER_POWERUP_UI then
+					if User.getCurrentInputLayer(.owner) <= CONFIG_INPUT_LAYER_SLOT_CHANGER then
 						/*열림*/
 						call stateDefault()
 						if User.getFocusUnit(.owner) > 0 then
@@ -153,7 +157,7 @@ library SlotChanger requires UI
 						call EnableTrigger(.keypress_trigger)
 						/*CLOSEUI*/
 						call CloseUI(this).add(CloseUI.ORDER_SLOT_CHANGER)
-						call User.addInputLayer(.owner,ENUM_INPUT_LAYER_SLOT_CHANGER)
+						call User.addInputLayer(.owner,CONFIG_INPUT_LAYER_SLOT_CHANGER)
 					else
 						return
 					endif
@@ -162,7 +166,7 @@ library SlotChanger requires UI
 					call DisableTrigger(.keypress_trigger)
 					/*CLOSEUI*/
 					call CloseUI(this).eraseFor(CloseUI.ORDER_SLOT_CHANGER)
-					call User.removeInputLayer(.owner,ENUM_INPUT_LAYER_SLOT_CHANGER)
+					call User.removeInputLayer(.owner,CONFIG_INPUT_LAYER_SLOT_CHANGER)
 				endif
 				// call User.enableAbilityHotkey(.owner,not flag)
 			endif
@@ -189,14 +193,14 @@ library SlotChanger requires UI
 				return
 			endif
 			loop
-				exitwhen i >= 10
-				set ABILITY_TEMP[i] = u.getAbility(getMap(i))
+				exitwhen i >= CONFIG_ABILITY_SIZE
+				set ABILITY_TEMP[mapIndex(i)] = u.getAbility(getMap(i))
 				set i = i + 1
 			endloop
 			set i = 0
 			loop
-				exitwhen i >= 10
-				call u.setAbility(i,ABILITY_TEMP[i])
+				exitwhen i >= CONFIG_ABILITY_SIZE
+				call u.setAbility(i,ABILITY_TEMP[mapIndex(i)])
 				set i = i + 1
 			endloop
 			/**/set EVT_UI_REFRESH_PLAYER = .owner
@@ -236,7 +240,7 @@ library SlotChanger requires UI
 			local integer i = 0
 			if Event.getValue() == ENUM_EVENT_KEYPRESS then
 				set this = GetPlayerId(EVT_KEYPRESS_PLAYER)
-				if EVT_KEYPRESS_KEY == CONSTANT_MENU_HOTKEY[ENUM_MENU_SLOT_CHANGER] and EVT_KEYPRESS_PRESS then
+				if EVT_KEYPRESS_KEY == UDG_MENU_HOTKEY[ENUM_MENU_SLOT_CHANGER] and EVT_KEYPRESS_PRESS then
 					if .state == 2 and .visible_flag then
 						call confirm()
 					endif
@@ -277,8 +281,8 @@ library SlotChanger requires UI
 
 		/*어빌리티 단축키 누릉*/
 		static method keypressCallback takes nothing returns nothing
-			local thistype this = GetPlayerId(EVT_KEYPRESS_PLAYER)
-			if this >= CONFIG_PLAYER_MAX then
+			local thistype this = Trigger.getData(GetTriggeringTrigger())
+			if this != GetPlayerId(EVT_KEYPRESS_PLAYER) then
 				return
 			endif
 			if User.oskey2Index(EVT_KEYPRESS_KEY) <= CONFIG_ABILITY_SIZE and EVT_KEYPRESS_PRESS then
@@ -294,12 +298,20 @@ library SlotChanger requires UI
 			if this >= CONFIG_PLAYER_MAX then
 				return
 			endif
-			if EVT_INPUT_LAYER_CHANGE_LAYER > ENUM_INPUT_LAYER_SLOT_CHANGER and /*
+			if EVT_INPUT_LAYER_CHANGE_LAYER > CONFIG_INPUT_LAYER_SLOT_CHANGER and /*
 			*/.visible_flag then
 				call DisableTrigger(GetTriggeringTrigger())
 				call visibleForPlayer(false)
 				call EnableTrigger(GetTriggeringTrigger())
 			endif
+		endmethod
+
+		static method menuButtonCallback takes nothing returns nothing
+			local thistype this = GetPlayerId(GetTriggerPlayer())
+			if this >= CONFIG_PLAYER_MAX then
+				return
+			endif
+			call switch()
 		endmethod
 
 		static method initFrames takes nothing returns nothing
@@ -322,7 +334,7 @@ library SlotChanger requires UI
 				set BUTTON[i] = f
 				/*버튼텍스트*/
 				set f = BlzGetFrameByName("CSlotChangerButtonHotkeyText",i)
-				call BlzFrameSetText(f,"|cffffcc00"+CONSTANT_ABILITY_SLOT_NAME[i]+"|r")
+				call BlzFrameSetText(f,"|cffffcc00"+UDG_ABILITY_SLOT_NAME[i]+"|r")
 				set i = i + 1
 			endloop
 			/*컨펌버튼*/
@@ -334,8 +346,13 @@ library SlotChanger requires UI
 			/*닫기버튼*/
 			set CLOSE_BUTTON = BlzGetFrameByName("CSlotChangerCloseButton",0)
 			call BlzTriggerRegisterFrameEvent(t,CLOSE_BUTTON,FRAMEEVENT_CONTROL_CLICK)
-			/**/
 			call TriggerAddCondition(t,function thistype.act)
+			/**/
+			/*메뉴버튼클릭*/
+			set t = CreateTrigger()
+			call BlzTriggerRegisterFrameEvent(t,BlzGetFrameByName("CSlotChangerMenuButton",0),FRAMEEVENT_CONTROL_CLICK)
+			call TriggerAddCondition(t,function thistype.menuButtonCallback)
+			/**/
 			set f = null
 			set t = null
 		endmethod
@@ -358,7 +375,7 @@ library SlotChanger requires UI
 				set ACTIVATED = true
 			endif
 			/*트리거*/
-			set .keypress_trigger = CreateTrigger()/*UI 보임 상태에 따라 온오프해야해서 멤버변수로 따로 관리*/
+			set .keypress_trigger = Trigger.new(this)/*UI 보임 상태에 따라 온오프해야해서 멤버변수로 따로 관리*/
 			call Event.register(.keypress_trigger,ENUM_EVENT_KEYPRESS)
 			call TriggerAddCondition(.keypress_trigger,function thistype.keypressCallback)
 			call DisableTrigger(.keypress_trigger)

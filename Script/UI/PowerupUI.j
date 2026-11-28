@@ -1,9 +1,13 @@
 library PowerupUI requires UI, Ability, Unit, PowerupManager
 
 	globals
-		private framehandle P_TRUE_CONTAINER
+		private framehandle P_WIDGET_CONTAINER
 		private constant integer P_WIDGET_COUNT = 5
+		private constant integer P_WIDGET_GAP = 20
 		private constant integer P_WIDGET_ICON_SIZE = 96
+		private constant integer P_WIDGET_CONTAINER_OFFSET_Y = -160 //컨테이너 상단으로부터
+		private constant integer P_WIDGET_CONTAINER_WIDTH = 940
+		private constant integer P_WIDGET_CONTAINER_HEIGHT = 368
 		private trigger P_UI_CALLBACK
 		private trigger P_WIDGET_CALLBACK
 	endglobals
@@ -19,6 +23,10 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 		static framehandle array P_WIDGET
 		static framehandle array P_ICON
 		static framehandle array P_BTN
+		static framehandle array P_TYPE_LABEL
+		static framehandle array P_TYPE_LABEL_TEXT
+		static framehandle array P_TITLE
+		static framehandle array P_DESC
 
 		/*UI 새로고침*/
 		method refresh takes nothing returns nothing
@@ -26,31 +34,49 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 			local integer p_item_type = target.getType()
 			local integer p_item_value = target.getValue()
 			if GetLocalPlayer() == .owner then
-				if p_item_type > -1 then
+				if p_item_type > -1 then /*비어있지 않은 슬롯*/
+					/*라벨*/
+					call BlzFrameSetVisible(P_TYPE_LABEL[.index],true)
+					call BlzFrameSetText(P_TYPE_LABEL_TEXT[.index],UDG_POWERUP_ITEM_TYPE_COLOR[p_item_type]+UDG_POWERUP_ITEM_TYPE_NAME[p_item_type]+"|r")
 					/*아이콘*/
 					call BlzFrameSetVisible(P_ICON[.index],true)
 					/*스킬획득*/
 					if p_item_type == ENUM_POWERUP_ITEM_TYPE_ABILITY then
 						/*아이콘*/
 						call BlzFrameSetTexture(P_ICON[.index],Ability.getTypeIconPath(p_item_value),0,true)
-					/*스탯증강*/
+						/*타이틀*/
+						call BlzFrameSetText(P_TITLE[.index],Ability.getTypeName(p_item_value))
+						/*설명*/
+						call BlzFrameSetText(P_DESC[.index],Ability.getTypeTooltip(p_item_value))
+						/*스탯증강*/
 					elseif p_item_type == ENUM_POWERUP_ITEM_TYPE_STAT then
 						/*아이콘*/
-						call BlzFrameSetTexture(P_ICON[.index],CONSTANT_STAT_ICON[p_item_value],0,true)
+						call BlzFrameSetTexture(P_ICON[.index],UDG_STAT_ICON[p_item_value],0,true)
+						/*타이틀*/
+						call BlzFrameSetText(P_TITLE[.index],/*
+							*/UDG_STAT_COLOR[p_item_value]+UDG_STAT_NAME[p_item_value]+"|r |cffffff00+"+I2S(R2I(CONFIG_POWERUP_STAT_AMOUNT*UDG_STAT_NORMAL_VALUE[p_item_value]))+"|r"/*
+						*/)
+						/*설명*/
+						call BlzFrameSetText(P_DESC[.index],UDG_STAT_DESC[p_item_value])
 					endif
+					/*타이틀표시*/
+					call BlzFrameSetVisible(P_TITLE[.index],true)
+					/*설명표시*/
+					call BlzFrameSetVisible(P_DESC[.index],true)
 					/*버튼활성화*/
-					call BlzFrameSetEnable(P_BTN[.index],true)
-				else
+					call BlzFrameSetVisible(P_BTN[.index],true)
+				else /*빈 슬롯*/
+					/*라벨*/
+					call BlzFrameSetVisible(P_TYPE_LABEL[.index],false)
 					/*아이콘 숨기기*/
 					call BlzFrameSetVisible(P_ICON[.index],false)
 					/*버튼비활성화*/
-					call BlzFrameSetEnable(P_BTN[.index],false)
+					call BlzFrameSetVisible(P_BTN[.index],false)
+					/*타이틀숨기기*/
+					call BlzFrameSetVisible(P_TITLE[.index],false)
+					/*설명숨기기*/
+					call BlzFrameSetVisible(P_DESC[.index],false)
 				endif
-				/*버튼프레임 활성화*/
-				/*무기변형이면*/
-				/*어빌리티 이름*/
-				/*능력치보너스*/
-				/*구매버튼*/
 			endif
 		endmethod
 
@@ -75,16 +101,50 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 		endmethod
 
 		static method initFrames takes integer index returns nothing
+			local framehandle f = null
+			local integer approxwidth = (P_WIDGET_CONTAINER_WIDTH-(P_WIDGET_GAP*(P_WIDGET_COUNT-1)))/P_WIDGET_COUNT
+			local integer nx = (approxwidth+P_WIDGET_GAP)*index
+			local integer ny = 0
 			/*프레임초기화(파워업아이템 위젯)*/
-			set P_WIDGET[index] = BlzCreateFrame("CPowerupUIWidget",P_TRUE_CONTAINER,0,index)
-			call BlzFrameSetPointPixel(P_WIDGET[index],FRAMEPOINT_TOPLEFT,P_TRUE_CONTAINER,FRAMEPOINT_TOPLEFT,160*index,-128)
-			// /*아이콘*/
+			set P_WIDGET[index] = BlzCreateFrame("CPowerupUIWidget",P_WIDGET_CONTAINER,0,index)
+			call BlzFrameSetPointPixel(P_WIDGET[index],FRAMEPOINT_TOPLEFT,P_WIDGET_CONTAINER,FRAMEPOINT_TOPLEFT,/*
+				*/nx,/*
+				*/ny/*
+			*/)
+			call BlzFrameSetPointPixel(P_WIDGET[index],FRAMEPOINT_BOTTOMRIGHT,P_WIDGET_CONTAINER,FRAMEPOINT_TOPLEFT,/*
+				*/nx+approxwidth,/*
+				*/ny-P_WIDGET_CONTAINER_HEIGHT/*
+			*/)
+			/*좌상단라벨*/
+			set P_TYPE_LABEL[index] = BlzGetFrameByName("CPowerupUIWidgetTypeLabel",index)
+			set P_TYPE_LABEL_TEXT[index] = BlzGetFrameByName("CPowerupUIWidgetTypeLabelText",index)
+			set f = BlzGetFrameByName("CPowerupUIWidgetTypeLabelBackground",index)
+			call BlzFrameSetPoint(f,FRAMEPOINT_TOPLEFT,P_TYPE_LABEL_TEXT[index],FRAMEPOINT_TOPLEFT,-0.002,0.002)
+			call BlzFrameSetPoint(f,FRAMEPOINT_BOTTOMRIGHT,P_TYPE_LABEL_TEXT[index],FRAMEPOINT_BOTTOMRIGHT,0.002,-0.002)
+			call BlzFrameSetVisible(P_TYPE_LABEL[index],false)
+			/*아이콘*/
 			set P_ICON[index] = BlzGetFrameByName("CPowerupUIWidgetIcon",index)
+			call BlzFrameSetPointPixel(P_ICON[index],FRAMEPOINT_TOP,P_WIDGET[index],FRAMEPOINT_TOP,0,-(approxwidth-P_WIDGET_ICON_SIZE)/2)
+			call BlzFrameSetSizePixel(P_ICON[index],P_WIDGET_ICON_SIZE,P_WIDGET_ICON_SIZE)
+			/*타이틀*/
+			set P_TITLE[index] = BlzGetFrameByName("CPowerupUIWidgetTitle",index)
+			call BlzFrameSetVisible(P_TITLE[index],false)
+			/*설명*/
+			set P_DESC[index] = BlzGetFrameByName("CPowerupUIWidgetDesc",index)
+			call BlzFrameSetVisible(P_DESC[index],false)
+			call BlzFrameSetPointPixel(P_DESC[index],FRAMEPOINT_TOPLEFT,P_TITLE[index],FRAMEPOINT_BOTTOM,-approxwidth/2,-16)
+			call BlzFrameSetPointPixel(P_DESC[index],FRAMEPOINT_BOTTOMRIGHT,P_WIDGET[index],FRAMEPOINT_BOTTOMRIGHT,0,0)
 			/*버튼*/
 			set P_BTN[index] = BlzCreateSimpleFrame("CPowerupUIWidgetButton",FRAME_POWERUP_UI,index)
 			call BlzFrameSetAllPoints(P_BTN[index],P_WIDGET[index])
+			set f = BlzGetFrameByName("CPowerupUIWidgetButtonBackground",index)
+			call BlzFrameSetVertexColor(f,BlzConvertColor(128,255,255,255))
+			/*위젯 추가 후 찐컨테이너 다시 숨김*/
+			call BlzFrameSetVisible(P_WIDGET_CONTAINER,false)
 			/*공용트리거*/
 			call BlzTriggerRegisterFrameEvent(P_WIDGET_CALLBACK,P_BTN[index],FRAMEEVENT_CONTROL_CLICK)
+			/**/
+			set f = null
 		endmethod
 
 		static method create takes player owner, integer index returns thistype
@@ -158,7 +218,7 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 				/*비어있을 때*/
 				if GetLocalPlayer() == .owner then
 					/*찐컨테이너 비표시*/
-					call BlzFrameSetVisible(P_TRUE_CONTAINER,false)
+					call BlzFrameSetVisible(P_WIDGET_CONTAINER,false)
 					/*타이틀 변경*/
 					call BlzFrameSetVisible(P_FRAME_INFO,false)
 					/*플레이스홀더*/
@@ -172,17 +232,17 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 				set pup = Powerup(p_manager.getValue(0))
 				if GetLocalPlayer() == .owner then
 					/*찐컨테이너 표시*/
-					call BlzFrameSetVisible(P_TRUE_CONTAINER,true)
+					call BlzFrameSetVisible(P_WIDGET_CONTAINER,true)
 					/*타이틀 변경*/
 					call BlzFrameSetVisible(P_FRAME_INFO,true)
 					if pup.type == ENUM_POWERUP_TYPE_LEVEL then
-						call BlzFrameSetText(P_FRAME_INFO_TEXT,CONSTANT_POWERUP_TYPE_COLOR[pup.type]+"레벨 "+I2S(pup.value)+" 달성 보상|r")
+						call BlzFrameSetText(P_FRAME_INFO_TEXT,UDG_POWERUP_TYPE_COLOR[pup.type]+"레벨 "+I2S(pup.value)+" 달성 보상|r")
 					else
-						call BlzFrameSetText(P_FRAME_INFO_TEXT,CONSTANT_POWERUP_TYPE_COLOR[pup.type]+CONSTANT_POWERUP_TYPE_NAME[pup.type]+" 보상|r")
+						call BlzFrameSetText(P_FRAME_INFO_TEXT,UDG_POWERUP_TYPE_COLOR[pup.type]+UDG_POWERUP_TYPE_NAME[pup.type]+" 보상|r")
 					endif
 					/*아이콘 변경*/
-					call BlzFrameSetTexture(P_FRAME_ICON_LEFT,CONSTANT_POWERUP_TYPE_ICON[pup.type],0,true)
-					call BlzFrameSetTexture(P_FRAME_ICON_RIGHT,CONSTANT_POWERUP_TYPE_ICON[pup.type],0,true)
+					call BlzFrameSetTexture(P_FRAME_ICON_LEFT,UDG_POWERUP_TYPE_ICON[pup.type],0,true)
+					call BlzFrameSetTexture(P_FRAME_ICON_RIGHT,UDG_POWERUP_TYPE_ICON[pup.type],0,true)
 					/*플레이스홀더*/
 					call BlzFrameSetVisible(P_FRAME_PLACEHOLDER,false)
 					/*새로고침버튼+매각버튼*/
@@ -204,7 +264,7 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 			if GetLocalPlayer() == .owner then
 				/*정보창*/
 				call BlzFrameSetAlpha(P_FRAME_INFO,alpha)
-				call BlzFrameSetAlpha(P_TRUE_CONTAINER,alpha)
+				call BlzFrameSetAlpha(P_WIDGET_CONTAINER,alpha)
 			endif
 		endmethod
 
@@ -252,21 +312,25 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 		method visibleForPlayer takes boolean flag returns nothing
 			if .visible_flag != flag then
 				if flag then
+					if User.getCurrentInputLayer(.owner) > CONFIG_INPUT_LAYER_POWERUP_UI then
+						return
+					endif
 					/*CLOSEUI*/
 					call CloseUI(this).add(CloseUI.ORDER_POWERUP_UI)
 					call refresh()
-					call User.addInputLayer(.owner,ENUM_INPUT_LAYER_POWERUP_UI)
+					call Ability.cancleUnitAbilityAll(User.getFocusUnit(.owner))
+					call User.addInputLayer(.owner,CONFIG_INPUT_LAYER_POWERUP_UI)
 				else
 					/*CLOSEUI*/
 					call CloseUI(this).eraseFor(CloseUI.ORDER_POWERUP_UI)
-					call User.removeInputLayer(.owner,ENUM_INPUT_LAYER_POWERUP_UI)
+					call User.removeInputLayer(.owner,CONFIG_INPUT_LAYER_POWERUP_UI)
 				endif
 			endif
 			set .visible_flag = flag
 			if GetLocalPlayer()==.owner then
 				call PlaySoundBJ(gg_snd_BigButtonClick)
 				call BlzFrameSetVisible(FRAME_POWERUP_UI,flag)
-				call BlzFrameSetVisible(P_TRUE_CONTAINER,flag)
+				call BlzFrameSetVisible(P_WIDGET_CONTAINER,flag)
 			endif
 		endmethod
 
@@ -358,14 +422,38 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 			endif
 		endmethod
 
+		/*상위 UI 활성화 시 닫힘*/
+		static method inputLayerChangeCallback takes nothing returns nothing
+			local thistype this = GetPlayerId(EVT_INPUT_LAYER_CHANGE_PLAYER)
+			if this >= CONFIG_PLAYER_MAX then
+				return
+			endif
+			if EVT_INPUT_LAYER_CHANGE_LAYER > CONFIG_INPUT_LAYER_POWERUP_UI and /*
+			*/.visible_flag then
+				call DisableTrigger(GetTriggeringTrigger())
+				call visibleForPlayer(false)
+				call EnableTrigger(GetTriggeringTrigger())
+			endif
+		endmethod
+
+		static method menuButtonCallback takes nothing returns nothing
+			local thistype this = GetPlayerId(GetTriggerPlayer())
+			if this >= CONFIG_PLAYER_MAX then
+				return
+			endif
+			call switch()
+		endmethod
+
 		static method initFrames takes nothing returns nothing
+			local trigger t = null
 			local framehandle f = null
 			/*트리거*/
 			set P_UI_CALLBACK = CreateTrigger()
 			/*찐 프레임(4:3영역 밖에 배치 불가)*/
-			set P_TRUE_CONTAINER = BlzCreateFrameByType("FRAME","CPowerupUITrueContainer",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],"",0)
-			call BlzFrameSetAllPoints(P_TRUE_CONTAINER,FRAME_POWERUP_UI)
-			call BlzFrameSetVisible(P_TRUE_CONTAINER,false)
+			set P_WIDGET_CONTAINER = BlzCreateFrame("CPowerupUIWidgetContainer",FRAME_GAME_UI[CONFIG_FRAME_LEVEL_WINDOW],0,0)
+			call BlzFrameSetPointPixel(P_WIDGET_CONTAINER,FRAMEPOINT_TOPLEFT,FRAME_POWERUP_UI,FRAMEPOINT_TOP,-P_WIDGET_CONTAINER_WIDTH/2,P_WIDGET_CONTAINER_OFFSET_Y)
+			call BlzFrameSetPointPixel(P_WIDGET_CONTAINER,FRAMEPOINT_BOTTOMRIGHT,FRAME_POWERUP_UI,FRAMEPOINT_TOP,P_WIDGET_CONTAINER_WIDTH/2,P_WIDGET_CONTAINER_OFFSET_Y-P_WIDGET_CONTAINER_HEIGHT)
+			call BlzFrameSetVisible(P_WIDGET_CONTAINER,false)
 			/*파워업유형-텍스트*/
 			set P_FRAME_INFO = BlzGetFrameByName("CPowerupUIInfo",0)
 			set P_FRAME_INFO_TEXT = BlzGetFrameByName("CPowerupUIInfoText",0)
@@ -388,12 +476,18 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 			/*레드닷*/
 			set P_FRAME_NOTICE = BlzGetFrameByName("CPowerupUIButtonNotice",0)
 			set P_FRAME_NOTICE_TEXT = BlzGetFrameByName("CPowerupUIButtonNoticeText",0)
+			call BlzFrameSetVisible(P_FRAME_NOTICE,false)
 			/*누름 콜백*/
 			call BlzTriggerRegisterFrameEvent(P_UI_CALLBACK,P_FRAME_BTN_CLOSE,FRAMEEVENT_CONTROL_CLICK)
 			call BlzTriggerRegisterFrameEvent(P_UI_CALLBACK,P_FRAME_BTN_CLOSE_SECONDARY,FRAMEEVENT_CONTROL_CLICK)
 			call TriggerAddCondition(P_UI_CALLBACK,function thistype.uiCallback)
 			call Event.register(P_UI_CALLBACK,ENUM_EVENT_KEYPRESS)
+			/*메뉴버튼클릭*/
+			set t = CreateTrigger()
+			call BlzTriggerRegisterFrameEvent(t,BlzGetFrameByName("CPowerupUIButton",0),FRAMEEVENT_CONTROL_CLICK)
+			call TriggerAddCondition(t,function thistype.menuButtonCallback)
 			/**/
+			set t = null
 			set f = null
 		endmethod
 
@@ -456,6 +550,10 @@ library PowerupUI requires UI, Ability, Unit, PowerupManager
 			set t = CreateTrigger()
 			call Event.register(t,ENUM_EVENT_POWERUP_ADD)
 			call TriggerAddCondition(t,function thistype.powerupAddCallback)
+			/*인풋레이어 변경시*/
+			set t = CreateTrigger()
+			call Event.register(t,ENUM_EVENT_INPUT_LAYER_CHANGE)
+			call TriggerAddCondition(t,function thistype.inputLayerChangeCallback)
 			/**/
 			set t = null
 		endmethod

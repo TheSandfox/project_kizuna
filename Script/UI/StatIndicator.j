@@ -68,11 +68,11 @@ struct StatItem extends array
 		// 		set tooltip = " - 일부 공격의 피해량이 증가합니다."
 		// 	elseif .stat_index == ENUM_STAT_ACCURACY then
 		// 		/*정확도*/
-		// 		set tooltip = " - 대상에게 입힐 수 있는 최소피해가 증가합니다.\n대상의 "+CONSTANT_STAT_COLOR[ENUM_STAT_EVASION]+CONSTANT_STAT_NAME[ENUM_STAT_EVASION]+"|r"/*
+		// 		set tooltip = " - 대상에게 입힐 수 있는 최소피해가 증가합니다.\n대상의 "+UDG_STAT_COLOR[ENUM_STAT_EVASION]+UDG_STAT_NAME[ENUM_STAT_EVASION]+"|r"/*
 		// 		*/+"에 따라 감소할 수 있습니다."
 		// 	elseif .stat_index == ENUM_STAT_EVASION then
 		// 		/*정확도*/
-		// 		set tooltip = " - 다른 대상에게 받을 수 있는 최소피해가 감소합니다.\n대상의 "+CONSTANT_STAT_COLOR[ENUM_STAT_ACCURACY]+CONSTANT_STAT_NAME[ENUM_STAT_ACCURACY]+"|r"/*
+		// 		set tooltip = " - 다른 대상에게 받을 수 있는 최소피해가 감소합니다.\n대상의 "+UDG_STAT_COLOR[ENUM_STAT_ACCURACY]+UDG_STAT_NAME[ENUM_STAT_ACCURACY]+"|r"/*
 		// 		*/+"에 따라 증가할 수 있습니다."
 		// 	elseif .stat_index == ENUM_STAT_LOVE then
 		// 		/*애정*/
@@ -86,14 +86,14 @@ struct StatItem extends array
 		// 			set r = (100.0/(100.0+r2)) - 1.0
 		// 			set r2 = 0.0
 		// 		endif
-		// 		set tooltip = " - 다른 대상과 주고받는 회복 및 보호막 양이 "+CONSTANT_STAT_COLOR[ENUM_STAT_LOVE]+R2SW(r*100,2,2)+"%|r 증가합니다.(곱적용)\n"+/*
-		// 		*/" - 다른 대상에게 주는 피해가 "+CONSTANT_STAT_COLOR[ENUM_STAT_LOVE]+R2SW(r2*100,2,2)+"%|r 감소합니다.(곱적용)"
+		// 		set tooltip = " - 다른 대상과 주고받는 회복 및 보호막 양이 "+UDG_STAT_COLOR[ENUM_STAT_LOVE]+R2SW(r*100,2,2)+"%|r 증가합니다.(곱적용)\n"+/*
+		// 		*/" - 다른 대상에게 주는 피해가 "+UDG_STAT_COLOR[ENUM_STAT_LOVE]+R2SW(r2*100,2,2)+"%|r 감소합니다.(곱적용)"
 		// 	else
 
 		// 	endif
 		// 	/*적용하기*/
 		// 	call BlzFrameSetText(TOOLTIP_TEXT[.index],/*
-		// 		*/CONSTANT_STAT_COLOR[.stat_index]+CONSTANT_STAT_NAME[.stat_index]+"|r\n\n"+tooltip/*
+		// 		*/UDG_STAT_COLOR[.stat_index]+UDG_STAT_NAME[.stat_index]+"|r\n\n"+tooltip/*
 		// 	*/)
 		// endif
 	endmethod
@@ -116,10 +116,10 @@ struct StatItem extends array
 		*/)
 		/* 스탯아이템 - 아이콘 */
 		set STAT_ICON[index] = BlzGetFrameByName("CStatIndicatorItemIcon",index)
-		call BlzFrameSetTexture(STAT_ICON[index],CONSTANT_STAT_ICON[stat_index],0,true)
+		call BlzFrameSetTexture(STAT_ICON[index],UDG_STAT_ICON[stat_index],0,true)
 		/* 스탯아이템 - 스탯이름 */
 		set STAT_NAME[index] = BlzGetFrameByName("CStatIndicatorItemName",index)
-		call BlzFrameSetText(STAT_NAME[index],CONSTANT_STAT_NAME[stat_index])
+		call BlzFrameSetText(STAT_NAME[index],UDG_STAT_NAME[stat_index])
 		/* 스탯아이템 - 스탯값 */
 		set STAT_VALUE[index] = BlzGetFrameByName("CStatIndicatorItemValue",index)
 		/* 스탯아이템 - 밑줄컬러링(fdf에서 안됨)*/
@@ -176,7 +176,6 @@ struct StatIndicator extends array
 	static framehandle CLOSE = null
 	
 	boolean visible
-	framehandle parent
 
 	method refreshTarget takes Unit target returns nothing
 		local integer i = 0
@@ -203,7 +202,7 @@ struct StatIndicator extends array
 
 	method show takes boolean flag returns nothing
 		if GetLocalPlayer() == Player(this) then
-			call BlzFrameSetVisible(.parent,flag)
+			call BlzFrameSetVisible(FRAME_STAT_INDICATOR,flag)
 			call PlaySoundBJ(gg_snd_BigButtonClick)
 		endif
 		if .visible != flag then
@@ -257,12 +256,26 @@ struct StatIndicator extends array
 		endif
 	endmethod
 
+	static method menuButtonCallback takes nothing returns nothing
+			local thistype this = GetPlayerId(GetTriggerPlayer())
+			if this >= CONFIG_PLAYER_MAX then
+				return
+			endif
+			call switch()
+		endmethod
+
 	static method initFrame takes nothing returns nothing
+		local trigger t = null
 		// 닫기버튼
 		set CLOSE = BlzGetFrameByName("CStatIndicatorCloseButton",0)
+		/*메뉴버튼클릭*/
+		set t = CreateTrigger()
+		call BlzTriggerRegisterFrameEvent(t,BlzGetFrameByName("CStatIndicatorMenuButton",0),FRAMEEVENT_CONTROL_CLICK)
+		call TriggerAddCondition(t,function thistype.menuButtonCallback)
+		set t = null
 	endmethod
 
-	static method create takes player p, framehandle parent returns thistype
+	static method create takes player p returns thistype
 		local thistype this = GetPlayerId(p)
 		if not .INIT_FRAME then
 			call initFrame()
@@ -284,21 +297,21 @@ struct StatIndicator extends array
 		call StatItem.create(ENUM_STAT_EVASION,p)
 		call StatItem.create(ENUM_STAT_SPELL_BOOST,p)
 		call StatItem.create(ENUM_STAT_LUCK,p)
-		call StatItem.create(ENUM_STAT_RODONG,p)
+		// call StatItem.create(ENUM_STAT_RODONG,p)
 		call StatItem.create(ENUM_STAT_INSIGHT,p)
-		call StatItem.create(ENUM_STAT_LOVE,p)
-		call StatItem.create(ENUM_STAT_GREED,p)
+		// call StatItem.create(ENUM_STAT_LOVE,p)
+		// call StatItem.create(ENUM_STAT_GREED,p)
 		call StatItem.create(ENUM_STAT_MOVEMENT_SPEED,p)
 		call StatItem.create(ENUM_STAT_ATTACK_SPEED,p)
 		call StatItem.create(ENUM_STAT_ATTACK_RANGE,p)
 		//
 		call BlzTriggerRegisterFrameEvent(KEYPRESS,CLOSE,FRAMEEVENT_CONTROL_CLICK)
 		set .visible = false
-		set .parent = parent
 		return this
 	endmethod
 
 	static method onInit takes nothing returns nothing
+		local trigger t
 		set KEYPRESS = CreateTrigger()
 		call TriggerAddCondition(KEYPRESS,function thistype.keypress)
 		call Event.register(KEYPRESS,ENUM_EVENT_KEYPRESS)

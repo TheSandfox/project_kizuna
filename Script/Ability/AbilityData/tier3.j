@@ -962,7 +962,7 @@ scope Ability3050 initializer init
 				if .servant <= 0 then
 					return
 				endif
-				set .servant.level = .level
+				call .servant.setLevel(.level)
 			endmethod
 
 			static method mR takes nothing returns nothing

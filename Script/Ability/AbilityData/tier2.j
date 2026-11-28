@@ -311,7 +311,7 @@ scope Ability2040 initializer init
 					endif
 				else
 					/*운빨투척*/
-					if Math.randomPercent() <= .caster.getLuckyPercent(DATA_REAL1,DATA_REAL2) then
+					if Math.randomPercent() <= .caster.getLuckyPercent(.caster.getCalculatedStatValue(DAMAGE_STAT3),DATA_REAL1,DATA_REAL2) then
 						call additional.create(.caster,.target,.level)
 					endif
 				endif
@@ -1520,7 +1520,7 @@ scope Ability20f0 initializer init
 				call damageTarget(.target)
 				call Backswing.create(.caster)
 				if UnitClass(.caster).getClass(ENUM_UNIT_CLASS_ILLUSION) <= 0 then
-					if .caster.luckyTest(DATA_REAL1,DATA_REAL2) then
+					if .caster.luckyTest(.caster.getCalculatedStatValue(DAMAGE_STAT3),DATA_REAL1,DATA_REAL2) then
 						call illusion.create(.caster,.target,.level)
 					endif
 				endif
@@ -2081,7 +2081,7 @@ scope Ability20i0 initializer init
 				call Event.register(.main_trigger.main_trigger,ENUM_EVENT_DEATH)
 				call .main_trigger.addCondition(function thistype.deathCallback)
 				/*레벨*/
-				set .level = level
+				call setLevel(level)
 				/*애님*/
 				call setAnim("stand")
 				/*좌표조정*/
@@ -3202,7 +3202,7 @@ scope Ability20q0 initializer init
 			method executeTarget takes Unit target returns nothing
 				call damageTarget(target)
 				if UnitClass(.owner).getClass(ENUM_UNIT_CLASS_ILLUSION) <= 0 then
-					if .owner.luckyTest(DATA_REAL1,DATA_REAL2) then
+					if .owner.luckyTest(.owner.getCalculatedStatValue(DAMAGE_STAT3),DATA_REAL1,DATA_REAL2) then
 						call illusion.create(.owner,.target,.level)
 					endif
 				endif

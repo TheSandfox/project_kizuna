@@ -30,7 +30,7 @@ library Tombstone
 			else
 				call .owner.healUnit(.owner,.owner.maxhp*HEAL_PER_SEC*TICK)
 				/*부활 예상시간 계산*/
-				set val = (.owner.maxhp - .owner.hp) / ( (.owner.maxhp*HEAL_PER_SEC+.owner.hpregen)*.owner.getCalculatedStatValue(ENUM_STAT_HEAL_AMP) )
+				set val = (.owner.maxhp - .owner.hp) / ( (.owner.maxhp*HEAL_PER_SEC+(.owner.hpregen*UDG_STAT_SCALE[ENUM_STAT_HPREGEN]))*.owner.getCalculatedStatValue(ENUM_STAT_HEAL_AMP) )
 				if GetLocalPlayer() == .owner.owner then
 					call BlzFrameSetText(.text,"|cffff0000"+I2S(R2I(val)+1)+"|r")
 				endif

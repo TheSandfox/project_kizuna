@@ -76,9 +76,9 @@ struct AbilityIcon extends array
 			if Ability.getTypeTier(.target.id) > 0 then
 				call BlzFrameSetText(TOOLTIP_TEXT[.index], .target.relativeTooltip(.target.owner) + "\n\n|cff00ffff스탯 보너스 : |r")
 				/*스탯보너스*/
-				call BlzFrameSetText(TOOLTIP_STAT_BONUS_TEXT1[.index], CONSTANT_STAT_NAME[Ability.getTypeBonusStatIndex(.target.id, 0)] + " +" + /*
+				call BlzFrameSetText(TOOLTIP_STAT_BONUS_TEXT1[.index], UDG_STAT_NAME[Ability.getTypeBonusStatIndex(.target.id, 0)] + " +" + /*
 				*/ CustomString.statStringReal(Ability.getTypeBonusStatIndex(.target.id, 0), .target.stat_bonus1, 1))
-				call BlzFrameSetText(TOOLTIP_STAT_BONUS_TEXT2[.index], CONSTANT_STAT_NAME[Ability.getTypeBonusStatIndex(.target.id, 1)] + " +" + /*
+				call BlzFrameSetText(TOOLTIP_STAT_BONUS_TEXT2[.index], UDG_STAT_NAME[Ability.getTypeBonusStatIndex(.target.id, 1)] + " +" + /*
 				*/ CustomString.statStringReal(Ability.getTypeBonusStatIndex(.target.id, 1), .target.stat_bonus2, 1))
 				call BlzFrameSetVisible(TOOLTIP_STAT_BONUS_TEXT1[.index], true)
 				call BlzFrameSetVisible(TOOLTIP_STAT_BONUS_TEXT2[.index], true)
@@ -171,34 +171,34 @@ struct AbilityIcon extends array
 				endif
         /*툴팁 스킬이름*/
 				if Ability.getTypeTier(.target.id) > 0 then
-          call BlzFrameSetText(TOOLTIP_NAME[.index], CONSTANT_TIER_COLOR[Ability.getTypeTier(.target.id)] +.target.name + "|r |cffffff00Lv. " + I2S(.target.level) + "|r|cff999999/" + I2S(.target.level_max) + "|r")
+          call BlzFrameSetText(TOOLTIP_NAME[.index], UDG_TIER_COLOR[Ability.getTypeTier(.target.id)] +.target.name + "|r |cffffff00Lv. " + I2S(.target.level) + "|r|cff999999/" + I2S(.target.level_max) + "|r")
 				else
-					call BlzFrameSetText(TOOLTIP_NAME[.index], CONSTANT_TIER_COLOR[0] +.target.name + "|r")
+					call BlzFrameSetText(TOOLTIP_NAME[.index], UDG_TIER_COLOR[0] +.target.name + "|r")
 				endif
         /*단축키색깔(스마트여부)*/
         if Ability.getTypeIsWeapon(.target.id) then
 					/*무기*/
-          call BlzFrameSetText(HOTKEY_TEXT[.index], "|cffcc0000" + CONSTANT_ABILITY_SLOT_NAME[.index] + "|r")
+          call BlzFrameSetText(HOTKEY_TEXT[.index], "|cffcc0000" + UDG_ABILITY_SLOT_NAME[.index] + "|r")
         else
           if .target.smart == 0 then
-            call BlzFrameSetText(HOTKEY_TEXT[.index], "|cff999999" + CONSTANT_ABILITY_SLOT_NAME[.index] + "|r")
+            call BlzFrameSetText(HOTKEY_TEXT[.index], "|cff999999" + UDG_ABILITY_SLOT_NAME[.index] + "|r")
           elseif .target.smart == 1 then
-            call BlzFrameSetText(HOTKEY_TEXT[.index], "|cffffcc00" + CONSTANT_ABILITY_SLOT_NAME[.index] + "|r")
+            call BlzFrameSetText(HOTKEY_TEXT[.index], "|cffffcc00" + UDG_ABILITY_SLOT_NAME[.index] + "|r")
           elseif .target.smart == 2 then
-            call BlzFrameSetText(HOTKEY_TEXT[.index], "|cff00ffff" + CONSTANT_ABILITY_SLOT_NAME[.index] + "|r")
+            call BlzFrameSetText(HOTKEY_TEXT[.index], "|cff00ffff" + UDG_ABILITY_SLOT_NAME[.index] + "|r")
           endif
         endif
         /*어빌리티 캐스트타입*/
-        call BlzFrameSetText(TOOLTIP_CASTTYPE[.index], "|cff00ffff" + CONSTANT_CAST_TYPE_NAME[Ability.getTypeCastType(.target.id)] + "|r")
+        call BlzFrameSetText(TOOLTIP_CASTTYPE[.index], "|cff00ffff" + UDG_CAST_TYPE_NAME[Ability.getTypeCastType(.target.id)] + "|r")
         /*무기어빌리티면 모델프레임 표시*/
         call BlzFrameSetVisible(WEAPON_PARTICLE[.index], .target == .target.owner.getWeaponAbility())
         /*무기어빌리티면 마나코스트 아이콘 바꾸기*/
         if Ability.getTypeIsWeapon(.target.id) then
           call BlzFrameSetVisible(TOOLTIP_ICON_WEAPON[.index], true)
-          call BlzFrameSetTexture(TOOLTIP_MANACOST_BACKDROP[.index], CONSTANT_STAT_ICON[ENUM_STAT_ATTACK_RANGE], 0, true)
+          call BlzFrameSetTexture(TOOLTIP_MANACOST_BACKDROP[.index], UDG_STAT_ICON[ENUM_STAT_ATTACK_RANGE], 0, true)
         else
           call BlzFrameSetVisible(TOOLTIP_ICON_WEAPON[.index], false)
-          call BlzFrameSetTexture(TOOLTIP_MANACOST_BACKDROP[.index], CONSTANT_STAT_ICON[ENUM_STAT_MAXMP], 0, true)
+          call BlzFrameSetTexture(TOOLTIP_MANACOST_BACKDROP[.index], UDG_STAT_ICON[ENUM_STAT_MAXMP], 0, true)
         endif
       endif
       /*어빌리티 태그*/
@@ -206,9 +206,9 @@ struct AbilityIcon extends array
         set j = DamageTag.get(.target.id, i)
         exitwhen j < 0
         if i > 0 then
-          set s = s + ", " + CONSTANT_ABILITY_TAG_NAME[j]
+          set s = s + ", " + UDG_ABILITY_TAG_NAME[j]
         else
-          set s = s + CONSTANT_ABILITY_TAG_NAME[j]
+          set s = s + UDG_ABILITY_TAG_NAME[j]
         endif
         set i = i + 1
       endloop
@@ -218,8 +218,8 @@ struct AbilityIcon extends array
         /*스탯보너스*/
 				call BlzFrameSetVisible(TOOLTIP_STAT_BONUS_ICON1[.index], Ability.getTypeTier(.target.id) > 0)
 				call BlzFrameSetVisible(TOOLTIP_STAT_BONUS_ICON2[.index], Ability.getTypeTier(.target.id) > 0)
-        call BlzFrameSetTexture(TOOLTIP_STAT_BONUS_ICON1[.index], CONSTANT_STAT_ICON[Ability.getTypeBonusStatIndex(.target.id, 0)], 0, true)
-        call BlzFrameSetTexture(TOOLTIP_STAT_BONUS_ICON2[.index], CONSTANT_STAT_ICON[Ability.getTypeBonusStatIndex(.target.id, 1)], 0, true)
+        call BlzFrameSetTexture(TOOLTIP_STAT_BONUS_ICON1[.index], UDG_STAT_ICON[Ability.getTypeBonusStatIndex(.target.id, 0)], 0, true)
+        call BlzFrameSetTexture(TOOLTIP_STAT_BONUS_ICON2[.index], UDG_STAT_ICON[Ability.getTypeBonusStatIndex(.target.id, 1)], 0, true)
         /*시그니쳐일 경우 텍스트 표시*/
         call BlzFrameSetVisible(UNIQUE[.index], .target.signature)
 				call BlzFrameSetVisible(UNIQUE_BACKDROP[.index], .target.signature)
@@ -349,7 +349,7 @@ struct AbilityIcon extends array
     set HOTKEY_TEXT[index] = BlzCreateFrame("MyText", ICON_CONTAINER[index], 0, 0)
     call BlzFrameSetAllPoints(HOTKEY_TEXT[index], HOTKEY_BACKDROP[index])
     call BlzFrameSetTextAlignment(HOTKEY_TEXT[index], TEXT_JUSTIFY_CENTER, TEXT_JUSTIFY_CENTER)
-    call BlzFrameSetText(HOTKEY_TEXT[index], "|cffffcc00" + CONSTANT_ABILITY_SLOT_NAME[index] + "|r")
+    call BlzFrameSetText(HOTKEY_TEXT[index], "|cffffcc00" + UDG_ABILITY_SLOT_NAME[index] + "|r")
 		/*게이지*/
     set GAUGE_BACKDROP[index] = BlzCreateFrameByType("BACKDROP", "", ICON_CONTAINER[index], "", 0)
     call BlzFrameSetPoint(GAUGE_BACKDROP[index], FRAMEPOINT_TOPLEFT, pivot, FRAMEPOINT_BOTTOMLEFT, 0., 0.)

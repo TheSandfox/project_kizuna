@@ -959,6 +959,8 @@ globals
 	private constant real DAMAGE_PER_LEVEL = 0.06
 	private constant real DAMAGE_AMPLIFIER1 = 1.0
 	private constant integer DAMAGE_STAT1 = ENUM_STAT_LUCK
+	private constant integer DAMAGE_STAT2 = ENUM_STAT_GREED
+	private constant integer DAMAGE_STAT3 = ENUM_STAT_LUCK
 	private constant boolean USE_DAMAGE_FLAG = true
 	private constant integer DAMAGE_TYPE = ENUM_DAMAGE_PHYSICAL
 	private constant integer ATTACK_TYPE = ENUM_DAMAGE_BASIC
@@ -1528,6 +1530,7 @@ globals
 	private constant real DAMAGE_AMPLIFIER1 = 0.6
 	private constant integer DAMAGE_STAT1 = ENUM_STAT_ATTACK
 	private constant integer DAMAGE_STAT2 = ENUM_STAT_LUCK
+	private constant integer DAMAGE_STAT3 = ENUM_STAT_LUCK
 	private constant boolean USE_DAMAGE_FLAG = true
 	private constant integer DAMAGE_TYPE = ENUM_DAMAGE_UNDEFINED
 	private constant integer ATTACK_TYPE = ENUM_DAMAGE_UNDEFINED
@@ -1922,6 +1925,7 @@ globals
 	private constant real DAMAGE_AMPLIFIER2 = 0.3
 	private constant integer DAMAGE_STAT1 = ENUM_STAT_ATTACK
 	private constant integer DAMAGE_STAT2 = ENUM_STAT_ACCURACY
+	private constant integer DAMAGE_STAT3 = ENUM_STAT_ACCURACY
 	private constant boolean USE_DAMAGE_FLAG = true
 	private constant integer DAMAGE_TYPE = ENUM_DAMAGE_PHYSICAL
 	private constant integer ATTACK_TYPE = ENUM_DAMAGE_BASIC
@@ -2269,6 +2273,7 @@ globals
 	private constant real DAMAGE_AMPLIFIER2 = 0.3
 	private constant integer DAMAGE_STAT1 = ENUM_STAT_ATTACK
 	private constant integer DAMAGE_STAT2 = ENUM_STAT_ACCURACY
+	private constant integer DAMAGE_STAT3 = ENUM_STAT_ACCURACY
 	private constant boolean USE_DAMAGE_FLAG = true
 	private constant integer DAMAGE_TYPE = ENUM_DAMAGE_PHYSICAL
 	private constant integer ATTACK_TYPE = ENUM_DAMAGE_BASIC

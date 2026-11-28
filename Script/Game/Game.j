@@ -4,12 +4,16 @@
 //! import "CharacterSelect.j"
 //! import "Shuffle.j"
 //! import "PowerupManager.j"
+//! import "Interactive/Interactive.j"
+//! import "Biome/Biome.j"
+//! import "UserExtraData.j"
 
 library Game requires Unit, Ability, UI
 
 	globals
 		private trigger LEAVE_TRIGGER = CreateTrigger()	
-		private integer TEST_UNIT_ID = 'HR03'
+		private integer TEST_UNIT_ID = 'HR0c'
+		// private integer TEST_UNIT_ID = 'HR03'
 		private integer DUMMY_UNIT_ID1 = 'U001'
 		private integer DUMMY_UNIT_ID2 = 'U004'
 		constant boolean GAME_DEBUG = true
@@ -53,21 +57,22 @@ library Game requires Unit, Ability, UI
 			call BlzDisplayChatMessage(CONFIG_PLAYER_SYSTEM,0,msg)
 		endmethod
 
-		static method addLevel takes nothing returns nothing
-			local integer i = 0
-			local Unit u = 0
-			loop
-				exitwhen i >= 4
-				call User.addGold(Player(i),5)
-				set u = User.getFocusUnit(Player(i))
-				if u > 0 then
-					call Effect.createAttatched("Abilities\\Spells\\Other\\Levelup\\LevelupCaster.mdl",u.origin_unit,"origin").setDuration(1.5)
-					set u.level = u.level + 1
-				endif
-				set i = i + 1
-			endloop
-		endmethod
+		// static method addLevel takes nothing returns nothing
+		// 	local integer i = 0
+		// 	local Unit u = 0
+		// 	loop
+		// 		exitwhen i >= 4
+		// 		call User.addGold(Player(i),5)
+		// 		set u = User.getFocusUnit(Player(i))
+		// 		if u > 0 then
+		// 			call Effect.createAttatched("Abilities\\Spells\\Other\\Levelup\\LevelupCaster.mdl",u.origin_unit,"origin").setDuration(1.5)
+		// 			set u.level = u.level + 1
+		// 		endif
+		// 		set i = i + 1
+		// 	endloop
+		// endmethod
 
+		/*플레이어별 초기화*/
 		private static method initForPlayer takes player p, integer uid returns nothing
 			local Unit u = Unit.create(p,uid,Math.pPX(GetRectCenterX(gg_rct_Spawn),128,GetRandomReal(0.,360.)),Math.pPY(GetRectCenterY(gg_rct_Spawn),128,GetRandomReal(0.,360.)),270.)
 			set u.is_revive = true
@@ -84,26 +89,33 @@ library Game requires Unit, Ability, UI
 			call User.new(p)
 			call User.setFocusUnit(p,u)
 			call User.selectFocusUnit(p)
+			call UserExtraData.new(p)
 			/*파워업 매니저*/
 			call PowerupManager.create(p)
 			/*메인 UI*/
 			call UI.create(p)
+			call PowerupUI.create(p)
+			call SlotChanger.create(p)
+			call StatIndicator.create(p)
+			call WarpUI.create(p)
 			/*초기소지금*/
-			if GAME_DEBUG then
-				call User.addGold(p,5000)
-			else
-				call User.addGold(p,5)
-			endif
-			set u.level = 5
+			// if GAME_DEBUG then
+			// 	call User.addGold(p,5000)
+			// else
+			// 	call User.addGold(p,5)
+			// endif
+			// set u.level = 5
 		endmethod
 
+		/*게임초기화*/
 		static method endSelect takes nothing returns nothing
 			local integer i = 0
-			/*꿀팁 활성화*/
-			// call Tip.init()
 			/*프레임관련*/
 			call UI.init()
-			call Numberpad.init()
+			/*카메라*/
+			call Camera.init()
+			/*꿀팁 활성화*/
+			// call Tip.init()
 			/*플레이어별 초기화*/
 			loop
 				exitwhen i >= CONFIG_PLAYER_MAX
@@ -113,8 +125,8 @@ library Game requires Unit, Ability, UI
 				endif
 				set i = i + 1
 			endloop
-			/*상호작용물*/
-			call Interactive.init()
+			/*바이옴 초기화*/
+			call Biome.init()
 			/*탈주트리거*/
 			call TriggerAddCondition(LEAVE_TRIGGER,function thistype.playerLeave)
 		endmethod
@@ -216,27 +228,42 @@ library Game requires Unit, Ability, UI
 
 		private static method cheatCallback takes nothing returns nothing
 			local integer i = 0
-			local Unit u = 0
+			local Unit u = User.getFocusUnit(Player(0))
+			local unit target = null
 			if BlzGetTriggerPlayerKey() == OSKEY_O then
 				/*더미소환*/
 				loop
 					exitwhen i >= 1
-					set u = Unit.create(CONFIG_PLAYER_UNDEAD,DUMMY_UNIT_ID1,Mouse.getX(Player(0)),Mouse.getY(Player(0)),0)
-					call u.plusStatValue(ENUM_STAT_HPREGEN,100.)
-					call u.plusStatus(ENUM_STATUS_CAST)
+					set u = Monster.create(0,'M000',Mouse.getX(Player(0)),Mouse.getY(Player(0)),0)
+					// set u = Monster.create(0,DUMMY_UNIT_ID1,Mouse.getX(Player(0)),Mouse.getY(Player(0)),0)
+					// call u.plusStatValue(ENUM_STAT_HPREGEN,100.)
+					// call u.plusStatus(ENUM_STATUS_CAST)
 					set i = i + 1
 				endloop
-				call BossB000.create(15,GetRectCenterX(gg_rct_TreeOfLife),GetRectCenterY(gg_rct_TreeOfLife))
+				// call BossB000.create(15,GetRectCenterX(gg_rct_TreeOfLife),GetRectCenterY(gg_rct_TreeOfLife))
 			elseif BlzGetTriggerPlayerKey() == OSKEY_K then
 				/*죽이기*/
-				set User.getFocusUnit(Player(0)).hp = 0.
+				set u.hp = 0.
 			elseif BlzGetTriggerPlayerKey() == OSKEY_P then
 				/*디버그절취선*/
 				call BJDebugMsg("================디버그절취선================")
 			elseif BlzGetTriggerPlayerKey() == OSKEY_7 then
 				/*렙업*/
-				set User.getFocusUnit(Player(0)).level = User.getFocusUnit(Player(0)).level + 1
+				call u.setLevel(u.level + 1)
+			elseif BlzGetTriggerPlayerKey() == OSKEY_8 then
+				/*렙업*/
+				call u.addExp(55.)
+			elseif BlzGetTriggerPlayerKey() == OSKEY_9 then
+				/*멀티에서쓰면방갈림*/
+				set target = BlzGetMouseFocusUnit()
+				if Unit.get(target) > 0 then
+					call u.damageTarget(Unit.get(target),9999.0,WEAPON_TYPE_WHOKNOWS)
+				endif
+			elseif BlzGetTriggerPlayerKey() == OSKEY_0 then
+				/*워프를 편 상태에서 바이옴이 깨어나면 종착지 버튼이 바르게 생성되는지 확인*/
+				call Biome.create(ENUM_BIOME_MOUNTAIN,UDG_RECT_RECT[ENUM_RECT_13],UDG_RECT_RECT[ENUM_RECT_8]).awake()
 			endif
+			set target = null
 		endmethod
 
 		static method onInit takes nothing returns nothing

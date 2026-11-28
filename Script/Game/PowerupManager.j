@@ -3,6 +3,7 @@ library PowerupManager initializer init requires Object, Ability, User, Table
   globals
     private integer array P_RANDOM_STAT
     private integer P_RANDOM_STAT_SIZE = 0
+    private string P_FX_PATH_LEVELUP = "war3.w3mod:Abilities\\Spells\\Other\\Levelup\\LevelupCaster.mdl"
   endglobals
 
   /*최대로 동시에 플레이어 수*출력할 파워업아이템개수 만큼 존재할 수 있다.*/
@@ -51,7 +52,7 @@ library PowerupManager initializer init requires Object, Ability, User, Table
         endif
       elseif .type == ENUM_POWERUP_ITEM_TYPE_STAT then
         /*TODO 스탯증가*/
-        call target.plusBaseStatValue(.value,CONFIG_POWERUP_STAT_AMOUNT*CONSTANT_STAT_NORMAL_VALUE[.value])
+        call target.plusBaseStatValue(.value,CONFIG_POWERUP_STAT_AMOUNT*UDG_STAT_NORMAL_VALUE[.value])
       else
       endif
       return true
@@ -102,8 +103,13 @@ library PowerupManager initializer init requires Object, Ability, User, Table
           exitwhen i >= CONFIG_POWERUP_ITEM_MAX
           // call getPowerupItem(i).setType(ENUM_POWERUP_ITEM_TYPE_ABILITY)
           // call getPowerupItem(i).setValue('1000')
-          call getPowerupItem(i).setType(ENUM_POWERUP_ITEM_TYPE_STAT)
-          call getPowerupItem(i).setValue(.random_stat_list.getValue(i))
+          if i == 1 or i == 3 then
+            call getPowerupItem(i).setType(ENUM_POWERUP_ITEM_TYPE_ABILITY)
+            call getPowerupItem(i).setValue('1000')
+          else
+            call getPowerupItem(i).setType(ENUM_POWERUP_ITEM_TYPE_STAT)
+            call getPowerupItem(i).setValue(.random_stat_list.getValue(i))
+          endif
           set i = i + 1
         endloop
       endif
@@ -111,13 +117,25 @@ library PowerupManager initializer init requires Object, Ability, User, Table
 
     /*파워업 추가하기*/
     method addPowerup takes Powerup pw returns nothing
+      local Unit focusUnit = User.getFocusUnit(.owner)
       call add(pw)
-      /*없었다가 생기면 바로 추출*/
+      /*없었다가 생기면 바로 추출&유동텍스트 출력*/
       if .size == 1 then
+        /*추출*/
         call extract()
+        /*유동텍스트*/
+        set InstantText.SIZE = 20.
+        set InstantText.R = 255
+        set InstantText.G = 192
+        set InstantText.B = 192
+        call InstantText.createForPlayer(focusUnit.x,focusUnit.y,75,"파워업 획득!",.owner)
+      endif
+      /*레벨업 보상이면 이펙트 출력*/
+      if pw.type == ENUM_POWERUP_TYPE_LEVEL then
+        call Effect.createAttatched(P_FX_PATH_LEVELUP,focusUnit.origin_unit,"origin").setDuration(2.0)
       endif
       set EVT_POWERUP_ADD_PLAYER = .owner
-      set EVT_POWERUP_ADD_UNIT = User.getFocusUnit(.owner)
+      set EVT_POWERUP_ADD_UNIT = focusUnit
       call Event.activate(ENUM_EVENT_POWERUP_ADD)
     endmethod
 
@@ -189,13 +207,20 @@ library PowerupManager initializer init requires Object, Ability, User, Table
         call .random_stat_list.add(P_RANDOM_STAT[i])
         set i = i + 1
       endloop
+      /*파워업아이템들 빈값으로 초기화*/
+      set i = 0
+      loop
+        exitwhen i >= CONFIG_POWERUP_ITEM_MAX
+        call getPowerupItem(i).setEmpty()
+        set i = i + 1
+      endloop
       return this
     endmethod
 
     /*레벨업 콜백*/
     static method levelCallback takes nothing returns nothing
       local Unit u = Unit(EVT_LEVEL_UNIT)
-      local integer diff = EVT_LEVEL_LEVEL
+      local integer diff = EVT_LEVEL_LEVEL_DIFF
       local thistype this = 0
       local integer i = 0
       if GetPlayerId(u.owner) < CONFIG_PLAYER_MAX and diff > 0 then
@@ -251,14 +276,14 @@ library PowerupManager initializer init requires Object, Ability, User, Table
     set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
     set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_LUCK
     set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
-    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_RODONG
-    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    // set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_RODONG
+    // set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
     set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_INSIGHT
     set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
-    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_LOVE
-    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
-    set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_GREED
-    set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    // set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_LOVE
+    // set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
+    // set P_RANDOM_STAT[P_RANDOM_STAT_SIZE] = ENUM_STAT_GREED
+    // set P_RANDOM_STAT_SIZE = P_RANDOM_STAT_SIZE + 1
   endfunction
 
 endlibrary

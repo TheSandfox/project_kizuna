@@ -143,7 +143,7 @@ library Ability requires AbilityPrototype
 
 		method iconClick takes nothing returns nothing
 			local integer s = .smart
-			if User.getCurrentInputLayer(.owner.owner) == ENUM_INPUT_LAYER_DEFAULT then
+			if User.getCurrentInputLayer(.owner.owner) == CONFIG_INPUT_LAYER_DEFAULT then
 				if getTypeIsWeapon(.id) then
 					call Ability.setUnitWeaponAbility(.owner,this)
 					call UI(GetPlayerId(.owner.owner)).refreshAbilityIconsTarget()
@@ -163,7 +163,7 @@ library Ability requires AbilityPrototype
 		endmethod
 
 		stub method iconRightClick takes nothing returns nothing
-			if User.getCurrentInputLayer(.owner.owner) == ENUM_INPUT_LAYER_DEFAULT then
+			if User.getCurrentInputLayer(.owner.owner) == CONFIG_INPUT_LAYER_DEFAULT then
 				/*아이콘 어빌 우클릭 활성화상태*/
 				if Ability.getTypeIsWeapon(.id) then
 					/*무기 어빌리티 우클릭 > 무기 장착 해제*/
@@ -175,7 +175,7 @@ library Ability requires AbilityPrototype
 					call changeSmart(.smart + 1)
 				endif
 				call UI(GetPlayerId(.owner.owner)).refreshAbilityIconsTarget()
-			elseif User.getCurrentInputLayer(.owner.owner) == ENUM_INPUT_LAYER_ABILITY_MANAGER then
+			// elseif User.getCurrentInputLayer(.owner.owner) == CONFIG_INPUT_LAYER_ABILITY_MANAGER then
 				/*비활성화상태임(조합창에 올릴때 등 액션은 여기에 작성)*/
 				// call AbilityManager(GetPlayerId(.owner.owner)).abilityMixRegisterRequest(this,AbilityMixElement.TYPE_ABILITY)
 			endif
@@ -193,10 +193,10 @@ library Ability requires AbilityPrototype
 			endif
 			set ind1 = getTypeBonusStatIndex(.id,0)
 			set ind2 = getTypeBonusStatIndex(.id,1)
-			call .owner.plusBaseStatValue(ind1,v*CONSTANT_STAT_NORMAL_VALUE[ind1]*getTypeTier(.id)*0.5)
-			call .owner.plusBaseStatValue(ind2,v*CONSTANT_STAT_NORMAL_VALUE[ind2]*getTypeTier(.id)*0.5)
-			set .stat_bonus1 = .stat_bonus1 + v*CONSTANT_STAT_NORMAL_VALUE[ind1]*getTypeTier(.id)*0.5
-			set .stat_bonus2 = .stat_bonus2 + v*CONSTANT_STAT_NORMAL_VALUE[ind2]*getTypeTier(.id)*0.5
+			call .owner.plusBaseStatValue(ind1,v*UDG_STAT_NORMAL_VALUE[ind1]*getTypeTier(.id)*0.5)
+			call .owner.plusBaseStatValue(ind2,v*UDG_STAT_NORMAL_VALUE[ind2]*getTypeTier(.id)*0.5)
+			set .stat_bonus1 = .stat_bonus1 + v*UDG_STAT_NORMAL_VALUE[ind1]*getTypeTier(.id)*0.5
+			set .stat_bonus2 = .stat_bonus2 + v*UDG_STAT_NORMAL_VALUE[ind2]*getTypeTier(.id)*0.5
 		endmethod
 
 		method addLevel takes integer v returns nothing

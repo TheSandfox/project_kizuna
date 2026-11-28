@@ -234,7 +234,7 @@ library Item requires Frame
 		endmethod
 
 		stub method getDropName takes nothing returns string
-			return CONSTANT_TIER_COLOR[getTypeTier(.id)]+.name +" x"+I2S(.count)
+			return UDG_TIER_COLOR[getTypeTier(.id)]+.name +" x"+I2S(.count)
 		endmethod
 		
 		method showTooltip takes nothing returns nothing

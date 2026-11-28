@@ -56,15 +56,12 @@ library Unit requires UnitData
 
 		endmethod
 
-		static method loveDamageCallback takes nothing returns nothing
-			local thistype attacker = EVT_DAMAGE_ATTACKER
-			local real love = attacker.getCalculatedStatValue(ENUM_STAT_LOVE)
-			/*러브값 0이하면 리턴*/
-			if love <= 0. then
-				return
-			endif
-			/*그렇지 않으면 러브패널티*/
-			set EVT_DAMAGE_AMOUNT = EVT_DAMAGE_AMOUNT * (100.0/(100.0+love))
+		method refreshMaxExp takes nothing returns nothing
+			set .maxexp = 50 + .level * 100 /*알아서잘수정하세요*/
+		endmethod
+
+		method addExp takes real v returns nothing
+			call super.addExp(v*((100.+getCalculatedStatValue(ENUM_STAT_INSIGHT))/100.))
 		endmethod
 
 		static method loveShieldCallback takes nothing returns nothing
@@ -156,6 +153,7 @@ library Unit requires UnitData
 			local integer i = 0
 			call loadAbility()
 			call initClass()
+			call refreshMaxExp()
 			set .upgrade_point = SimpleList.create(ENUM_ABILITY_UPGRADE_TYPE_MAX)
 			set .class = "Unit"
 			set .mp = getCalculatedStatValue(ENUM_STAT_MAXMP)
@@ -191,10 +189,6 @@ library Unit requires UnitData
 			set t = CreateTrigger()
 			call Event.register(t,ENUM_EVENT_LEVEL)
 			call TriggerAddCondition(t,function thistype.onLevel)
-			/*커스텀 최종뎀 트리거(애정)*/
-			set t = CreateTrigger()
-			call Event.register(t,ENUM_EVENT_DAMAGE_LAST)
-			call TriggerAddCondition(t,function thistype.loveDamageCallback)
 			/*커스텀 최종힐 트리거(애정)*/
 			set t = CreateTrigger()
 			call Event.register(t,ENUM_EVENT_HEAL_LAST)
@@ -217,3 +211,4 @@ endlibrary
 //! import "InteractiveUnit/InteractiveUnit.j"
 //! import "Summon.j"
 //! import "Boss/Boss.j"
+//! import "Monster.j"

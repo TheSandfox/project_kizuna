@@ -319,7 +319,7 @@ library Boss requires Frame
 			call .damage_trigger.addCondition(function thistype.damageCallback)
 			/*그룹*/
 			set .enemies = Group.new()
-			set .level = level
+			call setLevel(level)
 			/*체젠감소*/
 			call divideStatValue(ENUM_STAT_HEAL_AMP,4.)
 			/*클래스*/

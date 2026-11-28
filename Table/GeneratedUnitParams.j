@@ -361,7 +361,7 @@ scope UnitM000 initializer init
 		call UnitData.setInteger('M000',ENUM_UNIT_PARAM_ID,'M000')
 		call UnitData.setString('M000',ENUM_UNIT_PARAM_NAME,"나무정령")
 		call UnitData.setString('M000',ENUM_UNIT_PARAM_ICON_PATH,"ReplaceableTextures\\CommandButtons\\BTNEnt.blp")
-		call UnitData.setInteger('M000',ENUM_UNIT_PARAM_INITIAL_ABILITY,'1000')
+		call UnitData.setInteger('M000',ENUM_UNIT_PARAM_INITIAL_ABILITY,'1090')
 		call UnitData.setString('M000',ENUM_UNIT_PARAM_TOOLTIP,"")
 	endfunction
 endscope
@@ -381,7 +381,7 @@ scope UnitM002 initializer init
 		call UnitData.setInteger('M002',ENUM_UNIT_PARAM_ID,'M002')
 		call UnitData.setString('M002',ENUM_UNIT_PARAM_NAME,"곰돌이")
 		call UnitData.setString('M002',ENUM_UNIT_PARAM_ICON_PATH,"ReplaceableTextures\\CommandButtons\\BTNFurbolg.blp")
-		call UnitData.setInteger('M002',ENUM_UNIT_PARAM_INITIAL_ABILITY,'1000')
+		call UnitData.setInteger('M002',ENUM_UNIT_PARAM_INITIAL_ABILITY,'1090')
 		call UnitData.setString('M002',ENUM_UNIT_PARAM_TOOLTIP,"[죽음을 각오한 인간]보다 조금 더 강하다고 알려진다.")
 	endfunction
 endscope

@@ -47,7 +47,7 @@ function loadEnumLookupParams(workbook) {
 
     if (!rawIndex || !rawArrName) continue;
 
-    const baseArrName = String(rawArrName).replace(/^CONSTANT_/, '');
+    const baseArrName = String(rawArrName).replace(/^UDG_/, '');
     const enumIndex = String(rawIndex);
 
     for (const subfixColIdx of subfixCols) {

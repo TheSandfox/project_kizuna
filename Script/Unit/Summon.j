@@ -141,7 +141,7 @@ library Summon requires Unit
 			call refreshStatValue(ENUM_STAT_MPREGEN)
 			call refreshStatValue(ENUM_STAT_MAXMP)
 			/*레벨, 지속시간*/
-			set .level = level
+			call setLevel(level)
 			call setDuration(duration)
 			/*마나회복정지*/
 			set .restore_mp = false

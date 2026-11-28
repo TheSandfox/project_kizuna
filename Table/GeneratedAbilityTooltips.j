@@ -127,7 +127,7 @@ endmethod
 //! endtextmacro
 //! textmacro abilityTooltip10o0
 method relativeTooltip takes Unit caster returns string
-	return "대상에게 금화를 던져 |cffff9900"+R2SW(1.0*caster.getCalculatedStatValue(ENUM_STAT_LUCK)*(1+0.06*.level),2,2)+"|r"+CustomString.shiftStatTooltip(ENUM_STAT_LUCK)+"의 피해를 입히고 "+"|cff|cff00cc00"+R2SW(caster.getLuckyPercent(0.001,300.0)*100.,1,1)+"%|r"+CustomString.shiftStatTooltip(ENUM_STAT_LUCK)+" 확률로 |cffffcc00금화를 1|r 획득합니다."
+	return "대상에게 금화를 던져 |cffff9900"+R2SW(1.0*caster.getCalculatedStatValue(ENUM_STAT_LUCK)*(1+0.06*.level),2,2)+"|r"+CustomString.shiftStatTooltip(ENUM_STAT_LUCK)+"의 피해를 입히고 "+"|cff|cff00cc00"+R2SW(caster.getLuckyPercent(caster.getCalculatedStatValue(ENUM_STAT_LUCK),0.001,300.0)*100.,1,1)+"%|r"+CustomString.shiftStatTooltip(ENUM_STAT_LUCK)+" 확률로 |cffffcc00금화를 1|r 획득합니다."
 endmethod
 //! endtextmacro
 //! textmacro abilityTooltip10p0
@@ -212,7 +212,7 @@ endmethod
 //! endtextmacro
 //! textmacro abilityTooltip2040
 method relativeTooltip takes Unit caster returns string
-	return "대상에게 |cffffffff"+R2SW(0.6*caster.getCalculatedStatValue(ENUM_STAT_ATTACK)*(1+0.07*.level),2,2)+"|r"+CustomString.shiftStatTooltip(ENUM_STAT_ATTACK)+"의 피해를 입히는 무작위 카드를 투척합니다. "+"|cff|cff00cc00"+R2SW(caster.getLuckyPercent(0.0025,255.0)*100.,1,1)+"%|r"+CustomString.shiftStatTooltip(ENUM_STAT_LUCK)+" 확률로 한 장의 카드를 추가로 투척합니다. 피해유형과 공격유형이 카드의 색깔에 따라 달라집니다.\n\n빨간색 카드 : |r|cffff9900물리|r, |cffff9900기본|r\n파란색 카드 : |r|cff9999ff마법|r, |cffff9900기본|r\n황금색 카드 : |r|cffff9900물리|r, |cff9999ff스킬|r\n보라색 카드 : |r|cff9999ff마법|r, |cff9999ff스킬|r"
+	return "대상에게 |cffffffff"+R2SW(0.6*caster.getCalculatedStatValue(ENUM_STAT_ATTACK)*(1+0.07*.level),2,2)+"|r"+CustomString.shiftStatTooltip(ENUM_STAT_ATTACK)+"의 피해를 입히는 무작위 카드를 투척합니다. "+"|cff|cff00cc00"+R2SW(caster.getLuckyPercent(caster.getCalculatedStatValue(ENUM_STAT_LUCK),0.0025,255.0)*100.,1,1)+"%|r"+CustomString.shiftStatTooltip(ENUM_STAT_LUCK)+" 확률로 한 장의 카드를 추가로 투척합니다. 피해유형과 공격유형이 카드의 색깔에 따라 달라집니다.\n\n빨간색 카드 : |r|cffff9900물리|r, |cffff9900기본|r\n파란색 카드 : |r|cff9999ff마법|r, |cffff9900기본|r\n황금색 카드 : |r|cffff9900물리|r, |cff9999ff스킬|r\n보라색 카드 : |r|cff9999ff마법|r, |cff9999ff스킬|r"
 endmethod
 //! endtextmacro
 //! textmacro abilityTooltip2050
@@ -267,7 +267,7 @@ endmethod
 //! endtextmacro
 //! textmacro abilityTooltip20f0
 method relativeTooltip takes Unit caster returns string
-	return "대상에게 |cffff9900"+R2SW(0.7*caster.getCalculatedStatValue(ENUM_STAT_ATTACK)*(1+0.07*.level),2,2)+"|r"+CustomString.shiftStatTooltip(ENUM_STAT_ATTACK)+"의 피해를 입히고 "+"|cff|cff00cc00"+R2SW(caster.getLuckyPercent(0.0025,200.0)*100.,1,1)+"%|r"+CustomString.shiftStatTooltip(ENUM_STAT_LUCK)+" 확률로 |cffffffff레벨 "+I2S(1*.level)+"|r 공격자의 환영을 만들어 공격하게 합니다. 환영은 최대 |cffc3dbff3.0초|r 지속됩니다.\n\n환영 : |r|cffff9900"+R2SW(0.3*caster.getCalculatedStatValue(ENUM_STAT_ACCURACY)*(1+0.07*.level),2,2)+"|r"+CustomString.shiftStatTooltip(ENUM_STAT_ACCURACY)+"|cffff9900의 증가된 공격력|r을 가지며 |cffffffff33%|r의 피해를 입힘"
+	return "대상에게 |cffff9900"+R2SW(0.7*caster.getCalculatedStatValue(ENUM_STAT_ATTACK)*(1+0.07*.level),2,2)+"|r"+CustomString.shiftStatTooltip(ENUM_STAT_ATTACK)+"의 피해를 입히고 "+"|cff|cff00cc00"+R2SW(caster.getLuckyPercent(caster.getCalculatedStatValue(ENUM_STAT_ACCURACY),0.0025,200.0)*100.,1,1)+"%|r"+CustomString.shiftStatTooltip(ENUM_STAT_LUCK)+" 확률로 |cffffffff레벨 "+I2S(1*.level)+"|r 공격자의 환영을 만들어 공격하게 합니다. 환영은 최대 |cffc3dbff3.0초|r 지속됩니다.\n\n환영 : |r|cffff9900"+R2SW(0.3*caster.getCalculatedStatValue(ENUM_STAT_ACCURACY)*(1+0.07*.level),2,2)+"|r"+CustomString.shiftStatTooltip(ENUM_STAT_ACCURACY)+"|cffff9900의 증가된 공격력|r을 가지며 |cffffffff33%|r의 피해를 입힘"
 endmethod
 //! endtextmacro
 //! textmacro abilityTooltip20g0
@@ -331,7 +331,7 @@ endmethod
 //! endtextmacro
 //! textmacro abilityTooltip20q0
 method relativeTooltip takes Unit caster returns string
-	return "대상에게 |cffff9900"+R2SW(1.25*caster.getCalculatedStatValue(ENUM_STAT_ATTACK)*(1+0.07*.level),2,2)+"|r"+CustomString.shiftStatTooltip(ENUM_STAT_ATTACK)+"의 피해를 입히는 투사체를 발사하며 적중 시 "+"|cff|cff00cc00"+R2SW(caster.getLuckyPercent(0.0025,166.0)*100.,1,1)+"%|r"+CustomString.shiftStatTooltip(ENUM_STAT_LUCK)+" 확률로 |cffffffff레벨 "+I2S(1*.level)+"|r 대상의 환영을 만들어 공격하게 합니다. 환영은 최대 |cffc3dbff3.0초|r 지속됩니다.\n\n환영 : |r|cffff9900"+R2SW(0.3*caster.getCalculatedStatValue(ENUM_STAT_ACCURACY)*(1+0.07*.level),2,2)+"|r"+CustomString.shiftStatTooltip(ENUM_STAT_ACCURACY)+"|cffff9900의 증가된 공격력|r을 가지며 |cffffffff33%|r의 피해를 입힘"
+	return "대상에게 |cffff9900"+R2SW(1.25*caster.getCalculatedStatValue(ENUM_STAT_ATTACK)*(1+0.07*.level),2,2)+"|r"+CustomString.shiftStatTooltip(ENUM_STAT_ATTACK)+"의 피해를 입히는 투사체를 발사하며 적중 시 "+"|cff|cff00cc00"+R2SW(caster.getLuckyPercent(caster.getCalculatedStatValue(ENUM_STAT_ACCURACY),0.0025,166.0)*100.,1,1)+"%|r"+CustomString.shiftStatTooltip(ENUM_STAT_LUCK)+" 확률로 |cffffffff레벨 "+I2S(1*.level)+"|r 대상의 환영을 만들어 공격하게 합니다. 환영은 최대 |cffc3dbff3.0초|r 지속됩니다.\n\n환영 : |r|cffff9900"+R2SW(0.3*caster.getCalculatedStatValue(ENUM_STAT_ACCURACY)*(1+0.07*.level),2,2)+"|r"+CustomString.shiftStatTooltip(ENUM_STAT_ACCURACY)+"|cffff9900의 증가된 공격력|r을 가지며 |cffffffff33%|r의 피해를 입힘"
 endmethod
 //! endtextmacro
 //! textmacro abilityTooltip20r0

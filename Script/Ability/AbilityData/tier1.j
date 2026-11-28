@@ -717,7 +717,7 @@ scope Ability1070 initializer init
 		//! runtextmacro abilityParam1070()
 
 		globals
-			private constant string EFFECT_PATH1 = "Abilities\\Spells\\Items\\AIil\\AIilTarget.mdl"
+			private constant string EFFECT_PATH1 = "war3.w3mod:Abilities\\Spells\\Items\\AIil\\AIilTarget.mdl"
 			private constant string EFFECT_PATH2 = "Effects\\WindSlash.mdl"
 			private constant string EFFECT_PATH3 = "Abilities\\Spells\\Other\\Stampede\\StampedeMissileDeath.mdl"
 		endglobals
@@ -1924,7 +1924,7 @@ scope Ability10l0 initializer init
 				/*이 유닛은 건물임*/
 				call UnitClass(this).plusClass(ENUM_UNIT_CLASS_STRUCTURE)
 				/*레벨*/
-				set .level = level
+				call setLevel(level)
 				/*애님*/
 				call setAnim("stand")
 				/*좌표조정*/
@@ -2194,7 +2194,7 @@ scope Ability10o0 initializer init
 
 			method executeTarget takes Unit target returns nothing
 				call damageTarget(target)
-				if .owner.luckyTest(DATA_REAL1,DATA_REAL2) then
+				if .owner.luckyTest(.owner.getCalculatedStatValue(DAMAGE_STAT3),DATA_REAL1,DATA_REAL2) then
 					call User.addGold(.owner.owner,DATA_INTEGER1)
 					call Effect.create(EFFECT_PATH2,target.x,target.y,target.z,0.).setDuration(1.5)
 				endif

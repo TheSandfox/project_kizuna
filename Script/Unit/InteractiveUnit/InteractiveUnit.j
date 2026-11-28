@@ -77,7 +77,7 @@ library InteractiveUnit requires Unit
 			set .caster = caster
 			call UnitClass(this).plusClass(ENUM_UNIT_CLASS_SERVANT)
 			set .is_revive = true
-			set .level = level
+			call setLevel(level)
 			call disableInteract()
 			return this
 		endmethod
@@ -89,8 +89,3 @@ library InteractiveUnit requires Unit
 	endstruct
 
 endlibrary
-
-//! import "ManggakAzae.j"
-//! import "Fisher.j"
-//! import "Lumberman.j"
-//! import "Miner.j"

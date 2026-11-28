@@ -33,7 +33,7 @@ library CloseUI requires UI
 				return
 			endif
 			if order == ORDER_WARP then
-				call WarpWidget.show(Player(this),false)
+				call WarpUI(this).close()
 			endif
 		endmethod
 

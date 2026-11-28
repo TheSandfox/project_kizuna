@@ -97,7 +97,7 @@ library AbilityManager requires Frame
 					elseif .upgrade_mode == ENUM_ABILITY_UPGRADE_TYPE_BLUE then
 						call BlzFrameSetTexture(SKILLPOINT_BACKDROP,"replaceabletextures\\commandbuttons\\BTNAbility_Gem_Blue.blp",0,true)
 					endif
-					call BlzFrameSetText(SKILLPOINT_TEXT,CONSTANT_ABILITY_UPGRADE_TYPE_COLOR[.upgrade_mode]+CONSTANT_ABILITY_UPGRADE_TYPE_NAME[.upgrade_mode]+":\n\n"+I2S(.target.getUpgradePoint(.upgrade_mode))+"|r")
+					call BlzFrameSetText(SKILLPOINT_TEXT,UDG_ABILITY_UPGRADE_TYPE_COLOR[.upgrade_mode]+UDG_ABILITY_UPGRADE_TYPE_NAME[.upgrade_mode]+":\n\n"+I2S(.target.getUpgradePoint(.upgrade_mode))+"|r")
 				elseif .page == PAGE_EXTRACT then
 					/*페이지 2일 때 망각의 가루 표시*/
 					call BlzFrameSetTexture(SKILLPOINT_BACKDROP,"replaceabletextures\\commandbuttons\\BTNAbility_Gem_Purple.blp",0,true)
@@ -174,7 +174,7 @@ library AbilityManager requires Frame
 						/*아니면 활성화*/
 						if GetLocalPlayer() == Player(this) then
 							call BlzFrameSetEnable(ABILITY_LEVEL_BUTTON[i],true)
-							call BlzFrameSetText(f,CONSTANT_ABILITY_UPGRADE_TYPE_COLOR[.upgrade_mode]+"▲"+I2S(Ability.getTypeTier(a.id))+"|r")
+							call BlzFrameSetText(f,UDG_ABILITY_UPGRADE_TYPE_COLOR[.upgrade_mode]+"▲"+I2S(Ability.getTypeTier(a.id))+"|r")
 						endif
 					endif
 					/*제거버튼*/
@@ -504,9 +504,9 @@ library AbilityManager requires Frame
 				endif
 			endif
 			if flag then
-				call User.addInputLayer(.owner,ENUM_INPUT_LAYER_ABILITY_MANAGER)
+				call User.addInputLayer(.owner,CONFIG_INPUT_LAYER_ABILITY_MANAGER)
 			else
-				call User.removeInputLayer(.owner,ENUM_INPUT_LAYER_ABILITY_MANAGER)
+				call User.removeInputLayer(.owner,CONFIG_INPUT_LAYER_ABILITY_MANAGER)
 			endif
 			set .visible_flag = flag
 		endmethod
@@ -549,7 +549,7 @@ library AbilityManager requires Frame
 						call BlzFrameSetVisible(ABILITY_LEVEL_BUTTON_CONTAINER,true)
 						/*도움말*/
 						call BlzFrameSetText(HELP_TOOLTIP_TEXT,/*
-							*/CONSTANT_ABILITY_UPGRADE_TYPE_NAME[ENUM_ABILITY_UPGRADE_TYPE_RED]+", "+CONSTANT_ABILITY_UPGRADE_TYPE_NAME[ENUM_ABILITY_UPGRADE_TYPE_GREEN]+", "+CONSTANT_ABILITY_UPGRADE_TYPE_NAME[ENUM_ABILITY_UPGRADE_TYPE_BLUE]+"를 사용해서 선택한 스킬의 레벨을 상승시킵니다.\n해당 스킬의 등급(티어)에 따라 소모되는 재화의 갯수가 결정됩니다."/*
+							*/UDG_ABILITY_UPGRADE_TYPE_NAME[ENUM_ABILITY_UPGRADE_TYPE_RED]+", "+UDG_ABILITY_UPGRADE_TYPE_NAME[ENUM_ABILITY_UPGRADE_TYPE_GREEN]+", "+UDG_ABILITY_UPGRADE_TYPE_NAME[ENUM_ABILITY_UPGRADE_TYPE_BLUE]+"를 사용해서 선택한 스킬의 레벨을 상승시킵니다.\n해당 스킬의 등급(티어)에 따라 소모되는 재화의 갯수가 결정됩니다."/*
 						*/)
 					elseif index == PAGE_EXTRACT then
 						/*제거 버튼*/

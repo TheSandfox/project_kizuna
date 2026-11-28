@@ -4,6 +4,8 @@ globals
 	constant real CONFIG_MIN_X = -10240
 	constant real CONFIG_MAX_Y = 10240
 	constant real CONFIG_MIN_Y = -10240
+	constant real CONFIG_MONSTER_CAMP_WIDTH = 4096-1024
+	constant real CONFIG_MONSTER_CAMP_HEIGHT = 4096-1024
 	constant integer CONFIG_CLIFF_HEIGHT_DEFAULT = 2
 	constant player CONFIG_PLAYER_ITEM = Player(22)
 	constant player CONFIG_PLAYER_UNDEAD = Player(20)
@@ -23,6 +25,12 @@ globals
 	constant integer CONFIG_ABILITY_ID_CLASS_INTERACTIVE = 'Axx6'
 	constant integer CONFIG_ABILITY_ID_STOP = 'Axx7'
 	constant integer CONFIG_ABILITY_ID_CLASS_NONUNIT = 'Axx8'
+	constant integer CONFIG_INPUT_LAYER_DEFAULT = 0
+	constant integer CONFIG_INPUT_LAYER_SLOT_CHANGER = 1
+	constant integer CONFIG_INPUT_LAYER_POWERUP_UI = 2
+	constant integer CONFIG_INPUT_LAYER_WARP_UI = 3
+	constant integer CONFIG_INPUT_LAYER_ABILITY_ONLY = 4
+	constant integer CONFIG_INPUT_LAYER_EXTRA_BEHAVIOR = 5
 	constant integer CONFIG_POWERUP_ITEM_MAX = 5
 	constant real CONFIG_POWERUP_STAT_AMOUNT = 5.0
 	constant string CONFIG_ORDER_STRING_FOLLOW = "channel"
