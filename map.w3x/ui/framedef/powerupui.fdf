@@ -1,0 +1,237 @@
+IncludeFile "UI\FrameDef\templates\strings.fdf",
+IncludeFile "UI\FrameDef\templates\bordertemplates.fdf",
+IncludeFile "UI\FrameDef\templates\menubuttontemplates.fdf",
+
+
+// 새로고침
+String "CPowerupUIRerollButtonText" INHERITS "TMenuButtonText" {
+}
+String "CPowerupUIRerollButtonDisabledText" INHERITS "TMenuButtonDisabledText" {
+}
+String "CPowerupUIRerollButtonHighlightText" INHERITS "TMenuButtonHighlightText" {
+}
+
+// 판매
+String "CPowerupUISellButtonText" INHERITS "TMenuButtonText" {
+}
+String "CPowerupUISellButtonDisabledText" INHERITS "TMenuButtonDisabledText" {
+}
+String "CPowerupUISellButtonHighlightText" INHERITS "TMenuButtonHighlightText" {
+}
+
+// 닫기(나중에)
+String "CPowerupUICloseButton2Text" INHERITS "TMenuButtonText" {
+}
+String "CPowerupUICloseButton2DisabledText" INHERITS "TMenuButtonDisabledText" {
+}
+String "CPowerupUICloseButton2HighlightText" INHERITS "TMenuButtonHighlightText" {
+}
+
+// 파워업 UI
+Frame "SIMPLEFRAME" "CPowerupUI" INHERITS "TEditboxBorder" {
+  
+  // 타이틀
+  String "CPowerupUITitle" INHERITS "TTextLarge" {
+    Anchor TOP, 0.0, -0.01777,
+    FontJustificationH JUSTIFYCENTER,
+    FontJustificationV JUSTIFYTOP,
+    FontColor 1.0 0.8 0.0 1.0,
+    Text "파워업",
+  }
+
+  Frame "SIMPLEFRAME" "CPowerupUIInfo" {
+    SetPoint TOP, "CPowerupUI", TOP, 0, -0.04444,
+    Width 0.17777,
+    Height 0.02222,
+    Layer "BACKGROUND" {
+      Texture "CPowerupUIInfoBackground" {
+        File "textures\black32.blp",
+      }
+    }
+    Layer "ARTWORK" {
+      // 파워업 유형 - 아이콘
+      Texture "CPowerupUIInfoIconLeft" {
+        File "textures\black32.blp",
+        Anchor TOPLEFT, 0.0, 0.0,
+        Width 0.02222,
+        Height 0.02222,
+      }
+      // 파워업 유형 - 이름
+      String "CPowerupUIInfoText" INHERITS "TTextLarge" {
+        Anchor CENTER, 0.0, 0.0,
+        FontJustificationH JUSTIFYCENTER,
+        FontJustificationV JUSTIFYTOP,
+        Text "파워업 유형",
+      }
+      // 파워업 유형 - 아이콘
+      Texture "CPowerupUIInfoIconRight" {
+        File "textures\black32.blp",
+        Anchor TOPRIGHT, 0.0, 0.0,
+        Width 0.02222,
+        Height 0.02222,
+      }
+    }
+  }
+
+  // 플레이스홀더
+  Frame "SIMPLEFRAME" "CPowerupUIPlaceholder" {
+    SetPoint CENTER, "CPowerupUI", CENTER, 0.0, 0.0,
+    Width 0.26666,
+    Height 0.01777,
+
+    Texture "CPowerupUIPlaceholderBackground" {
+      Anchor CENTER, 0.0, 0.0,
+      File "textures\black32.blp",
+    }
+
+    String "CPowerupUIPlaceholderText" INHERITS "TTextLarge" {
+      Anchor CENTER, 0.0, 0.0,
+      FontJustificationH JUSTIFYCENTER,
+      FontJustificationV JUSTIFYTOP,
+      FontColor 0.4 0.4 0.4,
+      Text "사용할 수 있는 파워업이 없습니다.",
+    }
+  }
+
+  //닫기버튼
+  Frame "SIMPLEBUTTON" "CPowerupUICloseButton" INHERITS "GCloseButton" {
+    SetPoint TOPRIGHT, "CPowerupUI", TOPRIGHT, -0.01333, -0.01333,
+  }
+
+  // 닫기(나중에)버튼(우측배치)
+  Frame "SIMPLEBUTTON" "CPowerupUICloseButton2" INHERITS "TMenuButton" {
+    SetPoint BOTTOMRIGHT, "CPowerupUI", BOTTOMRIGHT, -0.01333, 0.01333,
+    NormalText "CPowerupUICloseButton2Text" "나중에 |cffFFD412(ESC)|r",
+    DisabledText "CPowerupUICloseButton2DisabledText" "나중에",
+    HighlightText "CPowerupUICloseButton2HighlightText" "나중에 (ESC)",
+  }
+
+  // 매각버튼(중앙배치)
+  Frame "SIMPLEBUTTON" "CPowerupUISellButton" INHERITS "TMenuButton" {
+    SetPoint RIGHT, "CPowerupUICloseButton2", LEFT, -0.00444, 0.0,
+    NormalText "CPowerupUISellButtonText" "매각 |cffFFD412(@)|r",
+    DisabledText "CPowerupUISellButtonDisabledText" "매각",
+    HighlightText "CPowerupUISellButtonHighlightText" "매각 (@)",
+  }
+
+  // 새로고침버튼(좌측배치)
+  Frame "SIMPLEBUTTON" "CPowerupUIRerollButton" INHERITS "TMenuButton" {
+    SetPoint RIGHT, "CPowerupUISellButton", LEFT, -0.00444, 0.0,
+    NormalText "CPowerupUIRerollButtonText" "새로고침 |cffFFD412(@)|r",
+    DisabledText "CPowerupUIRerollButtonDisabledText" "새로고침",
+    HighlightText "CPowerupUIRerollButtonHighlightText" "새로고침 (@)",
+  }
+
+
+}
+
+//파워업 UI 열기 버튼
+Frame "SIMPLEBUTTON" "CPowerupUIButton" {
+  Width 0.04444,
+  Height 0.04444,
+  UseHighlight "GHighlight",
+  //테두리&아이콘
+  Layer "BACKGROUND" {
+    Texture "CPowerupUIButtonEdge" {
+      Anchor CENTER, 0.0, 0.0,
+      File "ui\console\human\human-transport-slot.blp",
+    }
+  }
+  Layer "ARTWORK" {
+    Texture "CPowerupUIButtonIcon" {
+      Anchor CENTER, 0.0, 0.0,
+      Width 0.04,
+      Height 0.04,
+      File "ReplaceableTextures\CommandButtons\BTNStatUp.blp",
+    }
+  }
+  // 단축키 표시
+  Frame "SIMPLEFRAME" "CPowerupUIButtonHotkey" {
+    SetPoint TOPLEFT, "CPowerupUIButton", BOTTOMLEFT, 0.0, 0.0,
+    SetPoint BOTTOMRIGHT, "CPowerupUIButton", BOTTOMRIGHT, 0.0, -0.00888,
+    Texture "CPowerupUIButtonHotkeyBackdrop" {
+      File "textures\black32.blp",
+    }
+    String "CPowerupUIButtonHotkeyText" INHERITS "TTextSmall" {
+      Anchor CENTER, 0.0, 0.0,
+      Text "파워업 |cffFFD412(T)|r",
+    }
+  }
+  // 레드닷
+  Frame "SIMPLEFRAME" "CPowerupUIButtonNotice" {
+    SetPoint TOPRIGHT, "CPowerupUIButton", TOPRIGHT, 0.0, 0.0,
+    Width 0.01777,
+    Height 0.01777,
+    String "CPowerupUIButtonNoticeText" {
+      Anchor TOPRIGHT, 0.005, 0.005,
+      Font "fonts\2002.ttf", 0.01777,
+      FontJustificationH JUSTIFYCENTER,
+      FontJustificationV JUSTIFYMIDDLE,
+      Text "◆",
+    }
+  }
+}
+
+Frame "FRAME" "CPowerupUIWidgetContainer" {
+  LayerStyle "IGNORETRACKEVENTS",
+}
+
+Frame "FRAME" "CPowerupUIWidget" {
+	LayerStyle "IGNORETRACKEVENTS",
+  UseActiveContext,
+
+  // 상단라벨(스킬습득, 스탯증가 등)
+  Frame "FRAME" "CPowerupUIWidgetTypeLabel" {
+    UseActiveContext,
+    Frame "BACKDROP" "CPowerupUIWidgetTypeLabelBackground" {
+      UseActiveContext,
+      // 포인트지정은 트리거로
+      BackdropBackground "replaceabletextures\teamcolor\teamcolor20.blp",
+    }
+
+    Frame "TEXT" "CPowerupUIWidgetTypeLabelText" INHERITS "FTextSmall" {
+      UseActiveContext,
+      SetPoint BOTTOM, "CPowerupUIWidget", TOP, 0.000, 0.002,
+      FontJustificationV JUSTIFYBOTTOM,
+      FontJustificationH JUSTIFYCENTER,
+    }
+
+  }
+
+  // 아이콘
+  Frame "BACKDROP" "CPowerupUIWidgetIcon" {
+    UseActiveContext,
+    SetPoint TOP, "CPowerupUIWidget", TOP, 0.0, 0.0,
+    // Width 0.04444, 스크립트로 지정
+    // Height 0.04444, 스크립트로 지정
+    BackdropBackground "replaceabletextures\commandbuttons\btnfootman.blp",
+  }
+
+  // 아이템이름
+  Frame "TEXT" "CPowerupUIWidgetTitle" INHERITS "FTextSmall" {
+    UseActiveContext,
+    SetPoint TOP, "CPowerupUIWidgetIcon", BOTTOM, 0.0, -0.00888,
+    FontJustificationV JUSTIFYTOP,
+    FontJustificationH JUSTIFYCENTER,
+  }
+
+  // 아이템설명
+  Frame "TEXT" "CPowerupUIWidgetDesc" INHERITS "FTextSmall" {
+    UseActiveContext,
+    // SetPoint TOP, "CPowerupUIWidgetTitle", TOP, 0.0, -0.00888,
+    FontJustificationV JUSTIFYTOP,
+    FontJustificationH JUSTIFYCENTER,
+  }
+
+}
+
+
+Frame "SIMPLEBUTTON" "CPowerupUIWidgetButton" {
+  UseActiveContext,
+  UseHighlight "GHighlight",
+  Layer "BACKGROUND" {
+    Texture "CPowerupUIWidgetButtonBackground" {
+      File "textures\black32.blp",
+    }
+  }
+}

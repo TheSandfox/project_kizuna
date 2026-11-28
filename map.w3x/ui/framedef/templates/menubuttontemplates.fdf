@@ -1,0 +1,113 @@
+// 공용 하이라이트
+Texture "GHighlight" {
+    File "UI\Widgets\escmenu\Human\human-options-button-highlight.blp",
+    AlphaMode "ADD",
+}
+// 메뉴 버튼 텍스쳐들
+Texture "TMenuButtonBackground" {
+    File "UI\Widgets\Console\Human\human-console-buttonstates2.blp",
+    TexCoord 0.0, 0.6640625, 0.0, 0.171875,
+}
+Texture "TMenuButtonPushedBackground" {
+    File "UI\Widgets\Console\Human\human-console-buttonstates2.blp",
+    TexCoord 0.0, 0.6640625, 0.25, 0.421875,
+}
+Texture "TMenuButtonDisabledBackground" {
+    File "UI\Widgets\Console\Human\human-console-buttonstates2.blp",
+    TexCoord 0.0, 0.6640625, 0.5, 0.671875,
+}
+Texture "TMenuButtonHighlight" {
+    File "UI\Widgets\Console\Human\human-console-buttonstates2.blp",
+    TexCoord 0.0, 0.6640625, 0.75, 0.921875,
+    AlphaMode "ADD",
+}
+// 메뉴버튼 이름
+String "TMenuButtonText" {
+    Font "fonts/2002.ttf",0.01,
+    FontColor 1.0 1.0 1.0,
+}
+
+String "TMenuButtonDisabledText" INHERITS "TMenuButtonText" {
+    FontColor 0.4 0.4 0.4,
+}
+
+String "TMenuButtonHighlightText" INHERITS "TMenuButtonText" {
+    FontColor 1.0 0.83 0.07,
+}
+
+// 메뉴버튼 백드롭 템플릿
+Frame "SIMPLEBUTTON" "TMenuButton" {
+    Width 0.08888,
+    Height 0.02222,
+    ButtonPushedTextOffset 0.001 -0.001,
+    NormalTexture "TMenuButtonBackground",
+    PushedTexture "TMenuButtonPushedBackground",
+    DisabledTexture "TMenuButtonDisabledBackground",
+    UseHighlight "TMenuButtonHighlight",
+}
+
+
+// 정사각형버튼 텍스쳐들
+Texture "TSimpleButtonBackground" {
+    File "ui\widgets\escmenu\human\checkbox-background.blp",
+}
+Texture "TSimpleButtonPushedBackground" {
+    File "ui\widgets\escmenu\human\checkbox-background.blp",
+}
+Texture "TSimpleButtonDisabledBackground" {
+    File "ui\widgets\escmenu\human\checkbox-background-disabled.blp",
+}
+Texture "TSimpleButtonHighlight" {
+    File "ui\widgets\escmenu\human\checkbox-depressed.blp",
+}
+
+// 정사각형버튼 이름
+String "TSimpleButtonText" {
+    Font "fonts/2002.ttf",0.01777,
+    FontColor 1.0 1.0 1.0,
+    Anchor CENTER, -0.0005, -0.00055,
+}
+
+String "TSimpleButtonDisabledText" INHERITS "TSimpleButtonText" {
+    FontColor 0.4 0.4 0.4,
+    Anchor CENTER, -0.0005, -0.00055,
+}
+
+String "TSimpleButtonHighlightText" INHERITS "TSimpleButtonText" {
+    FontColor 1.0 0.83 0.07,
+    Anchor CENTER, -0.0005, -0.00055,
+}
+
+// 정사각형버튼 템플릿
+Frame "SIMPLEBUTTON" "TSimpleButton" {
+    Width 0.01777,
+    Height 0.01777,
+    ButtonPushedTextOffset 0.001 -0.001,
+    NormalTexture "TSimpleButtonBackground",
+    PushedTexture "TSimpleButtonPushedBackground",
+    DisabledTexture "TSimpleButtonDisabledBackground",
+    UseHighlight "TSimpleButtonHighlight",
+
+    Layer "BACKGROUND" {
+        Texture "TSimpleButtonBlack" {
+            File "textures\black32.blp",
+            Width 0.01333,
+            Height 0.01333,
+            Anchor CENTER, 0.0, 0.0,
+        }
+    }
+}
+
+// 공용 닫기버튼
+String "GCloseButtonText" INHERITS "TSimpleButtonText" {
+    FontColor 1.0 0.0 0.0,
+}
+String "GCloseButtonDisabledText" INHERITS "TSimpleButtonDisabledText" {
+}
+String "GCloseButtonHighlightText" INHERITS "TSimpleButtonHighlightText" {
+}
+Frame "SIMPLEBUTTON" "GCloseButton" INHERITS "TSimpleButton" {
+    NormalText "GCloseButtonText" "×",
+    DisabledText "GCloseButtonDisabledText" "×",
+    HighlightText "GCloseButtonHighlightText" "×",
+}

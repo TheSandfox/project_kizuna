@@ -1,0 +1,41 @@
+// 초상화와 옆에 붙는 유닛 정보를 보여주는 UI에요
+// 유닛레벨 + 유닛이름, 경험치바 등을 포함해요
+Frame "SIMPLEFRAME" "CUnitInfo" {
+  UseActiveContext,
+  Texture "CUnitInfoBackdrop" { // 배경
+    File "Textures\arrow.blp",
+    SetPoint TOPLEFT, "CUnitInfo", TOPLEFT, 0.0, 0.0,
+    SetPoint BOTTOMRIGHT, "CUnitInfo", BOTTOMRIGHT, 0.0, 0.0,
+  }
+  // 칭호프레임 쓰려고했는데 칭호시스템자체를 파기했어요
+  // Frame "SIMPLEFRAME" "CChingho" {
+  //   UseActiveContext,
+  //   SetPoint TOPLEFT, "CUnitInfo", TOPLEFT, 0., 0.,
+  //   SetPoint BOTTOMRIGHT, "CUnitInfo", TOPRIGHT, 0., -0.01777,
+  //   Texture "CChinghoBackdrop" {
+  //     SetPoint TOPLEFT, "CChingho", TOPLEFT, 0., 0.,
+  //     SetPoint BOTTOMRIGHT, "CChingho", BOTTOMRIGHT, 0., 0.,
+  //     File "textures\black32.blp",
+  //   }
+  //   Texture "CChinghoIcon" {
+  //     Anchor TOPLEFT, "CChingho", 0., 0.,
+  //     Width 0.01777,
+  //     Height 0.01777,
+  //     File "Icons\BTNBlackIcon.blp",
+  //   }
+  //   String "CChinghoName" {
+  //     SetPoint TOPLEFT, "CChinghoIcon", TOPRIGHT, 0., 0.,
+  //     SetPoint BOTTOMRIGHT, "CChingho", TOPRIGHT, 0., -0.01777,
+  //     Font "fonts\2002.ttf", 0.01,
+  //     FontShadowColor 0.0 0.0 0.0 0.9,
+  //     FontShadowOffset 0.001 -0.001,
+  //   }
+  // }
+  String "CUnitInfoUnitName" { // Lv.xx 유닛이름
+    SetPoint TOPLEFT, "CChingho", BOTTOMLEFT, 0., 0.,
+    SetPoint BOTTOMRIGHT, "CUnitInfo", BOTTOMRIGHT, 0., 0.,
+    Font "fonts\2002.ttf", 0.01,
+    FontShadowColor 0.0 0.0 0.0 0.9,
+    FontShadowOffset 0.001 -0.001,
+  }
+}

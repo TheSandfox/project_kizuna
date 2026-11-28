@@ -1,0 +1,41 @@
+IncludeFile "UI\FrameDef\templates\menubuttontemplates.fdf",
+IncludeFile "UI\FrameDef\templates\bordertemplates.fdf",
+IncludeFile "UI\FrameDef\templates\strings.fdf",
+
+// 워프UI
+Frame "SIMPLEFRAME" "CWarpUI" INHERITS "TEditboxBorder" {
+  //닫기버튼
+  Frame "SIMPLEBUTTON" "CWarpUICloseButton" INHERITS "GCloseButton" {
+    SetPoint TOPRIGHT, "CWarpUI", TOPRIGHT, -0.01333, -0.01333,
+  }
+
+  Frame "SIMPLEFRAME" "CWarpUIWidgetContainer" {
+  }
+
+  Layer "BACKGROUND" {
+    Texture "CWarpUIMinimap" {
+      File "war3map.blp",
+    }
+  }
+}
+
+//
+// Frame "FRAME" "CWarpUIWidgetContainer" {
+//   LayerStyle "IGNORETRACKEVENTS",
+// }
+
+// 워프위젯
+Frame "SIMPLEBUTTON" "CWarpUIWidget" {
+  UseHighlight "GHighlight",
+  //테두리&아이콘
+  Layer "BACKGROUND" {
+    Texture "CWarpUIWidgetEdge" {
+      File "ui\console\human\human-transport-slot.blp",
+    }
+  }
+  Layer "ARTWORK" {
+    Texture "CWarpUIWidgetIcon" {
+      File "ReplaceableTextures\CommandButtons\BTNWaygate.blp",
+    }
+  }
+}

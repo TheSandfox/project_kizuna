@@ -1,0 +1,7 @@
+IncludeFile "UI\FrameDef\templates\bordertemplates.fdf",
+
+Frame "SIMPLEFRAME" "CMinimap" {
+	Frame "SIMPLEFRAME" "CMinimapBackdrop" INHERITS "TMultiboardBorder" {
+
+	}
+}

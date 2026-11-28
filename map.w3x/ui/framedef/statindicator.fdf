@@ -1,0 +1,61 @@
+IncludeFile "UI\FrameDef\templates\menubuttontemplates.fdf",
+IncludeFile "UI\FrameDef\templates\bordertemplates.fdf",
+IncludeFile "UI\FrameDef\templates\strings.fdf",
+
+Texture "TStatIcon" {
+  File "textures\arrow.blp",
+  Width 0.01333,
+  Height 0.01333,
+  Anchor TOPLEFT, 0.0, 0.0,
+}
+
+String "TStatName" INHERITS "TTextSmall" {
+  Text "스탯이름",
+  FontJustificationH JUSTIFYLEFT,
+  FontJustificationV JUSTIFYMIDDLE,
+  Anchor LEFT, 0.01777, 0.0,
+}
+
+String "TStatValue" INHERITS "TTextSmall" {
+  Text "스탯값",
+  FontJustificationH JUSTIFYRIGHT,
+  FontJustificationV JUSTIFYMIDDLE,
+  Anchor RIGHT, 0.0, 0.0,
+}
+
+Frame "SIMPLEFRAME" "CStatIndicatorItem" {
+  UseActiveContext,
+  Layer "BACKGROUND" {
+    Texture "CStatIndicatorItemUnderline" {
+      File "textures\white.blp",
+      SetPoint TOPLEFT, "CStatIndicatorItem", BOTTOMLEFT, 0.0, 0.0012,
+      SetPoint BOTTOMRIGHT, "CStatIndicatorItem", BOTTOMRIGHT, 0.0, 0.0,
+      
+    }
+  }
+  Layer "ARTWORK" {
+    Texture "CStatIndicatorItemIcon" INHERITS "TStatIcon" {
+    }
+    String "CStatIndicatorItemName" INHERITS "TStatName" {
+    }
+    String "CStatIndicatorItemValue" INHERITS "TStatValue" {
+    }
+  }
+}
+
+// 스탯표시창(C)
+Frame "SIMPLEFRAME" "CStatIndicator" INHERITS "TEditboxBorder" {
+  // 능력치(C)
+  String "CStatIndicatorTitle" INHERITS "TTextLarge" {
+    Anchor TOP, 0.0, -0.01777,
+    FontJustificationH JUSTIFYCENTER,
+    FontJustificationV JUSTIFYTOP,
+    FontColor 1.0 0.8 0.0 1.0,
+    Text "능력치",
+  }
+
+  //닫기버튼
+  Frame "SIMPLEBUTTON" "CStatIndicatorCloseButton" INHERITS "GCloseButton" {
+    SetPoint TOPRIGHT, "CStatIndicator", TOPRIGHT, -0.01333, -0.01333,
+  }
+}

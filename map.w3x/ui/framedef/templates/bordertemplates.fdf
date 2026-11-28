@@ -1,0 +1,206 @@
+Frame "SIMPLEFRAME" "TMultiboardBorder" {
+	Layer "BACKGROUND" {
+		// 배경
+		Texture "TMultiboardBorderackdrop" {
+			File "ui/widgets/escmenu/human/editbox-background.blp",
+			SetAllPoints,
+		}
+	}
+	Layer "ARTWORK" {
+		// 1. 좌상단 (TopLeft) - 기준
+		Texture "TMultiboardBorderTL" {
+			File "ui/border/multiboard-border.blp",
+			Width 0.00888,
+			Height 0.00888,
+			Anchor TOPLEFT, 0.0, 0.0,
+			TexCoord 0.5, 0.625, 0.0, 1.0,
+		}
+		// 우상
+		Texture "TMultiboardBorderTR" {
+			File "ui/border/multiboard-border.blp",
+			Width 0.00888,
+			Height 0.00888,
+			Anchor TOPRIGHT, 0.0, 0.0,
+			TexCoord 0.625, 0.75, 0.0, 1.0,
+		}
+		// 좌하
+		Texture "TMultiboardBorderBL" {
+			File "ui/border/multiboard-border.blp",
+			Width 0.00888,
+			Height 0.00888,
+			Anchor BOTTOMLEFT, 0.0, 0.0,
+			TexCoord 0.75, 0.875, 0.0, 1.0,
+		}
+		// 우하
+		Texture "TMultiboardBorderBR" {
+			File "ui/border/multiboard-border.blp",
+			Width 0.00888,
+			Height 0.00888,
+			Anchor BOTTOMRIGHT, 0.0, 0.0,
+			TexCoord 0.875, 1.0, 0.0, 1.0,
+		}
+		// 상
+		Texture "TMultiboardBorderT" {
+			File "ui/border/multiboard-border.blp",
+			SetPoint TOPLEFT, "TMultiboardBorderTL", TOPRIGHT, 0.0, 0.0,
+			SetPoint BOTTOMRIGHT, "TMultiboardBorderTR", BOTTOMLEFT, 0.0, 0.0, 
+			TexCoord 0.3, 0.35, 0.0, 1.0,
+		}
+		// 하
+		Texture "TMultiboardBorderB" {
+			File "ui/border/multiboard-border.blp",
+			SetPoint TOPLEFT, "TMultiboardBorderBL", TOPRIGHT, 0.0, 0.0,
+			SetPoint BOTTOMRIGHT, "TMultiboardBorderBR", BOTTOMLEFT, 0.0, 0.0, 
+			TexCoord 0.4, 0.45, 0.0, 1.0,
+		}
+		// 좌
+		Texture "TMultiboardBorderL" {
+			File "ui/border/multiboard-border.blp",
+			SetPoint TOPLEFT, "TMultiboardBorderTL", BOTTOMLEFT, 0.0, 0.0,
+			SetPoint BOTTOMRIGHT, "TMultiboardBorderBL", TOPRIGHT, 0.0, 0.0, 
+			TexCoord 0.0, 0.125, 0.0, 1.0,
+		}
+		// 우
+		Texture "TMultiboardBorderR" {
+			File "ui/border/multiboard-border.blp",
+			SetPoint TOPLEFT, "TMultiboardBorderTR", BOTTOMLEFT, 0.0, 0.0,
+			SetPoint BOTTOMRIGHT, "TMultiboardBorderBR", TOPRIGHT, 0.0, 0.0, 
+			TexCoord 0.125, 0.25, 0.0, 1.0,
+		}
+	}
+}
+
+Frame "SIMPLEFRAME" "TMenuBorder" {
+	// 1. 좌상단 (TopLeft) - 기준
+	Texture "TMenuBorderTL" {
+		File "ui/widgets/escmenu/human/human-cinematic-border.blp",
+		Width 0.02666,
+		Height 0.02666,
+		Anchor TOPLEFT, 0.0, 0.0,
+		TexCoord 0.0, 0.25, 0.0, 0.25,
+	}
+	// 우상
+	Texture "TMenuBorderTR" {
+		File "ui/widgets/escmenu/human/human-cinematic-border.blp",
+		Width 0.02666,
+		Height 0.02666,
+		Anchor TOPRIGHT, 0.0, 0.0,
+		TexCoord 0.75, 1.0, 0.0, 0.25,
+	}
+	// 좌하
+	Texture "TMenuBorderBL" {
+		File "ui/widgets/escmenu/human/human-cinematic-border.blp",
+		Width 0.02666,
+		Height 0.02666,
+		Anchor BOTTOMLEFT, 0.0, 0.0,
+		TexCoord 0.0, 0.25, 0.75, 1.0,
+	}
+	// 우하
+	Texture "TMenuBorderBR" {
+		File "ui/widgets/escmenu/human/human-cinematic-border.blp",
+		Width 0.02666,
+		Height 0.02666,
+		Anchor BOTTOMRIGHT, 0.0, 0.0,
+		TexCoord 0.75, 1.0, 0.75, 1.0,
+	}
+	// 상
+	Texture "TMenuBorderT" {
+		File "ui/widgets/escmenu/human/human-cinematic-border.blp",
+		SetPoint TOPLEFT, "TMenuBorderTL", TOPRIGHT, 0.0, 0.0,
+		SetPoint BOTTOMRIGHT, "TMenuBorderTR", BOTTOMLEFT, 0.0, 0.0, 
+		TexCoord 0.25, 0.75, 0.0, 0.25,
+	}
+	// 하
+	Texture "TMenuBorderB" {
+		File "ui/widgets/escmenu/human/human-cinematic-border.blp",
+		SetPoint TOPLEFT, "TMenuBorderBL", TOPRIGHT, 0.0, 0.0,
+		SetPoint BOTTOMRIGHT, "TMenuBorderBR", BOTTOMLEFT, 0.0, 0.0, 
+		TexCoord 0.25, 0.75, 0.75, 1.0,
+	}
+	// 좌
+	Texture "TMenuBorderL" {
+		File "ui/widgets/escmenu/human/human-cinematic-border.blp",
+		SetPoint TOPLEFT, "TMenuBorderTL", BOTTOMLEFT, 0.0, 0.0,
+		SetPoint BOTTOMRIGHT, "TMenuBorderBL", TOPRIGHT, 0.0, 0.0, 
+		TexCoord 0.0, 0.25, 0.25, 0.75,
+	}
+	// 우
+	Texture "TMenuBorderR" {
+		File "ui/widgets/escmenu/human/human-cinematic-border.blp",
+		SetPoint TOPLEFT, "TMenuBorderTR", BOTTOMLEFT, 0.0, 0.0,
+		SetPoint BOTTOMRIGHT, "TMenuBorderBR", TOPRIGHT, 0.0, 0.0, 
+		TexCoord 0.75, 1.0, 0.25, 0.75,
+	}
+}
+
+Frame "SIMPLEFRAME" "TEditboxBorder" {
+	// 1. 좌상단 (TopLeft) - 기준
+	Layer "ARTWORK" {
+		Texture "TEditboxBorderTL" {
+			File "ui/border/editbox-border.blp",
+			Width 0.01777,
+			Height 0.01777,
+			Anchor TOPLEFT, 0.0, 0.0,
+			TexCoord 0.0, 0.25, 0.0, 0.25,
+		}
+		// 우상
+		Texture "TEditboxBorderTR" {
+			File "ui/border/editbox-border.blp",
+			Width 0.01777,
+			Height 0.01777,
+			Anchor TOPRIGHT, 0.0, 0.0,
+			TexCoord 0.75, 1.0, 0.0, 0.25,
+		}
+		// 좌하
+		Texture "TEditboxBorderBL" {
+			File "ui/border/editbox-border.blp",
+			Width 0.01777,
+			Height 0.01777,
+			Anchor BOTTOMLEFT, 0.0, 0.0,
+			TexCoord 0.0, 0.25, 0.75, 1.0,
+		}
+		// 우하
+		Texture "TEditboxBorderBR" {
+			File "ui/border/editbox-border.blp",
+			Width 0.01777,
+			Height 0.01777,
+			Anchor BOTTOMRIGHT, 0.0, 0.0,
+			TexCoord 0.75, 1.0, 0.75, 1.0,
+		}
+		// 상
+		Texture "TEditboxBorderT" {
+			File "ui/border/editbox-border.blp",
+			SetPoint TOPLEFT, "TEditboxBorderTL", TOPRIGHT, 0.0, 0.0,
+			SetPoint BOTTOMRIGHT, "TEditboxBorderTR", BOTTOMLEFT, 0.0, 0.0, 
+			TexCoord 0.25, 0.75, 0.0, 0.25,
+		}
+		// 하
+		Texture "TEditboxBorderB" {
+			File "ui/border/editbox-border.blp",
+			SetPoint TOPLEFT, "TEditboxBorderBL", TOPRIGHT, 0.0, 0.0,
+			SetPoint BOTTOMRIGHT, "TEditboxBorderBR", BOTTOMLEFT, 0.0, 0.0, 
+			TexCoord 0.25, 0.75, 0.75, 1.0,
+		}
+		// 좌
+		Texture "TEditboxBorderL" {
+			File "ui/border/editbox-border.blp",
+			SetPoint TOPLEFT, "TEditboxBorderTL", BOTTOMLEFT, 0.0, 0.0,
+			SetPoint BOTTOMRIGHT, "TEditboxBorderBL", TOPRIGHT, 0.0, 0.0, 
+			TexCoord 0.0, 0.25, 0.25, 0.75,
+		}
+		// 우
+		Texture "TEditboxBorderR" {
+			File "ui/border/editbox-border.blp",
+			SetPoint TOPLEFT, "TEditboxBorderTR", BOTTOMLEFT, 0.0, 0.0,
+			SetPoint BOTTOMRIGHT, "TEditboxBorderBR", TOPRIGHT, 0.0, 0.0, 
+			TexCoord 0.75, 1.0, 0.25, 0.75,
+		}
+		// 배경
+		Texture "TEditboxBorderackdrop" {
+			File "ui/border/editbox-border.blp",
+			SetPoint TOPLEFT, "TEditboxBorderTL", BOTTOMRIGHT, 0.0, 0.0,
+			SetPoint BOTTOMRIGHT, "TEditboxBorderBR", TOPLEFT, 0.0, 0.0, 
+			TexCoord 0.25, 0.75, 0.25, 0.75,
+		}
+	}
+}

@@ -1,0 +1,29 @@
+// 미니맵 우측에 배치되는 메뉴버튼들
+// F10, F12, 등..
+IncludeFile "UI\FrameDef\templates\menubuttontemplates.fdf",
+
+// 스탯창(C)
+String "CStatIndicatorMenuButtonText" INHERITS "TMenuButtonText" {
+}
+String "CStatIndicatorMenuButtonDisabledText" INHERITS "TMenuButtonDisabledText" {
+}
+String "CStatIndicatorMenuButtonHighlightText" INHERITS "TMenuButtonHighlightText" {
+}
+Frame "SIMPLEBUTTON" "CStatIndicatorMenuButton" INHERITS "TMenuButton" {
+    NormalText "CStatIndicatorMenuButtonText" "능력치 |cffFFD412(C)|r",
+    DisabledText "CStatIndicatorMenuButtonDisabledText" "능력치",
+    HighlightText "CStatIndicatorMenuButtonHighlightText" "능력치 (C)",
+}
+
+// 단축키 변경(V)
+String "CSlotChangerMenuButtonText" INHERITS "TMenuButtonText" {
+}
+String "CSlotChangerMenuButtonDisabledText" INHERITS "TMenuButtonDisabledText" {
+}
+String "CSlotChangerMenuButtonHighlightText" INHERITS "TMenuButtonHighlightText" {
+}
+Frame "SIMPLEBUTTON" "CSlotChangerMenuButton" INHERITS "TMenuButton" {
+    NormalText "CSlotChangerMenuButtonText" "단축키 변경 |cffFFD412(V)|r",
+    DisabledText "CSlotChangerMenuButtonDisabledText" "단축키 변경",
+    HighlightText "CSlotChangerMenuButtonHighlightText" "단축키 변경 (V)",
+}

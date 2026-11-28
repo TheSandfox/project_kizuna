@@ -1,0 +1,19 @@
+IncludeFile "UI\FrameDef\templates\strings.fdf",
+
+Frame "SIMPLEFRAME" "CPortrait" {
+	Texture "CPortraitBackdrop" {
+		File "ui/widgets/escmenu/human/human-cinematic-border.blp",
+		Anchor TOPLEFT, 0.0, 0.0,
+		Anchor BOTTOMRIGHT, 0.0, 0.0,
+	}
+
+	String "CPortraitReviveTimerText" INHERITS "TTextLarge" {
+		Text "",
+		Anchor CENTER, 0.0, 0.0,
+		FontJustificationH JUSTIFYCENTER,
+		FontJustificationV JUSTIFYMIDDLE,
+	}
+  // Frame "SIMPLEFRAME" "CPortraitBorder" INHERITS "TMenuBorder" {
+
+	// }
+}

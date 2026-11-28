@@ -1,0 +1,33 @@
+String "TTextSmall" {
+  Font "fonts\2002.ttf", 0.00888,
+  FontShadowColor 0.0 0.0 0.0 0.9,
+  FontShadowOffset 0.001 -0.001,
+}
+
+String "TTextLarge" {
+  Font "fonts\2002.ttf", 0.01333,
+  FontShadowColor 0.0 0.0 0.0 0.9,
+  FontShadowOffset 0.001 -0.001,
+}
+
+Frame "TEXT" "FTextSmall" {
+	UseActiveContext,
+	DecorateFileNames,
+	LayerStyle "IGNORETRACKEVENTS",
+	FontFlags "FIXEDSIZE",
+	FrameFont "MasterFont", 0.00888, "",
+	FontColor 1.0 1.0 1.0 1.0,
+	FontShadowColor 0.0 0.0 0.0 0.9,
+	FontShadowOffset 0.001 -0.001,
+}
+
+Frame "TEXT" "FTextLarge" {
+	UseActiveContext,
+	DecorateFileNames,
+	LayerStyle "IGNORETRACKEVENTS",
+	FontFlags "FIXEDSIZE",
+	FrameFont "MasterFont", 0.01333, "",
+	FontColor 1.0 1.0 1.0 1.0,
+	FontShadowColor 0.0 0.0 0.0 0.9,
+	FontShadowOffset 0.001 -0.001,
+}

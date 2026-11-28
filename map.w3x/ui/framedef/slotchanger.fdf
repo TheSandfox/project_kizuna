@@ -1,0 +1,59 @@
+IncludeFile "UI\FrameDef\templates\strings.fdf",
+IncludeFile "UI\FrameDef\templates\bordertemplates.fdf",
+IncludeFile "UI\FrameDef\templates\menubuttontemplates.fdf",
+
+//슬롯체인저 컨테이너
+// Frame "SIMPLEFRAME" "CSlotChanger" INHERITS "TMultiboardBorder" {
+Frame "SIMPLEFRAME" "CSlotChanger" INHERITS "TEditboxBorder" {
+
+  // 타이틀
+  String "CSlotChangerTitle" INHERITS "TTextLarge" {
+    Anchor TOP, 0.0, -0.01777,
+    FontJustificationH JUSTIFYCENTER,
+    FontJustificationV JUSTIFYTOP,
+    FontColor 1.0 0.8 0.0 1.0,
+    Text "단축키 변경",
+  }
+
+  // 적용버튼
+  Frame "SIMPLEBUTTON" "CSlotChangerConfirmButton" INHERITS "TMenuButton" {
+    SetPoint BOTTOM, "CSlotChanger", BOTTOM, 0.0, 0.00888,
+    String "CSlotChangerConfirmButtonText" INHERITS "TMenuButtonText" {
+    }
+  }
+
+  // 닫기버튼
+  Frame "SIMPLEBUTTON" "CSlotChangerCloseButton" INHERITS "GCloseButton" {
+    SetPoint TOPRIGHT, "CSlotChanger", TOPRIGHT, -0.01333, -0.01333,
+  }
+
+}
+
+//슬롯체인저 버튼
+Frame "SIMPLEBUTTON" "CSlotChangerButton" {
+  UseActiveContext,
+  UseHighlight "GHighlight", //레이어 아래에 작성하면 하이라이트 적용 안됨
+  Layer "BACKGROUND" {
+    Texture "CSlotChangerButtonIcon" {
+      File "textures\black32.blp",
+    }
+  }
+  Layer "ARTWORK" {
+    Frame "SIMPLEFRAME" "CSlotChangerButtonHotkeyFrame" {
+      Layer "BACKGROUND" {
+        Texture "CSlotChangerButtonHotkeyBackdrop" {
+          File "ui\console\human\human-transport-slot.blp",
+          Anchor CENTER, 0, 0,
+          Width 0.01111,
+          Height 0.01111,
+        }
+      }
+      
+      String "CSlotChangerButtonHotkeyText" INHERITS "TTextSmall" {
+        Anchor CENTER, 0, 0,
+        FontJustificationH JUSTIFYCENTER,
+        FontJustificationV JUSTIFYMIDDLE,
+      }
+    }
+  }
+}
